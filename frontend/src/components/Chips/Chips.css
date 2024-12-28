@@ -1,0 +1,17 @@
+.chips-con{
+    width: auto;
+    height: 30px;
+    padding: 2px 10px;
+    background-color: #c7c3c3;
+    font-size: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chips-con:hover{
+    cursor: default;
+    background-color: #3364FF;
+    color: white;
+}

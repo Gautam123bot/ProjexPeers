@@ -1,0 +1,78 @@
+.sidebar{
+    font-family: Product;
+    background-color: #EFF5FF;
+    height: 100vh;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 2px 0px 31px -6px rgba(0, 0, 0, 0.25);
+}
+.header{
+    padding-right: 22px;
+    color: #3364FF;
+}
+.sidebar_top{
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+    white-space: nowrap;
+    align-items: center;
+    height: 50px;
+    gap: 30px;
+}
+.sidebar_top img{
+    height: 30px;
+}
+.sidebar_top img:hover{
+    cursor: pointer;
+}
+
+.main-con{
+    display: flex;
+}
+
+.routes{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.route_con, .logout{
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 10px;
+    white-space: nowrap;
+}
+.route_con img, .logout img{
+    width: 28px;
+}
+
+.link_text, .logout p{
+    padding-top: 3px;
+    padding-left: 22px;
+    font-size: 18px;
+    color: #5C5C5C;
+}
+a{
+    text-decoration: none;
+}
+
+.logout{
+    border-top: 2px solid #E5E5E5;
+}
+.logout:hover{
+    cursor: pointer;
+}
+
+main{
+    /* padding-left: 20px; */
+    width: 100vw;
+    
+}
+main h1{
+    color: #3364FF;
+}

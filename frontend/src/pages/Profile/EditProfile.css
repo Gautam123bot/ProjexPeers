@@ -1,0 +1,165 @@
+.edit-con{
+    padding: 20px 30px;
+    min-height: 100%;
+    max-height: 100vh;
+    height: auto;
+    overflow: auto;
+    font-family: Product;
+    background-color: #EFF5FF;;
+    border-left: 1px dashed #3364FF;
+    
+}
+.ph{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+}
+.gh{
+    display: flex;
+    gap: 10px;
+    /* align-items: center; */
+}
+.edit-con::-webkit-scrollbar {
+    display: none;
+}
+
+.edit-main-con{
+    margin-top: 30px;
+}
+
+.edit-main-con label{
+    font-size: 22px;
+    font-weight: bold;
+    color: #3364FF;
+    margin-bottom: 10px;
+}
+
+.edit-main-con input{
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    padding: 0 10px;
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.edit-fullname, .edit-github, .edit-linkedIn,.edit-profimage ,.edit-covimage,.edit-institution, .edit-collegeStream, .edit-collegeYear, .edit-about{
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-submit-btn{
+    width: 140px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #EFF5FF;
+    color: #3364FF;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto;
+    border: 2px solid #3364FF;
+    box-shadow: 2px 1px 5px #3364ff;
+}
+.edit-submit-btn:hover{
+    color: white;
+    background-color: #3364FF;
+}
+
+.sec1, .sec2{
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.sec1 .sec2 input{
+    width: 300px;
+}
+
+.edit-about textarea{
+    min-height: 120px;
+    width: 80%;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.edit-skills, .edit-achievements, .edit-experience, .edit-projects{
+    margin-top: 15px;
+    width: 80%;
+}
+.edit-achievements, .edit-experience, .edit-projects > label{
+    margin-bottom: 15px !important;
+    width: 80%;
+}
+
+
+.roww{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+.roww input{
+    width: 20%;
+    
+}
+input{
+    border: none;
+}
+textarea{
+    border: none;
+    box-shadow: 2px 2px 1px 2px #cecece;
+}
+textarea:focus{
+    outline: none;
+}
+.edit-con-header{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.back-con{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #d5dcf7;
+}
+
+.back-con:hover{
+    cursor: pointer;
+}
+
+.back-con img{
+    width: 30px;
+    height: 30px;
+}
+.as{
+    margin-bottom: 15px;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+.ws{
+    margin-bottom: 15px;
+    /* align-items: center; */
+    display: flex;
+    gap: 10px;
+}
+.edit-covimage input{
+    width: 250px;
+}

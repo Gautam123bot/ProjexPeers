@@ -1,0 +1,73 @@
+.profile-conn{
+    font-family: Product;
+}
+
+.profile-summary-con{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    gap: 12px;
+}
+.profile-summary-con .username{
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+.profile-summary-con .title{
+    font-size: 16px;
+    color: #4a4a4a;
+}
+
+.profile-pic{
+    width: 80%;
+    border-radius: 15px;
+    box-shadow: 2px 1px 5px #b3b3b4;
+}
+
+.profile-stats{
+    padding-top: 25px;
+    display: flex;
+    gap: 10px;
+}
+
+.mini-card{
+    height: 60px;
+    flex: 0.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: aliceblue;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.count{
+    font-size: 16px;
+    font-weight: bold;
+    color: #3364FF;
+}
+
+.count-sub{
+    color: #696969;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.profile-stats .peers, .statss{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-stats{
+    font-size: 18px;
+}
+
+.title{
+    margin-top: -10px;
+}

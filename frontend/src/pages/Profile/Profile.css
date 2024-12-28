@@ -1,0 +1,224 @@
+.profile-con{
+    padding: 20px 30px;
+    min-height: 100%;
+    max-height: 100vh;
+    height: auto;
+    overflow: auto;
+    font-family: Product;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-con-sub{
+    width: 88%;
+    align-self: center;
+}
+.profile-con::-webkit-scrollbar {
+    display: none;
+}
+
+.profile-header{
+    margin-top: 20px;
+    min-height: 300px;
+    width: 100%;
+    position: relative;
+}
+
+.profile-wall{
+    height: 180px;
+    border-radius: 20px;
+    background-color: lightcyan;
+}
+
+.profile-wall-sub{
+    bottom: 10%;
+    z-index: 10;
+    height: 120px;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.profile-wall-sub .left{
+    height: auto;
+    margin-left: 20px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.profile-wall-sub .avatar{
+    width: 120px;
+    height: 120px;
+    border-radius: 10%;
+    margin-right: 30px;
+}
+
+.profile-wall-sub .txt > p{
+    padding-bottom: 4px;
+}
+
+.profile-wall-sub .txt .name{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.profile-wall-sub .txt .position, .institution{
+    color: #818181;
+}
+.profile-wall-sub img{
+    outline: 2px solid white;
+    
+}
+.profile-wall-sub .socials-icons{
+    padding-top: 30px;
+}
+.profile-wall-sub .socials-icons img{
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+
+/* .skills-con .skill{
+    width: auto;
+    height: 30px;
+    padding: 2px 10px;
+    background-color: #eff5ff;
+    border: 2px solid #3364FF;
+    font-size: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.skill-sub{
+    width: 100%;
+    padding-top: 10px;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.skills-con, .about-con, .achievements-con, .experience-con, .projects-con{
+    margin-bottom: 35px;
+}
+
+.sub-card{
+    padding-top: 10px;
+    width: 80%;
+    padding: 20px 10px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    border: 2px solid #3668ff21;
+    background-color: #eff5ff;
+}
+
+.sub-card p{
+    font-size: 20px;
+}
+
+ul {
+    list-style-position: inside;
+    font-size: 20px;
+}
+.projects-con{
+    width: 80%;
+}
+.proj-card{
+    width: 150px;
+    height: 150px;
+    background-color: #eff5ff;
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid #3667FF;
+}
+
+.profile-con h2{
+    margin-bottom: 10px;
+}
+
+.edit-conn{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.edit-btn{
+    width: 100px;
+    height: 35px;
+    background-color: #eff5ff;
+    color: #3667FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    border: 2px solid #3667FF;
+    box-shadow: 2px 1px 5px #3364ff;
+}
+
+.edit-btn:hover{
+    cursor: pointer;
+}
+.profile-wall img{
+    height: 180px;
+    border-radius: 20px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.left img{
+    object-fit: cover;
+}
+
+#editProfilePic{
+    color: rgba(0, 0, 0, 0.73);
+    cursor: pointer;
+}
+
+#editProfilePic:hover {
+    color: rgb(0, 0, 0);
+}
+
+#editCoverPic{
+    color: rgba(0, 0, 0, 0.73);
+   
+    cursor: pointer;
+}
+
+#editCoverPic:hover {
+    color: rgb(0, 0, 0);
+}
+
+.loader {
+  border: 6px solid #dadada;
+  border-radius: 50%;
+  border-top: 6px solid #3498db;
+  width: 35px;
+  height: 35px;
+  margin-left: 2rem;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.two-social-icons{
+    cursor: pointer;
+}

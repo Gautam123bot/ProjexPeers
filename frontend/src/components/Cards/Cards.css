@@ -1,0 +1,45 @@
+.card-con{
+    font-family: Product;
+    height: 350px;
+    width: 300px;
+    background-color: #EFF5FF;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.card-con .header{
+    margin-bottom: 20px;
+}
+
+.card-con .time{
+    margin-top: 10px;
+    font-size: 22px;
+    color: #818181;
+}
+
+.card-con .time-txt{
+    font-weight: bold;
+}
+
+.card-con .status{
+    margin-top: 30px;
+    font-size: 20px;
+    color: rgb(20, 223, 138);
+}
+
+.participate-btn{
+    position: absolute;
+    bottom: 20px;
+    width: 50%;
+    height: 40px;
+    background-color: #3364FF;
+    border-radius: 10px;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto 0px;
+}

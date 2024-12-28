@@ -1,0 +1,107 @@
+.card-body{
+    width: 800px;
+    height: 90%;
+    background-color: #EFF5FF;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    align-items: flex-start;
+    justify-content: center;
+    font-family: product;
+    border: 2px solid #3364FF;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px 20px #6d6d6d;
+}
+.card-body h1{
+ margin-bottom: 20px;
+ align-self: center;
+}
+/* form{
+   
+} */
+.cn{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:10px;
+    margin-bottom: 20px;
+
+}
+.ct{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:25px;
+    margin-bottom: 20px;
+  
+}
+.ce, .cs-sub{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:16px;
+    margin-bottom: 20px;
+}
+.cs{
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.skill-bod{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.skill-box{
+    width: auto;
+    height: auto;
+    background-color: #c7c3c3;
+    padding: 8px;
+    border-radius: 8px;
+}
+.skill-box:hover{
+    cursor: default;
+    background-color: #3364FF;
+    color: white;
+}
+input{
+   border-radius: 10px;
+   border: none;
+   color: #888888;
+   box-shadow: 2px 2px 1px 2px #cecece;
+}
+#sb{
+    width: 80px;
+    height: 40px;
+    font-family: product;
+    color: white;
+    background-color: #3364FF;
+    font-weight: bold;
+    box-shadow: 2px 2px 1px 2px #cecece;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+#sb:hover{
+    cursor: pointer;
+}
+.sbd{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+.cs h4{
+    margin-bottom: 10px;
+}
+
+.skill-box.highlight{
+    background-color: #3364FF !important;
+    color: white !important;
+}
+
+#year-selected{
+    background-color: #3364FF;
+    color: white;
+}

@@ -1,0 +1,59 @@
+.hackathon-con{
+    min-height: 100%;
+    width: 100%;
+    font-family: Product;
+    padding-top: 20px;
+    padding-right: 40px;
+    overflow: auto;
+    max-height: 100vh;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+.hackathon-con::-webkit-scrollbar {
+    display: none;
+}
+
+.finder-con{
+    margin-top: 20px;
+    height: 200px;
+}
+
+.hackathon-main{
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-box{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    border: 2px solid rgb(218, 218, 218) !important;
+    padding-left: 10px;
+    border-radius: 15px;
+}
+
+.search-box input{
+    outline: none;
+    border: none;
+    width: 800px;
+    height: 40px;
+    font-size: 22px;
+    padding-left: 10px;
+    box-shadow: none;
+}
+
+.hackathons-list{
+    min-height: 50vh;
+    height: auto;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}

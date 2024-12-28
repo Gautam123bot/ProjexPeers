@@ -1,0 +1,112 @@
+.feed-card-con{
+    margin-top: 20px;
+    min-width: 600px;
+    background-color: #EEF4FE;
+    padding: 20px 50px;
+    display: flex;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.delete-con{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: absolute;
+    right: 70px;
+    background-image: url("../../assets/icons/delete.svg");
+}
+.delete-con:hover{
+    cursor: pointer;
+    background-image: url("../../assets/icons/delete-red.svg");
+}
+
+
+.right{
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.feed_avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #dde4f8;
+}
+
+.feed-name{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+.feed-time{
+    font-size: 12px;
+    color: #828282;
+}
+
+.proj-desc{
+    margin-top: 10px;
+    /* display: flex;
+    flex-direction: column; */
+}
+
+.feed-title{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #3364FF;
+}
+
+.skillss-con, .yoe{
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.skillss-con{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.apply-btn{
+    justify-self: center;
+    align-self: center;
+}
+
+.bottom-con{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.like-con{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.connect-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 35px;
+    background-color: #3364FF;
+    color: white;
+    border-radius: 15px;
+    box-shadow: 2px 1px 5px #3364FF;
+}
+.connect-btn:hover{
+    cursor: pointer;
+}
+
+.chips-con{
+    font-weight: 100;
+}
