@@ -1,15 +1,10 @@
-//* All the AXIOS API calls will be made from here to the backend
-//* These functions will be exported and then imported wherever needed
-
-import Axios from "axios";
-
-//^ `````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+import axios from "axios";
 
 export const RegisterUser = async (credentials) => {
   try {
     console.log(credentials);
 
-    const Post = await Axios.post(` http://localhost:3001/register`, credentials);
+    const Post = await axios.post(` http://localhost:3001/auth/register`, credentials);
 
     return Post;
   } catch (error) {
@@ -18,13 +13,11 @@ export const RegisterUser = async (credentials) => {
   }
 };
 
-//^ `````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
-
 export const LoginUser = async (credentials) => {
   try {
     console.log(credentials);
 
-    const Post = await Axios.post(` http://localhost:3001/login`, credentials);
+    const Post = await axios.post(` http://localhost:3001/auth/login`, credentials);
 
     return Post;
   } catch (error) {
@@ -33,13 +26,11 @@ export const LoginUser = async (credentials) => {
   }
 };
 
-//^ `````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
-
 export const PostFeed = async (details) => {
   try {
     console.log(details);
 
-    const Post = await Axios.post(` http://localhost:3001/post-feed`, details);
+    const Post = await axios.post(` http://localhost:3001/post/post-feed`, details);
 
     return Post;
   } catch (error) {
@@ -48,11 +39,9 @@ export const PostFeed = async (details) => {
   }
 };
 
-//^ `````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
-
 export const GetAllPosts = async () => {
   try {
-    const Posts = await Axios.get(` http://localhost:3001/getAllPosts`);
+    const Posts = await axios.get(` http://localhost:3001/post/getAllPosts`);
 
     return Posts;
   } catch (error) {
@@ -61,12 +50,11 @@ export const GetAllPosts = async () => {
   }
 };
 
-//^ `````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 export const UpdateUser = async (userId, details) => {
   try {
     console.log(details);
 
-    const Submission = await Axios.patch(`http://localhost:3001/updateUser/${userId}`, details);
+    const Submission = await axios.patch(`http://localhost:3001/user/updateUser/${userId}`, details);
 
     return Submission;
   } catch (error) {
@@ -74,3 +62,31 @@ export const UpdateUser = async (userId, details) => {
     alert("Could not edit your profile, please try again later!");
   }
 };
+
+axios.interceptors.request.use((config) => {
+  // List of routes that don't require the Authorization header
+  const noAuthRoutes = [
+    '/auth/register',
+    '/auth/login',
+    '/auth/login-with-google',
+    '/otp/send-otp',
+    '/otp/verify-otp',
+    '/email/send-email',
+    '/post/getAllPosts',
+  ];
+
+  // Check if the current request URL matches any of the noAuthRoutes
+  const isNoAuthRoute = noAuthRoutes.some((route) => config.url.endsWith(route));
+
+  if (!isNoAuthRoute) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      console.log('Adding token:', token); 
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});

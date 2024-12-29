@@ -10,6 +10,7 @@ import Axios from "axios";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Backdrop } from "../../components/Backdrop/Backdrop";
 import { motion } from "framer-motion";
+import 'font-awesome/css/font-awesome.min.css';
 
 const Profile = () => {
   const username = JSON.parse(localStorage.getItem("user_info")).username;
@@ -39,7 +40,7 @@ const Profile = () => {
         alert("Profile Picture Changed Successfully!");
         getDownloadURL(ref(storage, `profileImages/${profileImg.name}`)).then(
           (url) => {
-            Axios.patch(`http://localhost:3001/updateUser/${user._id}`, {
+            Axios.patch(`http://localhost:3001/user/updateUser/${user._id}`, {
               profilePic: url,
             })
               .then((res) => {
@@ -71,7 +72,7 @@ const Profile = () => {
         alert("Cover Picture Changed Successfully!");
         getDownloadURL(ref(storage, `coverImages/${coverImg.name}`)).then(
           (url) => {
-            Axios.patch(`http://localhost:3001/updateUser/${user._id}`, {
+            Axios.patch(`http://localhost:3001/user/updateUser/${user._id}`, {
               coverPic: url,
             })
               .then((res) => {
@@ -90,7 +91,7 @@ const Profile = () => {
   useEffect(() => {
     console.log(username);
     const setUserDetails = async () => {
-      const res = await Axios.post("http://localhost:3001/getUser", {
+      const res = await Axios.post("http://localhost:3001/user/getUser", {
         username: username,
       });
       console.log(res.data);
@@ -145,7 +146,7 @@ const Profile = () => {
                     right: "1rem",
                     bottom: "-0.25rem",
                   }}
-                  class="fa fa-pencil-square-o"
+                  className="fa fa-pencil-square-o"
                   aria-hidden="true"
                 ></i>
               </span>
@@ -166,20 +167,20 @@ const Profile = () => {
                   src={github}
                   alt="GitHub"
                   onClick={() => window.open(user.github, "_blank")}
-                  className="two-social-icons"
+                  className="cursor-pointer"
                 />
               ) : (
-                <img src={github} alt="GitHub" />
+                <img src={github} alt="GitHub" className="cursor-pointer" />
               )}
               {user.linkedIn ? (
                 <img
                   src={linkedin}
                   alt="LinkedIn"
                   onClick={() => window.open(user.linkedIn, "_blank")}
-                  className="two-social-icons"
+                  className="cursor-pointer"
                 />
               ) : (
-                <img src={linkedin} alt="LinkedIn" />
+                <img src={linkedin} alt="LinkedIn" className="cursor-pointer" />
               )}
             </div>
           </div>

@@ -23,7 +23,7 @@ const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("user_info"));
   // console.log(user);
   useEffect(() => {
-    Axios.get("http://localhost:3001/getAllPosts").then((res) => {
+    Axios.get("http://localhost:3001/post/getAllPosts").then((res) => {
       console.log(res.data);
       setPosts(res.data.reverse());
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
   }, [search]);
 
   const getUserSpaces = async () => {
-    const res = await Axios.post(`http://localhost:3001/get-users-spaces`, {
+    const res = await Axios.post(`http://localhost:3001/space/get-users-spaces`, {
       username: user.username,
     });
     localStorage.setItem("user_spaces", JSON.stringify(res.data));

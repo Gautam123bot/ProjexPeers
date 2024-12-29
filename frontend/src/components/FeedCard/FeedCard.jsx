@@ -35,7 +35,7 @@ export const FeedCard = ({ post, recall }) => {
     useEffect(() => {
         console.log(post.username);
         const setUserDetails = async () => {
-            const res = await Axios.post("http://localhost:3001/getUser", { username: post.username });
+            const res = await Axios.post("http://localhost:3001/user/getUser", { username: post.username });
             console.log(res.data);
             setPostUser(res.data);
             // localStorage.setItem('user_info', JSON.stringify(res.data));
@@ -50,7 +50,7 @@ export const FeedCard = ({ post, recall }) => {
             return;
         }
         // console.log(randomstring.generate(7));
-        Axios.post("http://localhost:3001/post-like", obj).then((res) => {
+        Axios.post("http://localhost:3001/post/post-like", obj).then((res) => {
             console.log(res.data.message);
             setLiked(true);
             setLikeCount(likeCount + 1);
@@ -62,7 +62,7 @@ export const FeedCard = ({ post, recall }) => {
             return;
         }
         // console.log("dislike clicked!")
-        Axios.post("http://localhost:3001/post-dislike", obj).then((res) => {
+        Axios.post("http://localhost:3001/post/post-dislike", obj).then((res) => {
             console.log(res.data.message);
             setLiked(false);
             setLikeCount(likeCount - 1);
@@ -70,7 +70,7 @@ export const FeedCard = ({ post, recall }) => {
     }
 
     const deletePost = () => {
-        Axios.post(`http://localhost:3001/delete-post/${post._id}`).then((res) => {
+        Axios.post(`http://localhost:3001/post/delete-post/${post._id}`).then((res) => {
             console.log(res.data.message);
             window.location.reload()
         })
@@ -105,9 +105,9 @@ export const FeedCard = ({ post, recall }) => {
             chatPic : postUser.profilePic
         }
 
-        const res = await Axios.post("http://localhost:3001/create-space", obj);
+        const res = await Axios.post("http://localhost:3001/space/create-space", obj);
         console.log(res.data.message);
-        const sendMessage = await Axios.post("http://localhost:3001/send-email", { email: post.email, name: fullname });
+        const sendMessage = await Axios.post("http://localhost:3001/email/send-email", { email: post.email, name: fullname });
         console.log(sendMessage.data.message);
         navigate("/messages");
       }

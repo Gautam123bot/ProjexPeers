@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const spacesSchema = new mongoose.Schema({
   admin: {
@@ -61,4 +61,4 @@ spacesSchema.methods.PostMessages = async function (
 };
 const Spaces = mongoose.model("Chat", spacesSchema);
 
-module.exports = Spaces;
+export default Spaces;

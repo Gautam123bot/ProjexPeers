@@ -25,5 +25,4 @@ const getUser = (id) => {
   return users.find((user) => user.id === id);
 };
 
-module.exports = { addUser, getUser };
-
+export default { addUser, getUser };

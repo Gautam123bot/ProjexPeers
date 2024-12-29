@@ -1,14 +1,13 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
   fullname: {
     type: String,
     required: true,
     trim: true,
-    minLength: 4,
   },
 
   email: {
@@ -22,24 +21,25 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  is_verified:{
+    type: Boolean,
+    default: false
+  },
   username: {
     type: String,
     required: false,
     trim: true,
-    minLength: 5,
     unique: true,
   },
   password: {
     type: String,
     required: true,
     trim: true,
-    minLength: 8,
   },
   cpassword: {
     type: String,
     required: true,
     trim: true,
-    minLength: 8,
   },
   institution: {
     type: String,
@@ -139,7 +139,8 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.generateAuthToken = async function () {
   try {
-    let token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
+    console.log("came here for generate token")
+    let token = jwt.sign({ _id: this._id, username: this.username ,email: this.email }, process.env.SECRET_KEY, { expiresIn: '24h' });;
     this.tokens = this.tokens.concat({ token: token });
     await this.save();
     return token;
@@ -160,4 +161,4 @@ userSchema.methods.updatePost = async function (postsCount) {
 
 const User = mongoose.model("USER", userSchema);
 
-module.exports = User;
+export default User;

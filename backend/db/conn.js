@@ -1,18 +1,20 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const DB = "mongodb://127.0.0.1:27017/teambuilder"
+const dbUrl = "mongodb://127.0.0.1:27017/teambuilder";
 
-module.exports = async function connection (){
-  try{
+async function connectionToDb() {
+  try {
     const connectionParams = {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     };
-    await mongoose.connect(DB,connectionParams).then(() => {
+    await mongoose.connect(dbUrl, connectionParams).then(() => {
       console.log("Database connected successfully.");
-    })
-  }catch(e){
+    });
+  } catch (e) {
     console.log("Database connection error: ");
     console.log(e);
   }
 }
+
+export default connectionToDb;

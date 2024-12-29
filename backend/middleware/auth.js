@@ -1,26 +1,41 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 
 const auth = async (req, res, next) => {
-    try {
-        const token = req.cookies.jwt;
-        const verifyToken = jwt.verify(token,process.env.SECRET_KEY);
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.startsWith("Bearer ") 
+      ? authHeader.split(" ")[1]
+      : req.cookies?.jwt;
 
-        const rootUser = await User.findOne({_id:verifyToken._id,"tokens.token":token})
-
-        if(!rootUser){
-            throw new Error("User Not Found.");
-        }
-
-        req.token = token;
-        req.rootUser = rootUser;
-
-        next();
-
-    } catch (error) {
-        res.status(401).send("Unauthorized : No token provided");
-        console.log(error);
+    console.log("token is: ", token);
+    if (!token) {
+      return res.status(401).json({ message: "Authentication required" });
     }
+
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const rootUser = await User.findOne({
+      _id: decoded._id,
+      "tokens.token": token,
+    });
+
+    if (!rootUser) {
+      throw new Error("User Not Found.");
+    }
+
+    // req.token = token;
+    // req.rootUser = rootUser;
+
+    req.rootUser = {
+      ...rootUser.toObject(), // Include all rootUser properties
+      username: decoded.username, // Add username from the token
+    };
+
+    next();
+  } catch (error) {
+    res.status(401).send("Unauthorized : No token provided");
+    console.log(error);
+  }
 };
 
-module.exports = auth;
+export default auth;

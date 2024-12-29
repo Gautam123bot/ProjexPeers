@@ -1,5 +1,4 @@
-const res = require("express/lib/response");
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
   name: {
@@ -10,7 +9,6 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    minLength: 4,
   },
   likes: [
     {
@@ -74,4 +72,4 @@ postSchema.methods.downvote = async function (username) {
 
 const Posts = mongoose.model("Post", postSchema);
 
-module.exports = Posts;
+export default Posts;
