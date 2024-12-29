@@ -1,0 +1,49 @@
+services:
+  mongo:
+    image: mongo:8.0.4
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - projexpeers
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - projexpeers
+    ports:
+      - 3001:3001
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/teambuilder
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./frontend/.env
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - projexpeers
+    ports:
+      - 5173:5173
+    depends_on:
+      - api
+
+volumes:
+  mongo_data:
+networks:
+  projexpeers:
+    driver: bridge
