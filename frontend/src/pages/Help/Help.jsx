@@ -28,7 +28,7 @@ function Help() {
 
         <div className="help-box">
           <div className="f-l-h">
-            <h2>What is Devcon and how does it work?</h2>
+            <h2>What is ProjexPeers and how does it work?</h2>
             {fclk === true ? (
               <AiOutlineMinusCircle
                 size={30}
@@ -46,7 +46,7 @@ function Help() {
           {fclk && (
             <div className="a-c-b">
               {" "}
-              Devcon is an app to help you find partners for your hackathons or
+              ProjexPeers is an app to help you find partners for your hackathons or
               projects.{" "}
             </div>
           )}

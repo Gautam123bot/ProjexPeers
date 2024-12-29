@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
       ? authHeader.split(" ")[1]
       : req.cookies?.jwt;
 
-    console.log("token is: ", token);
+    console.log("Yours auth token is: ", token);
     if (!token) {
       return res.status(401).json({ message: "Authentication required" });
     }
@@ -20,7 +20,7 @@ const auth = async (req, res, next) => {
     });
 
     if (!rootUser) {
-      throw new Error("User Not Found.");
+      return res.status(401).json({message: "User Not Found."});
     }
 
     // req.token = token;

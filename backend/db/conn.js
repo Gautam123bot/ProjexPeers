@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const dbUrl = "mongodb://127.0.0.1:27017/teambuilder";
+const dbUrl = "mongodb://mongo:27017/teambuilder";
+console.log("your dburl is: ", dbUrl);
 
 async function connectionToDb() {
   try {
