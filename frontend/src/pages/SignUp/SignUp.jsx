@@ -82,8 +82,9 @@ const SignUp = () => {
     if (credentials.password !== credentials.cpassword) {
       alert("Passwords do not match!");
     } else {
+      const { cpassword, otp, ...userData } = credentials;
       try {
-        const reg = await RegisterUser(credentials);
+        const reg = await RegisterUser(userData);
         console.log("this is reg: ", reg);
         if (reg.data.exists === true) {
           alert("USER ALREADY EXISTS !! ");
