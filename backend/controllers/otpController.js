@@ -52,10 +52,9 @@ export const sendOtp = async (req, res) => {
 export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
-    console.log("Entered email: ", email, "Entered OTP: ", otp);
 
     // Find the OTP entry for the provided email
-    const otpData = await Otp.findOne({ email: email });
+    const otpData = await Otp.findOne({ email });
     if (!otpData) {
       return res.status(400).json({
         success: false,

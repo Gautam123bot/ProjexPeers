@@ -9,28 +9,30 @@ import loader_img from '../../assets/images/loader.svg'
 import Axios from "axios";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (localStorage.getItem('token') === null) {
-      navigate('/login')
-    }
-  });
   const [modal, setModal] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
   const [search, setSearch] = useState("");
   const [recall, setRecall] = useState(true);
   const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (localStorage.getItem('token') === null) {
+  //     navigate('/login')
+  //   }
+  // });
   const user = JSON.parse(localStorage.getItem("user_info"));
   // console.log(user);
   useEffect(() => {
     Axios.get("http://localhost:3001/post/getAllPosts").then((res) => {
       console.log(res.data);
       setPosts(res.data.reverse());
+      setAllPosts(res.data.reverse());
 
     });
     setRecall(!recall);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, []);
 
   const getUserSpaces = async () => {
     const res = await Axios.post(`http://localhost:3001/space/get-users-spaces`, {
@@ -40,22 +42,17 @@ const Dashboard = () => {
     console.log(res.data);
   };
 
-  const searchFeed = () => {
-    if (search === "") {
-      setRecall(!recall);
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearch(value);
+    if (value === "") {
+      setPosts(allPosts);
       return;
     }
-    console.log(search);
-    setLoader(true);
-    setTimeout(() => {
-      setLoader(false);
-    }, 2000);
-    setPosts(posts.filter((post) => {
-      return post.skills.some((skill) => {
-        return skill.toLowerCase().includes(search.toLowerCase());
-      })
-    }))
-    setRecall(!recall);
+    const filteredPosts = allPosts.filter((post) =>
+      post.skills.some((skill) => skill.toLowerCase().includes(value))
+    );
+    setPosts(filteredPosts);
   }
 
   useEffect(() => {
@@ -76,9 +73,7 @@ const Dashboard = () => {
       <div className="write-con">
         <h3>Feed Search</h3>
         <div className="inp-box">
-          {/* <textarea name="" id="" cols="30" rows="auto" className='inp'></textarea> */}
-          <input type="text" placeholder='Type the skills you are looking for' className='inp' onChange={(e) => { setSearch(e.target.value) }} />
-          <div className="search-btn" onClick={searchFeed}>Search</div>
+          <input type="text" placeholder='Type the skills you are looking for' className='inp' value={search} onChange={ handleSearch } />
         </div>
       </div>
 
