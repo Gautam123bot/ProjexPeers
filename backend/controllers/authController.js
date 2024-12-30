@@ -140,6 +140,12 @@ export const forgotPassword = async (req, res) => {
     return res.status(422).json({ error: "Please provide an email." });
   }
 
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: "Invalid email format." });
+  }
+
   try {
     const user = await User.findOne({ email });
 
@@ -156,7 +162,6 @@ export const forgotPassword = async (req, res) => {
 
     const msg = `<p>Hi <b>${email}</b>,</p><p>Your OTP for resetting the password is: <b>${otp}</b></p><br><p>Regards,<br>ProjexPeers Team</p>`;
     const info = await sendMailToUser(email, "Password Reset OTP", msg);
-    console.log("email sentttttttttttttttttttttttttttt")
     if (!info.success) {
       return res.status(500).json({
         message: "Failed to send OTP. Please try again later.",
@@ -170,7 +175,7 @@ export const forgotPassword = async (req, res) => {
     });
   } catch (e) {
     console.log("Error occurred while sending OTP:", e);
-    res.status(500).json({ message: `Could not send OTP: ${e}`, success: false });
+    res.status(500).json({ message: `Could notT send OTP: ${e}`, success: false });
   }
 };
 

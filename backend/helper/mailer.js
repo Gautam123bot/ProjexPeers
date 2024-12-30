@@ -10,17 +10,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMailToUser = async (req, res, email, subject, content) => {
+const sendMailToUser = async (email, subject, content) => {
   try {
+    if (!email) {
+      throw new Error("No recipient email provided.");
+    }
     const mailOptions = {
       from: process.env.SMTP_USER, 
       to: email,                         
       subject: subject,                 
       html: content,                    
     };
-    console.log("came till here");
     const info = await transporter.sendMail(mailOptions);
-    console.log("email senttttt")
     console.log("Email sent: " + info.messageId);
 
     // return res.status(200).json({
