@@ -88,7 +88,7 @@ const SignUp = () => {
         console.log("this is reg: ", reg);
         if (reg.data.exists === true) {
           alert("USER ALREADY EXISTS !! ");
-          navigate("/signin");
+          // navigate("/signin");
         }
         if (reg.data.success === true) {
           alert("USER CREATED !! ");
