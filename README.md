@@ -45,6 +45,56 @@ The app is deployed using **Docker**, making it portable and easy to set up on a
 
 ## Installation  
 
+Running Locally
+If you prefer running the application locally without Docker:
+
+Clone the Repository:
+
+bash
+Copy code
+git clone https://github.com/your-username/projexpeers.git  
+cd projexpeers  
+Set up the Environment Variables:
+
+Create a .env file in the backend directory and add the following:
+
+env
+Copy code
+MONGO_URI=mongodb://<your-mongo-db-url>:27017/projexpeers  
+JWT_SECRET=your_jwt_secret_key  
+PORT=3001  
+Install Dependencies:
+
+For the Backend:
+
+bash
+Copy code
+cd backend  
+npm install  
+For the Frontend:
+
+bash
+Copy code
+cd frontend  
+npm install  
+Start the Application:
+
+Backend:
+
+bash
+Copy code
+cd backend  
+npm start  
+Frontend:
+
+bash
+Copy code
+cd frontend  
+npm start  
+Access the Application:
+
+Open your browser and navigate to http://localhost:3000.
+
 ### Prerequisites  
 
 1. **Docker**: Ensure Docker is installed on your system.  
