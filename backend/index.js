@@ -19,6 +19,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8000;
+const Router = express.Router();
 
 app.use(cors({
   allowedHeaders: 'Content-Type, Authorization',
@@ -38,12 +39,12 @@ connectionToDb()
   });
 
 app.use("/user", auth, userRoutes);
-app.use("/post/getAllPosts", getAllPosts);
+app.use(Router.get("/post/getAllPosts", getAllPosts));
 app.use("/post", auth, postRoutes);
 app.use("/space", auth, spaceRoutes);
 
 app.use("/auth", authRoutes);
-app.use("/auth/logout", auth, logoutUser);
+app.use(Router.get("/auth/logout", auth, logoutUser));
 app.use("/otp", otpRoutes);
 app.use("/email", emailRoutes);
 

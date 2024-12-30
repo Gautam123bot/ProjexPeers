@@ -3,6 +3,12 @@ import User from "../models/user.js";
 import sgMail from "@sendgrid/mail";
 import sendMailToUser from '../helper/mailer.js';
 
+const otpStore = {};
+
+const generateRandom6Digit = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+};
+
 // Set the SendGrid API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -13,7 +19,6 @@ export const registerUser = async (req, res) => {
     username,
     email,
     password,
-    cpassword,
     institution,
     profilePic,
     collegeStream,
@@ -25,7 +30,7 @@ export const registerUser = async (req, res) => {
     achievements,
   } = req.body;
 
-  if (!fullname || !username || !email || !password || !cpassword) {
+  if (!fullname || !username || !email || !password) {
     return res.status(422).json({ error: "Please fill all the fields." });
   }
 
@@ -37,15 +42,10 @@ export const registerUser = async (req, res) => {
       return res.status(422).json({ error: "User already exists." });
     }
 
-    if (password !== cpassword) {
-      return res.status(422).json({ error: "Passwords don't match." });
-    }
-
     const user = new User({
       fullname,
       email,
       password,
-      cpassword,
       username,
     });
 
@@ -58,7 +58,16 @@ export const registerUser = async (req, res) => {
       text: `Hi ${fullname},\n\nThank you for registering!`,
     };
     // sgMail.send(msg);
-    await sendMailToUser(req, res, email, "Welcome to our platform", msg.text);
+    const info = await sendMailToUser(email, "Password Reset OTP", msg);
+
+    // Check if the info variable is empty or contains any error information
+    if (!info.success) {
+      // Handle the error case where the email wasn't sent successfully
+      return res.status(500).json({
+        message: "Failed to send OTP. Please try again later.",
+        success: false,
+      });
+    }
     res.status(201).json({ message: "Registered Successfully!", success: true });
   } catch (e) {
     res.status(500).json({ message: `Could not create account! --> ${e}`, success: false });
@@ -115,12 +124,107 @@ export const logoutUser = async (req, res) => {
     req.rootUser.tokens = req.rootUser.tokens.filter((currElem) => currElem.token !== req.token);
     res.clearCookie("jwt", { path: "/" });
 
-    await req.rootUser.save();
+    // await req.rootUser.save();
 
     return res.status(200).send({ message: "Logged out successfully!" });
   } catch (e) {
     console.error(e);
     res.status(500).send(e);
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(422).json({ error: "Please provide an email." });
+  }
+
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: "Invalid email format." });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found!" });
+    }
+
+    const otp = generateRandom6Digit();
+    otpStore[email] = {
+      otp,
+      createdAt: Date.now(),
+    };
+    console.log("otp store data is: ", otpStore)
+
+    const msg = `<p>Hi <b>${email}</b>,</p><p>Your OTP for resetting the password is: <b>${otp}</b></p><br><p>Regards,<br>ProjexPeers Team</p>`;
+    const info = await sendMailToUser(email, "Password Reset OTP", msg);
+    if (!info.success) {
+      return res.status(500).json({
+        message: "Failed to send OTP. Please try again later.",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "OTP sent to your email address.",
+      success: true,
+    });
+  } catch (e) {
+    console.log("Error occurred while sending OTP:", e);
+    res.status(500).json({ message: `Could notT send OTP: ${e}`, success: false });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { email, otp, newPassword, confirmPassword } = req.body;
+
+  if (!email || !otp || !newPassword || !confirmPassword) {
+    return res.status(422).json({ error: "Please fill all the fields." });
+  }
+
+  try {
+    const otpData = otpStore[email];
+    console.log("otp data is: ", otpData);
+    if (!otpData) {
+      return res.status(400).json({ message: "OTP not found for this email" });
+    }
+
+    const expirationTime = 10 * 60 * 1000;
+    if (Date.now() - otpData.createdAt > expirationTime) {
+      delete otpStore[email];
+      return res.status(400).json({ message: "OTP has expired" });
+    }
+
+    if (otpData.otp !== otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(422).json({ message: "Passwords don't match" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    const user = await User.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    delete otpStore[email];
+
+    return res.status(200).json({
+      message: "Password reset successfully!",
+      success: true,
+      user,
+    });
+  } catch (e) {
+    console.log("Error occurred during password reset:", e);
+    res.status(500).json({ message: `Could not reset password: ${e}`, success: false });
   }
 };
 

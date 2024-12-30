@@ -33,10 +33,21 @@ export const sendEmail = async (req, res) => {
       text: `${name} wants to connect with you!`,
     };
 
-    // Check if the email is already registered
     const userData = await User.findOne({ email: email });
 
-    await sendMailToUser(req, res, email, msg.subject, msg.text);
+    // await sendMailToUser(req, res, email, msg.subject, msg.text);
+    const info = await sendMailToUser(email, "Password Reset OTP", msg);
+
+    if (!info.success) {
+      return res.status(500).json({
+        message: "Failed to send OTP. Please try again later.",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Email sent successfully!",
+    });
   } catch (e) {
     console.log("Could not find user --> ", e);
     res
