@@ -33,6 +33,7 @@ export const TeamFinderCard = ({ setModal }) => {
 
     if (submission.data.success === true) {
       setModal(false);
+      window.location.reload();
     } else {
       alert("Error");
     }

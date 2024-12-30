@@ -15,7 +15,7 @@ export const RegisterUser = async (credentials) => {
 
 export const LoginUser = async (credentials) => {
   try {
-    console.log(credentials);
+    console.log("credentials entered: ", credentials);
 
     const Post = await axios.post(` http://localhost:3001/auth/login`, credentials);
 
@@ -60,6 +60,26 @@ export const UpdateUser = async (userId, details) => {
   } catch (error) {
     console.log(error);
     alert("Could not edit your profile, please try again later!");
+  }
+};
+
+export const sendOtp = async (data) => {
+  try {
+    const response = await axios.post(`http://localhost:3001/otp/send-otp`, data);
+    return response;
+  } catch (error) {
+    console.error(error);
+    alert("Could not send OTP, please try again later!");
+  }
+};
+
+export const verifyOtp = async (data) => {
+  try {
+    const response = await axios.post(`http://localhost:3001/otp/verify-otp`, data);
+    return response;
+  } catch (error) {
+    console.error(error);
+    alert("Could not verify OTP, please try again later!");
   }
 };
 

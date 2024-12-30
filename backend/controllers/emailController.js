@@ -1,5 +1,5 @@
 import sgMail from "@sendgrid/mail";
-import sendMailToUser from "../helper/mailer";
+import sendMailToUser from "../helper/mailer.js";
 
 export const sendEmail = async (req, res) => {
   // const { email, name } = req.body;
