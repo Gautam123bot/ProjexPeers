@@ -51,14 +51,20 @@ export const registerUser = async (req, res) => {
 
     await user.save();    
 
-    const msg = {
-      to: email,
-      from: "noreply@example.com",
-      subject: "Welcome to our platform",
-      text: `Hi ${fullname},\n\nThank you for registering!`,
-    };
+    // const msg = {
+    //   to: email,
+    //   from: "noreply@example.com",
+    //   subject: "Welcome to our platform",
+    //   text: `Hi ${fullname},\n\nThank you for registering!`,
+    // };
+    const msg = `
+      <p>Hi <b>${fullname}</b>,</p>
+      <p>Thank you for registering on our platform. We're excited to have you onboard!</p>
+      <br>
+      <p>Regards,<br>Team</p>
+    `;
     // sgMail.send(msg);
-    const info = await sendMailToUser(email, "Password Reset OTP", msg);
+    const info = await sendMailToUser(email, "Welcome to our platform!", msg);
 
     // Check if the info variable is empty or contains any error information
     if (!info.success) {
