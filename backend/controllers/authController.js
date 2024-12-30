@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.js"; 
 import sgMail from "@sendgrid/mail";
+import sendMailToUser from '../helper/mailer.js';
 
 // Set the SendGrid API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -50,13 +51,14 @@ export const registerUser = async (req, res) => {
 
     await user.save();    
 
-    // const msg = {
-    //   to: email,
-    //   from: "noreply@example.com",
-    //   subject: "Welcome to our platform",
-    //   text: `Hi ${fullname},\n\nThank you for registering!`,
-    // };
+    const msg = {
+      to: email,
+      from: "noreply@example.com",
+      subject: "Welcome to our platform",
+      text: `Hi ${fullname},\n\nThank you for registering!`,
+    };
     // sgMail.send(msg);
+    await sendMailToUser(req, res, email, "Welcome to our platform", msg.text);
     res.status(201).json({ message: "Registered Successfully!", success: true });
   } catch (e) {
     res.status(500).json({ message: `Could not create account! --> ${e}`, success: false });

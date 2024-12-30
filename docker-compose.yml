@@ -1,6 +1,6 @@
 services:
   mongo:
-    image: mongo:8.0.4
+    image: mongo
     ports:
       - 27017:27017
     volumes:
@@ -24,7 +24,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://mongo:27017/teambuilder
+      - MONGO_URI=mongodb://host.docker.internal:27017/teambuilder
   
   frontend:
     build:
