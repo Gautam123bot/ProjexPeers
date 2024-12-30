@@ -61,7 +61,7 @@ export const registerUser = async (req, res) => {
       <p>Hi <b>${fullname}</b>,</p>
       <p>Thank you for registering on our platform. We're excited to have you onboard!</p>
       <br>
-      <p>Regards,<br>Team</p>
+      <p>Regards,<br>Team ProjexPeers</p>
     `;
     // sgMail.send(msg);
     const info = await sendMailToUser(email, "Welcome to our platform!", msg);
@@ -198,14 +198,15 @@ export const resetPassword = async (req, res) => {
     if (!otpData) {
       return res.status(400).json({ message: "OTP not found for this email" });
     }
+    console.log("otp store is: ", otpStore);
 
     const expirationTime = 10 * 60 * 1000;
     if (Date.now() - otpData.createdAt > expirationTime) {
       delete otpStore[email];
       return res.status(400).json({ message: "OTP has expired" });
     }
-
-    if (otpData.otp !== otp) {
+    console.log("otp data is: ", otpData.otp, "otp is: ", otp);
+    if (otpData.otp != otp) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 

@@ -96,6 +96,7 @@ export const sendForgetPasswordOtp = async (email) => {
 export const resetToNewPassword = async (data) => {
   try {
     const response = await axios.post(`http://localhost:3001/auth/reset-password`, data);
+    console.log("resonse in api file is: ", response);
     return response;
   } catch (error) {
     console.error(error);
