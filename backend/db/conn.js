@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv"
 
-const dbUrl = "mongodb://mongo:27017/teambuilder";
-console.log("your dburl is: ", dbUrl);
+dotenv.config();
+
+const dbUrl = process.env.MONGO_URI;
 
 async function connectionToDb() {
   try {
@@ -9,6 +11,7 @@ async function connectionToDb() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     };
+    console.log("dburl is: ", dbUrl);
     await mongoose.connect(dbUrl, connectionParams).then(() => {
       console.log("Database connected successfully.");
     });
