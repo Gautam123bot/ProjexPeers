@@ -1,4 +1,5 @@
-import spaceUsers from "../middleware/spaceUsers.js";
+import spaceUsers from "../helper/spaceUsers.js";
+import User from "../models/user.js";
 
 const { addUser, getUser } = spaceUsers;
 
@@ -8,6 +9,10 @@ const socketController = (io) => {
 
     socket.on("join", ({ username, selectedSpace }, callback) => {
       try {
+        if (!username || !selectedSpace?.spaceName) {
+          // Added validation for required fields
+          return callback({ error: "Username and space name are required." });
+        }
         const spacename = selectedSpace.spaceName;
         const { error, user } = addUser({ id: socket.id, username, spacename });
 
@@ -19,7 +24,7 @@ const socketController = (io) => {
         socket.emit("message", {
           username: "admin",
           message: `Welcome ${user.username}`,
-          spacename: `${user.spacename}`,
+          spacename: user.spacename,
         });
 
         socket.broadcast.to(user.spacename).emit("message", {
@@ -37,6 +42,10 @@ const socketController = (io) => {
 
     socket.on("sendMessage", (message, callback) => {
       try {
+        if (!message) {
+          // Added validation for empty messages
+          return callback({ error: "Message cannot be empty." });
+        }
         const user = getUser(socket.id);
 
         if (!user) {

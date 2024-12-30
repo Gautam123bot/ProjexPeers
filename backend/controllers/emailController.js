@@ -1,5 +1,6 @@
 import sgMail from "@sendgrid/mail";
 import sendMailToUser from "../helper/mailer.js";
+import User from "../models/user.js";
 
 export const sendEmail = async (req, res) => {
   // const { email, name } = req.body;
@@ -34,18 +35,12 @@ export const sendEmail = async (req, res) => {
 
     // Check if the email is already registered
     const userData = await User.findOne({ email: email });
-    if (userData) {
-      return res.status(400).json({
-        success: false,
-        message: "Email already exists!",
-      });
-    }
 
     await sendMailToUser(req, res, email, msg.subject, msg.text);
   } catch (e) {
     console.log("Could not find user --> ", e);
     res
       .status(500)
-      .json({ success: false, message: `Could not send OTP --> ${e}` });
+      .json({ success: false, message: `Couldn't send mail --> {e}` });
   }
 };

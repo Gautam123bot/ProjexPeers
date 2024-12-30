@@ -12,6 +12,8 @@ import emailRoutes from "./routes/emailRoutes.js";
 import auth from "./middleware/auth.js";
 import { logoutUser } from "./controllers/authController.js";
 import { getAllPosts } from "./controllers/postController.js";
+import http from "http";
+import initializeSocket from "./socket/socket.js";
 
 dotenv.config();
 
@@ -45,6 +47,9 @@ app.use("/auth/logout", auth, logoutUser);
 app.use("/otp", otpRoutes);
 app.use("/email", emailRoutes);
 
-app.listen(port, () => {
+const server = http.createServer(app);
+initializeSocket(server);
+
+server.listen(port, () => {
   console.log(`Listening to port ${port}`);
 });
