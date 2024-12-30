@@ -18,18 +18,21 @@ const sendMailToUser = async (req, res, email, subject, content) => {
       subject: subject,                 
       html: content,                    
     };
-
+    console.log("came till here");
     const info = await transporter.sendMail(mailOptions);
+    console.log("email senttttt")
     console.log("Email sent: " + info.messageId);
 
-    return res.status(200).json({
-      success: true,
-      message: "OTP has been sent to your email",
-      info: info,
-    });
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "OTP has been sent to your email",
+    //   info: info,
+    // });
+    return { success: true, info: info };
   } catch (error) {
     console.log("Error in sendMailToUser function:", error);
-    return res.status(500).json({ error: error.message || "Internal Server Error" });
+    // return res.status(500).json({ error: error.message || "Internal Server Error" });
+    throw error;
   }
 };
 

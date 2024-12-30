@@ -101,7 +101,6 @@ const SignUp = () => {
             username: "",
             email: "",
             password: "",
-            cpassword: "",
           });
         }
       } catch (error) {

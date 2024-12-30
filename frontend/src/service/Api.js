@@ -83,6 +83,27 @@ export const verifyOtp = async (data) => {
   }
 };
 
+export const sendForgetPasswordOtp = async (email) => {
+  try {
+    const response = await axios.post(`http://localhost:3001/auth/forgot-password`, { email });
+    return response;
+  } catch (error) {
+    console.error(error);
+    alert("Could not send OTP for password reset, please try again later!");
+  }
+};
+
+export const resetToNewPassword = async (data) => {
+  try {
+    const response = await axios.post(`http://localhost:3001/auth/reset-password`, data);
+    return response;
+  } catch (error) {
+    console.error(error);
+    alert("Could not reset the password, please try again later!");
+  }
+};
+
+
 axios.interceptors.request.use((config) => {
   // List of routes that don't require the Authorization header
   const noAuthRoutes = [
