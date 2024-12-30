@@ -104,7 +104,7 @@ export const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.log("Error is coming as: ", error)
-    res.status(500).json({ message: "Invalid login credentials" });
+    return res.status(500).json({ message: "Invalid login credentials" });
   }
 };
 

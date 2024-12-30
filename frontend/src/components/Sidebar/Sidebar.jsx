@@ -22,6 +22,7 @@ const Sidebar = ({ children, setIsLoggedIn, isLoggedIn}) => {
         localStorage.removeItem("user_spaces");
         setIsLoggedIn(false);
         navigate("/")
+        window.location.reload();
     }
 
     return (

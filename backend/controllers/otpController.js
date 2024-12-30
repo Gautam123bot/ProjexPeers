@@ -1,14 +1,21 @@
 import Otp from "../models/otp.js";
 import sendMailToUser from "../helper/mailer.js";
+import User from "../models/user.js";
 
-const generateRandom4Digit = async() => {
-    return Math.floor(1000 + Math.random() * 9000);
+const generateRandom6Digit = async() => {
+    return Math.floor(100000 + Math.random() * 900000);
 }
 
 // Controller for sending OTP
 export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
+    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email format",
+      });
+    }
     console.log("Entered email is: ", email);
 
     // Check if the email is already registered
@@ -21,7 +28,8 @@ export const sendOtp = async (req, res) => {
     }
 
     // Generate a random OTP
-    const generatedOtp = await generateRandom4Digit();
+    const generatedOtp = await generateRandom6Digit();
+    await Otp.findOneAndDelete({ email });
     console.log("Generated OTP: ", generatedOtp);
 
     // Save OTP in the database
@@ -55,8 +63,18 @@ export const verifyOtp = async (req, res) => {
       });
     }
 
+    const expirationTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+    if (Date.now() - otpData.createdAt > expirationTime) {
+      await Otp.findOneAndDelete({ email });
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired",
+      });
+    }
+    console.log("Entered otp is: ", otp, "OTP from db is: ", otpData.otp);
     // Check if the OTP matches
-    if (otpData.otp === otp) {
+    if (otpData.otp == otp) {
+      await Otp.findOneAndDelete({ email });
       return res.status(200).json({
         success: true,
         message: "OTP verified successfully"
