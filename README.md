@@ -43,7 +43,7 @@ The app is deployed using **Docker**, making it portable and easy to set up on a
 
 ---
 
-## Installation  
+## **Installation**:
 
 Running Locally
 If you prefer running the application locally without Docker:
