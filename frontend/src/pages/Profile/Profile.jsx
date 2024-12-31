@@ -91,7 +91,7 @@ const Profile = () => {
   useEffect(() => {
     console.log(username);
     const setUserDetails = async () => {
-      const res = await Axios.post("http://localhost:3001/user/getUser", {
+      const res = await Axios.get("http://localhost:3001/user/getUser", {
         username: username,
       });
       console.log(res.data);

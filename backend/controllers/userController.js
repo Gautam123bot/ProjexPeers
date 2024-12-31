@@ -33,3 +33,20 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: "An error occurred.", error: e.message });
   }
 };
+
+export const getUserByUsername = async (req, res) => {
+  try {
+    const { username } = req.params; // Extract username from URL parameter
+    const user = await User.findOne({ username }); // Find user in DB
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user data
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
