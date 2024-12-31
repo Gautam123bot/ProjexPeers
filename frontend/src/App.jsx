@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Hackathons from "./pages/Hackathons/Hackathons";
 import Articles from "./pages/Articles/Articles";
@@ -16,36 +16,44 @@ import { EditProfile } from "./pages/Profile/EditProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("username");
+    console.log("username is: ", user);
+    if (token && user) {
       setIsLoggedIn(true);
-    } 
-  },[]);
+      setUsername(user);
+    }
+  }, []);
 
-  return isLoggedIn ? (
+  return (
     <Router>
-      <Sidebar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
+      {isLoggedIn ? (
+        <Sidebar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
+          <Routes>
+            <Route path="/:username" element={<Dashboard />} />
+            <Route path="/hackathons" element={<Hackathons />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/messages" element={<Chat />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/team-finder" element={<TeamFinderCard />} />
+            <Route path="/feed" element={<FeedCard />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
+            <Route
+              path="*"
+              element={<Navigate to={`/${username}`} replace />}
+            />
+            {/* <Route path="*" element={<div>404 Page not found :(</div>} /> */}
+          </Routes>
+        </Sidebar>
+      ) : (
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/hackathons" element={<Hackathons />} />
-          <Route path="/articles" element={<Articles />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/messages" element={<Chat />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/tf" element={<TeamFinderCard />} />
-          <Route path="/fc" element={<FeedCard />} />
-          <Route path="/profile/edit" element={<EditProfile />} />
-
-          <Route path="*" element={<div>404 Page not found :(</div>} />
+          <Route path="/login" element={<SignIn setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
-      </Sidebar>
-    </Router>
-  ) : (
-    <Router>
-      <Routes>
-          <Route path="/" element={<SignIn setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+      )}
     </Router>
   );
 }

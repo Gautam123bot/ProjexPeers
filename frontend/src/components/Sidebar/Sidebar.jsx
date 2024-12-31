@@ -20,6 +20,7 @@ const Sidebar = ({ children, setIsLoggedIn, isLoggedIn}) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user_info");
         localStorage.removeItem("user_spaces");
+        localStorage.removeItem("username");
         setIsLoggedIn(false);
         navigate("/")
         window.location.reload();
