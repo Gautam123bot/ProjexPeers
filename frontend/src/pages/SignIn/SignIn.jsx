@@ -40,13 +40,20 @@ const SignIn = ({ setIsLoggedIn }) => {
     try {
       const reg = await LoginUser(credentials);
       console.log("registered user details: ", reg);
-      if (reg.data.success === true) {
+      if (reg?.data?.success === true) {
         alert("USER LOGGED IN !! ");
         localStorage.setItem("token", reg.data.token);
         localStorage.setItem("username", reg.data.username);
         localStorage.setItem("user_info", JSON.stringify(reg.data.user));
         setIsLoggedIn(true);
-        navigate(`/${reg.data.username}`);
+        const username = reg.data.username.trim();
+        console.log("reg username is in signin page is:", username);
+
+        if (username) {
+          navigate(`/${username}`);
+        } else {
+          alert("Username is not available!");
+        }
       } else {
         alert("Invalid Credentials!! ");
       }
