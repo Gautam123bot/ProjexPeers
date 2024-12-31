@@ -22,9 +22,25 @@ const SignUp = () => {
     otp: "",
   });
 
+  // const handleChange = (e) => {
+  //   setcredentials({ ...credentials, [e.target.name]: e.target.value });
+  // };
+
   const handleChange = (e) => {
-    setcredentials({ ...credentials, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+  
+    if (name === "username") {
+      // Only allow alphanumeric characters
+      const isValid = /^[a-zA-Z0-9]*$/.test(value);
+      if (!isValid) {
+        alert("Username can only contain letters and numbers.");
+        return;
+      }
+    }
+  
+    setcredentials({ ...credentials, [name]: value });
   };
+  
 
   const handleSendOtp = async () => {
     if (!credentials.email) {

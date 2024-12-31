@@ -18,7 +18,6 @@ export const FeedCard = ({ post, recall }) => {
   const username = JSON.parse(localStorage.getItem("user_info")).username;
   const fullname = JSON.parse(localStorage.getItem("user_info")).fullname;
   const userspace = JSON.parse(localStorage.getItem("user_spaces"));
-  console.log(userspace);
   // const liked = post.likes.some(like => like.username === username);
   const obj = {
     id: post._id,
@@ -32,12 +31,10 @@ export const FeedCard = ({ post, recall }) => {
   }, []);
 
   useEffect(() => {
-    console.log(post.username);
     const setUserDetails = async () => {
       const res = await Axios.post("http://localhost:3001/user/getUser", {
         username: post.username,
       });
-      console.log(res.data);
       setPostUser(res.data);
       // localStorage.setItem('user_info', JSON.stringify(res.data));
     };
@@ -110,7 +107,6 @@ export const FeedCard = ({ post, recall }) => {
       "http://localhost:3001/space/create-space",
       obj
     );
-    console.log(res.data.message);
     const sendMessage = await Axios.post(
       "http://localhost:3001/email/send-email",
       { email: post.email, name: fullname }
@@ -121,7 +117,6 @@ export const FeedCard = ({ post, recall }) => {
     navigate("/messages");
   }
 
-  console.log(post);
   return (
     <div className="feed-card-con">
       {post.username === username ? (

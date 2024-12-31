@@ -22,10 +22,8 @@ const Dashboard = () => {
   //   }
   // });
   const user = JSON.parse(localStorage.getItem("user_info"));
-  // console.log(user);
   useEffect(() => {
     Axios.get("http://localhost:3001/post/getAllPosts").then((res) => {
-      console.log(res.data);
       setPosts(res.data.reverse());
       setAllPosts(res.data.reverse());
 
@@ -39,7 +37,6 @@ const Dashboard = () => {
       username: user.username,
     });
     localStorage.setItem("user_spaces", JSON.stringify(res.data));
-    console.log(res.data);
   };
 
   const handleSearch = (e) => {

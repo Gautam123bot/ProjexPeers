@@ -123,7 +123,6 @@ axios.interceptors.request.use((config) => {
   if (!isNoAuthRoute) {
     const token = localStorage.getItem("token");
     if (token) {
-      console.log('Adding token:', token); 
       config.headers.Authorization = `Bearer ${token}`;
     }
   }
