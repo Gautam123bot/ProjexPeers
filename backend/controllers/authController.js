@@ -111,7 +111,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
     });
 
-    res.json({
+    res.status(200).json({
       message: "Logged In Successfully!",
       token,
       success: true,
