@@ -7,36 +7,74 @@ import { useNavigate } from 'react-router-dom'
 import { TeamFinderCard } from '../../components/TeamFinder/TeamFinderCard'
 import loader_img from '../../assets/images/loader.svg'
 import Axios from "axios";
+import { useParams } from 'react-router-dom'
 
 const Dashboard = () => {
+  const { username } = useParams();
+  console.log("user name from params is: ", username);
   const [modal, setModal] = useState(false);
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
   const [search, setSearch] = useState("");
   const [recall, setRecall] = useState(true);
   const [loader, setLoader] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
   const navigate = useNavigate();
   // useEffect(() => {
   //   if (localStorage.getItem('token') === null) {
   //     navigate('/login')
   //   }
   // });
+  const fetchUserDetails = async () => {
+    try {
+      const res = await Axios.get(`http://localhost:3001/user/getUser/${username}`);
+      setUserDetails(res.data);
+    } catch (err) {
+      console.error("Error fetching user details:", err);
+      navigate("/login"); // Redirect to login if user not found
+    }
+  };
+
   const user = JSON.parse(localStorage.getItem("user_info"));
-  useEffect(() => {
-    Axios.get("http://localhost:3001/post/getAllPosts").then((res) => {
+  // useEffect(() => {
+  //   Axios.get("http://localhost:3001/post/getAllPosts").then((res) => {
+  //     setPosts(res.data.reverse());
+  //     setAllPosts(res.data.reverse());
+
+  //   });
+  //   setRecall(!recall);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  const fetchPosts = async () => {
+    try {
+      setLoader(true);
+      const res = await Axios.get("http://localhost:3001/post/getAllPosts");
       setPosts(res.data.reverse());
       setAllPosts(res.data.reverse());
+    } catch (err) {
+      console.error("Error fetching posts:", err);
+    } finally {
+      setLoader(false);
+    }
+  };
 
-    });
-    setRecall(!recall);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const getUserSpaces = async () => {
+  //   const res = await Axios.post(`http://localhost:3001/space/get-users-spaces`, {
+  //     username: user.username,
+  //   });
+  //   localStorage.setItem("user_spaces", JSON.stringify(res.data));
+  // };
 
-  const getUserSpaces = async () => {
-    const res = await Axios.post(`http://localhost:3001/space/get-users-spaces`, {
-      username: user.username,
-    });
-    localStorage.setItem("user_spaces", JSON.stringify(res.data));
+  const fetchUserSpaces = async () => {
+    try {
+      const res = await Axios.post("http://localhost:3001/space/get-users-spaces", {
+        username,
+      });
+      localStorage.setItem("user_spaces", JSON.stringify(res.data));
+    } catch (err) {
+      console.error("Error fetching user spaces:", err);
+    }
   };
 
   const handleSearch = (e) => {
@@ -44,7 +82,6 @@ const Dashboard = () => {
     setSearch(value);
     if (value === "") {
       setPosts(allPosts);
-      return;
     }
     const filteredPosts = allPosts.filter((post) =>
       post.skills.some((skill) => skill.toLowerCase().includes(value))
@@ -53,9 +90,13 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    getUserSpaces();
+    // getUserSpaces();
+    fetchUserDetails();
+    fetchPosts();
+    fetchUserSpaces();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [username]);
+
   return <div className='dashboard-con' id={modal ? 'blurr' : null}>
     <div className="dashboard-main">
       <div className="welcome-con">

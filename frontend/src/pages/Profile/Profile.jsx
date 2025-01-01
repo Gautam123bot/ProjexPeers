@@ -91,15 +91,15 @@ const Profile = () => {
   useEffect(() => {
     console.log(username);
     const setUserDetails = async () => {
-      const res = await Axios.get("http://localhost:3001/user/getUser", {
+      const res = await Axios.post("http://localhost:3001/user/getUser", {
         username: username,
       });
-      console.log(res.data);
+      console.log("get user res in profile is: ", res.data);
       setUser(res.data);
       localStorage.setItem("user_info", JSON.stringify(res.data));
     };
     setUserDetails();
-  }, []);
+  }, [username]);
 
   return (
     <div className="profile-con">
