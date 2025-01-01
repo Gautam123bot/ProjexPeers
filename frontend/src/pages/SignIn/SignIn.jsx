@@ -7,8 +7,9 @@ import {
   sendForgetPasswordOtp,
   resetToNewPassword,
 } from "../../service/Api";
-import "./SignIn.css";
+// import "./SignIn.css";
 import { signInWithGoogle } from "../../Firebase";
+import Navbar from "../../components/Navbar/Navbar";
 
 const SignIn = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
@@ -119,43 +120,60 @@ const SignIn = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div>
-      <div className="signup_body">
-        {showForgotPassword ? (
-          <div className="signup_left">
-            <div className="signup_left_inside">
-              <h1 className="sih">Forgot Password</h1>
-              {!otpSent ? (
+    <>
+      <Navbar />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="bg-white shadow-xl rounded-lg overflow-hidden w-full max-w-4xl grid grid-cols-1 md:grid-cols-2">
+          {/* Left Section */}
+          <div className="p-8 flex flex-col justify-center">
+            <h1 className="text-2xl font-bold text-indigo-600 mb-2">
+              {showForgotPassword
+                ? "Forgot Password"
+                : "Sign In to ProjexPeers"}
+            </h1>
+            <p className="text-gray-500 mb-6">
+              {showForgotPassword
+                ? "Reset your password by providing the required details."
+                : "Find your perfect project partner and explore hackathons!"}
+            </p>
+
+            {showForgotPassword ? (
+              !otpSent ? (
                 <>
-                  <label htmlFor="email">Enter your email*</label>
+                  <label className="block mb-2 text-gray-600">Email*</label>
                   <input
-                    name="email"
-                    placeholder="Enter your email"
                     type="email"
+                    placeholder="Enter your email"
+                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
                     value={emailForOtp}
                     onChange={(e) => setEmailForOtp(e.target.value)}
                   />
-                  <button className="signin_btn" onClick={handleForgotPassword}>
+                  <button
+                    className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
+                    onClick={handleForgotPassword}
+                  >
                     Send OTP
                   </button>
                 </>
               ) : (
                 <>
-                  <label htmlFor="otp">Enter OTP*</label>
+                  <label className="block mb-2 text-gray-600">OTP*</label>
                   <input
-                    name="otp"
-                    placeholder="Enter the OTP sent to your email"
                     type="text"
+                    placeholder="Enter OTP"
+                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
                     value={otpDetails.otp}
                     onChange={(e) =>
                       setOtpDetails({ ...otpDetails, otp: e.target.value })
                     }
                   />
-                  <label htmlFor="newPassword">New Password*</label>
+                  <label className="block mb-2 text-gray-600">
+                    New Password*
+                  </label>
                   <input
-                    name="newPassword"
-                    placeholder="Enter your new password"
                     type="password"
+                    placeholder="Enter new password"
+                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
                     value={otpDetails.newPassword}
                     onChange={(e) =>
                       setOtpDetails({
@@ -164,11 +182,13 @@ const SignIn = ({ setIsLoggedIn }) => {
                       })
                     }
                   />
-                  <label htmlFor="confirmPassword">Confirm Password*</label>
+                  <label className="block mb-2 text-gray-600">
+                    Confirm Password*
+                  </label>
                   <input
-                    name="confirmPassword"
-                    placeholder="Confirm your new password"
                     type="password"
+                    placeholder="Confirm password"
+                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
                     value={otpDetails.confirmPassword}
                     onChange={(e) =>
                       setOtpDetails({
@@ -177,82 +197,89 @@ const SignIn = ({ setIsLoggedIn }) => {
                       })
                     }
                   />
-                  <button className="signin_btn" onClick={handleResetPassword}>
+                  <button
+                    className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
+                    onClick={handleResetPassword}
+                  >
                     Reset Password
                   </button>
                 </>
-              )}
-              <p
-                style={{ cursor: "pointer", color: "blue" }}
-                onClick={() => setShowForgotPassword(false)}
-              >
-                Back to Sign In
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="signup_left">
-            <div className="signup_left_inside">
-              <h1 className="sih">
-                Sign in to <span>ProjexPeers</span>
-              </h1>
-              <p className="a-text">
-                Find your perfect project partner, build projects together,
-                discover hackathons and much more!
-              </p>
-              <button className="gbtn" onClick={signInWithGoogle}>
-                <FcGoogle />
-                Sign In with Google{" "}
-              </button>
-              <form className="form_style" action="">
-                <label htmlFor="email">Email*</label>
-                <input
-                  name="email"
-                  placeholder="Enter Your Email"
-                  type="email"
-                  value={credentials.email}
-                  onChange={handleChange}
-                />
-                <label htmlFor="password">Password*</label>
-                <input
-                  name="password"
-                  placeholder="Enter Your Password"
-                  type="password"
-                  value={credentials.password}
-                  onChange={handleChange}
-                />
-                <button className="signin_btn" onClick={handleSignin}>
-                  Sign In
-                </button>
-              </form>
-              <div className="signup_more_style">
-                <p>
-                  Don't have an account?{" "}
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => navigate("/signup")}
-                  >
-                    Sign up
-                  </span>
-                </p>
-                <p
-                  style={{ cursor: "pointer", color: "blue" }}
-                  onClick={() => setShowForgotPassword(true)}
+              )
+            ) : (
+              <>
+                <button
+                  className="w-full flex items-center justify-center bg-white border border-gray-300 py-3 rounded-md mb-4 hover:bg-gray-100"
+                  onClick={signInWithGoogle}
                 >
-                  Forgot Password?
+                  <FcGoogle className="mr-2" />
+                  Sign In with Google
+                </button>
+                <form onSubmit={handleSignin}>
+                  <label className="block mb-2 text-gray-600">Email*</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
+                    value={credentials.email}
+                    onChange={handleChange}
+                  />
+                  <label className="block mb-2 text-gray-600">Password*</label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
+                    value={credentials.password}
+                    onChange={handleChange}
+                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
+                  >
+                    Sign In
+                  </button>
+                </form>
+              </>
+            )}
+
+            <div className="text-center mt-6">
+              {showForgotPassword ? (
+                <p
+                  className="text-indigo-500 cursor-pointer"
+                  onClick={() => setShowForgotPassword(false)}
+                >
+                  Back to Sign In
                 </p>
-              </div>
+              ) : (
+                <>
+                  <p>
+                    Don't have an account?{" "}
+                    <span
+                      className="text-indigo-500 cursor-pointer"
+                      onClick={() => navigate("/signup")}
+                    >
+                      Sign up
+                    </span>
+                  </p>
+                  <p
+                    className="text-indigo-500 cursor-pointer mt-2"
+                    onClick={() => setShowForgotPassword(true)}
+                  >
+                    Forgot Password?
+                  </p>
+                </>
+              )}
             </div>
           </div>
-        )}
-        <div className="signup_right">
-          <div className="signup_image">
-            <img src={signin_img} alt="" />
+
+          {/* Right Section */}
+          <div className="hidden md:flex items-center justify-center bg-indigo-600">
+            <img src={signin_img} alt="Sign In" className="w-3/4" />
           </div>
-          <div className="signup_img_btext"></div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

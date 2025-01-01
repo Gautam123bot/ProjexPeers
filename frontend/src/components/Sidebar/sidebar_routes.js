@@ -8,7 +8,7 @@ import help_logo from '../../assets/icons/help.svg'
 const routes = [
     {
         path: '/',
-        name: 'Dashboard',
+        name: 'Home',
         icon: dashboard_logo
     },
     {
