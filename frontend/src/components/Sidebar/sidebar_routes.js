@@ -12,6 +12,11 @@ const routes = [
         icon: dashboard_logo
     },
     {
+        path: '/feeds',
+        name: 'Feeds',
+        icon: dashboard_logo
+    },
+    {
         path: '/profile',
         name: 'My Profile',
         icon: profile_logo

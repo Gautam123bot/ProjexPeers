@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./FeedCard.css";
+// import "./FeedCard.css";
 import feed_avatar from "../../assets/images/avatar2.png";
 import heart_outlined from "../../assets/icons/heart_outlined.png";
 import heart_filled from "../../assets/icons/heart_filled.png";
@@ -12,7 +12,7 @@ import moment from "moment";
 export const FeedCard = ({ post, recall }) => {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [likeCount, setLikeCount] = useState(post?.likes?.length);
   const [requestSent, setRequestSent] = useState(false);
   const [postUser, setPostUser] = useState({});
   const username = JSON.parse(localStorage.getItem("user_info")).username;
@@ -20,12 +20,12 @@ export const FeedCard = ({ post, recall }) => {
   const userspace = JSON.parse(localStorage.getItem("user_spaces"));
   // const liked = post.likes.some(like => like.username === username);
   const obj = {
-    id: post._id,
+    id: post?._id,
     username: username,
   };
 
   useEffect(() => {
-    if (post.likes.some((like) => like.username === username)) {
+    if (post?.likes.some((like) => like.username === username)) {
       setLiked(true);
     }
   }, []);
@@ -33,7 +33,7 @@ export const FeedCard = ({ post, recall }) => {
   useEffect(() => {
     const setUserDetails = async () => {
       const res = await Axios.post("http://localhost:3001/user/getUser", {
-        username: post.username,
+        username: post?.username,
       });
       setPostUser(res.data);
       // localStorage.setItem('user_info', JSON.stringify(res.data));
@@ -118,50 +118,80 @@ export const FeedCard = ({ post, recall }) => {
   }
 
   return (
-    <div className="feed-card-con">
-      {post.username === username ? (
-        <div className="delete-con" onClick={deletePost}></div>
-      ) : null}
-
-      <div className="left">
-        <img
-          src={postUser.profilePic ? postUser.profilePic : feed_avatar}
-          alt="Avatar"
-          className="feed_avatar"
-        />
-      </div>
-      <div className="right">
-        <p className="feed-name">{post.name}</p>
-        <p className="feed-time">{moment(post.date).format("LLL")}</p>
-        <div className="proj-desc">
-          <p className="feed-title">{post.title}</p>
-          <div className="skillss-con">
-            <p>Skills Required: </p>
-            {post.skills.map((skill, idx) => {
-              return <Chips className="feed-skill" name={skill} key={idx} />;
-            })}
-          </div>
-          <p className="yoe">Year of Education: {post.year}</p>
+    <div className="feed-card-con bg-gradient-to-r from-gray-800 via-gray-900 to-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out mb-6">
+      {post?.username === username && (
+        <div
+          className="delete-con absolute top-4 right-4 cursor-pointer text-gray-400 hover:text-white"
+          onClick={deletePost}
+        >
+          <i className="fas fa-trash-alt text-xl"></i>
         </div>
-        <div className="bottom-con">
-          {post.username !== username ? (
-            <div
-              className="connect-btn"
-              onClick={() => handleConnect(post.username)}
-            >
-              <p>{requestSent ? "Request Sent" : "Connect"}</p>
-            </div>
-          ) : (
-            <div></div>
-          )}
+      )}
 
-          <div className="like-con">
-            {liked ? (
-              <img src={heart_filled} alt="liked" onClick={handleDislike} />
-            ) : (
-              <img src={heart_outlined} alt="not liked" onClick={handleLike} />
+      <div className="flex space-x-6">
+        {/* Left: Avatar */}
+        <div className="left flex-shrink-0">
+          <img
+            src={postUser.profilePic ? postUser.profilePic : feed_avatar}
+            alt="Avatar"
+            className="feed_avatar w-16 h-16 rounded-full object-cover border-4 border-gray-700"
+          />
+        </div>
+
+        {/* Right: Content */}
+        <div className="right flex-1">
+          <p
+            className="feed-name text-2xl font-semibold text-white cursor-pointer hover:text-indigo-400 transition-all"
+            onClick={() => navigate(`/${post?.username}`)}
+          >
+            {post?.name}
+          </p>
+          <p className="feed-time text-gray-400 text-sm">{moment(post?.date).format("LLL")}</p>
+
+          <div className="proj-desc mt-4">
+            <p className="feed-title text-xl text-white font-semibold mt-2">{post?.title}</p>
+
+            <div className="skillss-con mt-3">
+              <p className="text-gray-400">Skills Required: </p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {post?.skills.map((skill, idx) => (
+                  <Chips className="feed-skill bg-gray-700 text-white px-3 py-1 rounded-full" name={skill} key={idx} />
+                ))}
+              </div>
+            </div>
+
+            <p className="yoe text-gray-400 mt-4">Year of Education: {post?.year}</p>
+          </div>
+
+          {/* Bottom: Actions */}
+          <div className="bottom-con flex justify-between items-center mt-6">
+            {post?.username !== username && (
+              <div
+                className="connect-btn bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded-full cursor-pointer transition-all"
+                onClick={() => handleConnect(post?.username)}
+              >
+                <p>{requestSent ? "Request Sent" : "Connect"}</p>
+              </div>
             )}
-            <p className="likes">{post.likes ? likeCount : 0}</p>
+
+            <div className="like-con flex items-center space-x-3">
+              {liked ? (
+                <img
+                  src={heart_filled}
+                  alt="liked"
+                  className="cursor-pointer w-6 h-6"
+                  onClick={handleDislike}
+                />
+              ) : (
+                <img
+                  src={heart_outlined}
+                  alt="not liked"
+                  className="cursor-pointer w-6 h-6"
+                  onClick={handleLike}
+                />
+              )}
+              <p className="likes text-white text-lg font-semibold">{post?.likes ? likeCount : 0}</p>
+            </div>
           </div>
         </div>
       </div>

@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { TeamFinderCard } from "../../components/TeamFinder/TeamFinderCard";
 import loader_img from "../../assets/images/loader.svg";
 import Axios from "axios";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 const Dashboard = () => {
-  const { username } = useParams();
-  console.log("user name from params is: ", username);
+  // const { username } = useParams();
+  // console.log("user name from params is: ", username);
   const [modal, setModal] = useState(false);
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
@@ -20,22 +20,23 @@ const Dashboard = () => {
   const [loader, setLoader] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const navigate = useNavigate();
+  const username = localStorage.getItem("username")
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
       navigate("/login");
     }
   });
-  const fetchUserDetails = async () => {
-    try {
-      const res = await Axios.get(
-        `http://localhost:3001/user/getUser/${username}`
-      );
-      setUserDetails(res.data);
-    } catch (err) {
-      console.error("Error fetching user details:", err);
-      navigate("/login"); // Redirect to login if user not found
-    }
-  };
+  // const fetchUserDetails = async () => {
+  //   try {
+  //     const res = await Axios.get(
+  //       `http://localhost:3001/user/getUser/${username}`
+  //     );
+  //     setUserDetails(res.data);
+  //   } catch (err) {
+  //     console.error("Error fetching user details:", err);
+  //     navigate("/login"); // Redirect to login if user not found
+  //   }
+  // };
 
   const user = JSON.parse(localStorage.getItem("user_info"));
 
@@ -79,7 +80,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchUserDetails();
+    // fetchUserDetails();
     fetchPosts();
     fetchUserSpaces();
   }, [username]);
@@ -106,7 +107,7 @@ const Dashboard = () => {
             <input
               type="text"
               placeholder="Type the skills you are looking for"
-              className="inp"
+              className="inp px-4 py-2"
               value={search}
               onChange={handleSearch}
             />

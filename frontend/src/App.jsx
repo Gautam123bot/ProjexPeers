@@ -19,6 +19,7 @@ import { TeamFinderCard } from "./components/TeamFinder/TeamFinderCard";
 import { FeedCard } from "./components/FeedCard/FeedCard";
 import { EditProfile } from "./pages/Profile/EditProfile";
 import Home from "./pages/Home/Home";
+import ProfilePage from "./pages/ShowProfile/ProfilePage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Start as null to delay rendering
@@ -59,7 +60,8 @@ function App() {
             <ProtectedRoute>
               <Sidebar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
                 <Routes>
-                  <Route path="/:username" element={<Dashboard />} />
+                  <Route path="/:username" element={<ProfilePage />} />
+                  <Route path="/feeds" element={<Dashboard />} />
                   <Route path="/hackathons" element={<Hackathons />} />
                   <Route path="/articles" element={<Articles />} />
                   <Route path="/profile" element={<Profile />} />
