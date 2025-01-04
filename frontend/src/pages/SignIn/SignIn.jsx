@@ -51,7 +51,7 @@ const SignIn = ({ setIsLoggedIn }) => {
         console.log("reg username is in signin page is:", username);
 
         if (username) {
-          navigate(`/${username}`);
+          navigate(`/feeds`);
         } else {
           alert("Username is not available!");
         }

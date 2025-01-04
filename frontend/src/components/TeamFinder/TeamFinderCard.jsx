@@ -76,16 +76,16 @@ export const TeamFinderCard = ({ setModal }) => {
               </div> */}
               <div className="ct">
                 <h4>Title<span style={{ color: "red" }}>*</span></h4>
-                <input name="title" placeholder='Enter your title' type="text" value={details.title} onChange={handleChange} />
+                <input className='px-3 py-2' name="title" placeholder='Enter your title' type="text" value={details.title} onChange={handleChange} />
               </div>
               <div className="ce">
                 <h4>Email<span style={{ color: "red" }}>*</span></h4>
-                <input name="email" placeholder='Enter your email' type="email" value={details.email} onChange={handleChange} />
+                <input className='px-3 py-2' name="email" placeholder='Enter your email' type="email" value={details.email} onChange={handleChange} />
               </div>
               <div className="cs">
                 <div className="cs-sub">
                   <h4>Skills<span style={{ color: "red" }}>*</span></h4>
-                  <input name="skill" placeholder='Enter the skill you are looking for' type="text" onKeyDown={(e) => { addSkill(e); }} />
+                  <input className='px-3 py-2' name="skill" placeholder='Enter the skill you are looking for' type="text" onKeyDown={(e) => { addSkill(e); }} />
                 </div>
 
                 <div className="skill-bod">

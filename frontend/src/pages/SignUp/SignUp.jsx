@@ -6,10 +6,13 @@ import { RegisterUser } from "../../service/Api";
 import { verifyOtp } from "../../service/Api";
 import { sendOtp } from "../../service/Api";
 import Navbar from "../../components/Navbar/Navbar";
+import Loader from "../../components/Loader/Loader";
 
 const SignUp = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [isOtpLoading, setIsOtpLoading] = useState(false);
+  const [isSignupLoading, setIsSignupLoading] = useState(false)
   const navigate = useNavigate();
 
   const [credentials, setcredentials] = useState({
@@ -51,6 +54,7 @@ const SignUp = () => {
     if (!isConfirmed) {
       return;
     }
+    setIsOtpLoading(true);
     try {
       const response = await sendOtp({ email: credentials.email });
       if (response.data.success) {
@@ -62,6 +66,8 @@ const SignUp = () => {
     } catch (error) {
       alert("An error occurred while sending OTP.");
       console.error(error);
+    } finally {
+      setIsOtpLoading(false);
     }
   };
 
@@ -99,6 +105,7 @@ const SignUp = () => {
       alert("Passwords do not match!");
     } else {
       const { cpassword, otp, ...userData } = credentials;
+      setIsSignupLoading(true);
       try {
         const reg = await RegisterUser(userData);
         console.log("this is reg: ", reg);
@@ -108,7 +115,7 @@ const SignUp = () => {
         }
         if (reg.data.success === true) {
           alert("USER CREATED !! ");
-          navigate("/");
+          navigate("/login");
         }
 
         if (reg.data.success === false && reg.data.exists !== true) {
@@ -123,6 +130,8 @@ const SignUp = () => {
       } catch (error) {
         console.log("Error in signup", error);
         alert("An error occured while registering");
+      } finally{
+        setIsSignupLoading(false);
       }
     }
   };
@@ -189,14 +198,21 @@ const SignUp = () => {
               <button
                 type="button"
                 onClick={handleSendOtp}
-                className={`mt-2 px-4 py-2 rounded-md text-sm font-medium ${
-                  isOtpSent
+                className={`mt-2 px-4 py-2 rounded-md text-sm font-medium ${isOtpSent
                     ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-indigo-600 text-white hover:bg-indigo-700"
-                }`}
-                disabled={isOtpSent}
+                    : isOtpLoading
+                      ? "bg-indigo-600 text-white cursor-wait"
+                      : "bg-indigo-600 text-white hover:bg-indigo-700"
+                  }`}
+                disabled={isOtpSent || isOtpLoading}
               >
-                {isOtpSent ? "OTP Sent" : "Send OTP"}
+                {isOtpLoading ? (
+                  <Loader /> // Show loader if loading
+                ) : isOtpSent ? (
+                  "OTP Sent"
+                ) : (
+                  "Send OTP"
+                )}
               </button>
             </div>
 
@@ -216,11 +232,10 @@ const SignUp = () => {
                 <button
                   type="button"
                   onClick={handleVerifyOtp}
-                  className={`mt-2 px-4 py-2 rounded-md text-sm font-medium ${
-                    isOtpVerified
+                  className={`mt-2 px-4 py-2 rounded-md text-sm font-medium ${isOtpVerified
                       ? "bg-green-500 text-white cursor-not-allowed"
                       : "bg-indigo-600 text-white hover:bg-indigo-700"
-                  }`}
+                    }`}
                   disabled={isOtpVerified}
                 >
                   {isOtpVerified ? "OTP Verified" : "Verify OTP"}
@@ -258,14 +273,13 @@ const SignUp = () => {
 
             <button
               type="submit"
-              className={`w-full py-2 px-4 rounded-md text-sm font-medium text-white ${
-                isOtpVerified
+              className={`w-full py-2 px-4 rounded-md text-sm font-medium text-white ${isOtpVerified
                   ? "bg-indigo-600 hover:bg-indigo-700"
                   : "bg-gray-400 cursor-not-allowed"
-              }`}
-              disabled={!isOtpVerified}
+                }`}
+              disabled={!isOtpVerified || isSignupLoading}
             >
-              Sign Up
+              {isSignupLoading ? <Loader /> : "RegisterOtp"}
             </button>
           </form>
 
