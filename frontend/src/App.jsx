@@ -47,6 +47,9 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/hackathons" element={<Hackathons />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/help" element={<Help />} />
         <Route
           path="/login"
           element={<SignIn setIsLoggedIn={setIsLoggedIn} />}
@@ -62,14 +65,11 @@ function App() {
                 <Routes>
                   <Route path="/:username" element={<ProfilePage />} />
                   <Route path="/feeds" element={<Dashboard />} />
-                  <Route path="/hackathons" element={<Hackathons />} />
-                  <Route path="/articles" element={<Articles />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/profile/edit" element={<EditProfile />} />
                   <Route path="/messages" element={<Chat />} />
-                  <Route path="/help" element={<Help />} />
-                  <Route path="/team-finder" element={<TeamFinderCard />} />
-                  <Route path="/feed" element={<FeedCard />} />
+                  {/* <Route path="/team-finder" element={<TeamFinderCard />} /> */}
+                  {/* <Route path="/feed" element={<FeedCard />} /> */}
                   <Route path="*" element={<div>404 Page Not Found</div>} />
                 </Routes>
               </Sidebar>

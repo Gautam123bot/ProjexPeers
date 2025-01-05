@@ -1,10 +1,12 @@
 import React from "react";
 import "./Articles.css";
 import { articles_list } from "./articles_data";
+import Navbar from "../../components/Navbar/Navbar";
 
 const Articles = () => {
   return (
     <div className="art-body">
+      <Navbar />
       <h1>Top Articles</h1>
     
     {articles_list.map((item)=>{

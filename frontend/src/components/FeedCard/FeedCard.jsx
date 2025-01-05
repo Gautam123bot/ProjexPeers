@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import "./FeedCard.css";
-import feed_avatar from "../../assets/images/avatar2.png";
+import feed_avatar from "../../assets/images/profile_img.jpg";
 import heart_outlined from "../../assets/icons/heart_outlined.png";
 import heart_filled from "../../assets/icons/heart_filled.png";
 import Axios from "axios";

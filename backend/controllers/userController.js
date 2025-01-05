@@ -17,7 +17,7 @@ export const getUser = async (req, res) => {
   try {
     // const { username: tokenUsername } = req.rootUser;
     const { username } = req.body;
-    if(!username) {
+    if (!username) {
       return res.status(400).json({ message: "Username is required." });
     }
     const userFound = await User.findOne({ username });

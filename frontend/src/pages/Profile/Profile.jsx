@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
-import avatar_pic from "../../assets/images/avatar2.png";
+import avatar_pic from "../../assets/images/profile_img.jpg";
 import github from "../../assets/icons/github.svg";
 import linkedin from "../../assets/icons/linkedin.svg";
 import skills from "./test_skills";
@@ -125,7 +125,7 @@ const Profile = () => {
               <i
                 id="editCoverPic"
                 style={{ fontSize: "2rem", position: "absolute", right: "0rem" }}
-                class="fa fa-pencil-square-o"
+                class="fa fa-pencil-square-o p-40"
                 aria-hidden="true"
               ></i>
             </span>
