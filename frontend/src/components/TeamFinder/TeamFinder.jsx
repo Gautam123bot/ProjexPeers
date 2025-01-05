@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import joinATeam from '../../assets/images/join_a_team.svg'
-import findATeammate from '../../assets/images/find_a_teammate.svg'
+import joinATeam from '../../assets/images/join_a_team.png'
+import findATeammate from '../../assets/images/find_a_teammate.png'
 import './TeamFinder.css'
 
 const TeamFinder = ({ setModal }) => {

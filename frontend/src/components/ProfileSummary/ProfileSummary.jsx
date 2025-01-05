@@ -1,6 +1,6 @@
 import React from 'react'
 import './ProfileSummary.css'
-import profile_pic from '../../assets/images/avatar2.png'
+import profile_pic from '../../assets/images/profile_img.jpg'
 import peer from '../../assets/icons/peer.svg'
 import writePost from '../../assets/icons/writePost.svg'
 

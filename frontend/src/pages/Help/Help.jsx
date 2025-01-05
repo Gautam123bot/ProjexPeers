@@ -3,6 +3,7 @@ import "./help.css";
 import helpsvg from "./help-svg.svg";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { AiOutlineMinusCircle } from "react-icons/ai";
+import Navbar from "../../components/Navbar/Navbar";
 
 
 function Help() {
@@ -12,6 +13,7 @@ function Help() {
   const [frclk, setFrclk] = useState(false);
   return (
     <div className="help-bod">
+      <Navbar />
       <div className="help-first">
         <div className="help-write">
           <h1>Help Section</h1>

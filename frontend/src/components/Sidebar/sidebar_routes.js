@@ -22,16 +22,6 @@ const routes = [
         icon: profile_logo
     },
     {
-        path: '/hackathons',
-        name: 'Hackathons',
-        icon: hackathon_logo
-    },
-    {
-        path: '/articles',
-        name: 'Articles',
-        icon: article_logo
-    },
-    {
         path: '/messages',
         name: 'Chats',
         icon: chat_logo
