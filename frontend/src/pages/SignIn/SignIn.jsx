@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import signin_img from "../../assets/images/signin.png";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
   LoginUser,
   sendForgetPasswordOtp,
@@ -27,6 +28,10 @@ const SignIn = ({ setIsLoggedIn }) => {
     confirmPassword: "",
   });
   const [otpSent, setOtpSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showLoginSpinner, setShowLoginSpinner] = useState(false);
 
   const handleChange = (e) => {
     setcredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -34,6 +39,7 @@ const SignIn = ({ setIsLoggedIn }) => {
 
   const handleSignin = async (e) => {
     e.preventDefault();
+    setShowLoginSpinner(true);
 
     // if (credentials.password.length < 5) {
     //   alert("Passwords needs to be greater than 5 characters !! ");
@@ -61,6 +67,9 @@ const SignIn = ({ setIsLoggedIn }) => {
     } catch (error) {
       console.error("Error during login: ", error);
       alert("An error occured during login. Please try again");
+    }
+    finally {
+      setShowLoginSpinner(false);
     }
     // }
   };
@@ -167,36 +176,57 @@ const SignIn = ({ setIsLoggedIn }) => {
                       setOtpDetails({ ...otpDetails, otp: e.target.value })
                     }
                   />
-                  <label className="block mb-2 text-gray-600">
-                    New Password*
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Enter new password"
-                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
-                    value={otpDetails.newPassword}
-                    onChange={(e) =>
-                      setOtpDetails({
-                        ...otpDetails,
-                        newPassword: e.target.value,
-                      })
-                    }
-                  />
-                  <label className="block mb-2 text-gray-600">
-                    Confirm Password*
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Confirm password"
-                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
-                    value={otpDetails.confirmPassword}
-                    onChange={(e) =>
-                      setOtpDetails({
-                        ...otpDetails,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                  />
+                  <div>
+                    {/* New Password Field */}
+                    <div className="relative">
+                      <label className="block mb-2 text-gray-600">New Password*</label>
+                      <input
+                        type={showNewPassword ? "text" : "password"}
+                        placeholder="Enter new password"
+                        className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
+                        value={otpDetails.newPassword}
+                        onChange={(e) =>
+                          setOtpDetails({
+                            ...otpDetails,
+                            newPassword: e.target.value,
+                          })
+                        }
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        className="absolute right-3 top-12 text-gray-500 hover:text-gray-700 focus:outline-none"
+                        aria-label={showNewPassword ? "Hide password" : "Show password"}
+                      >
+                        {showNewPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                      </button>
+                    </div>
+
+                    {/* Confirm Password Field */}
+                    <div className="relative">
+                      <label className="block mb-2 text-gray-600">Confirm Password*</label>
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Confirm password"
+                        className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
+                        value={otpDetails.confirmPassword}
+                        onChange={(e) =>
+                          setOtpDetails({
+                            ...otpDetails,
+                            confirmPassword: e.target.value,
+                          })
+                        }
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-12 text-gray-500 hover:text-gray-700 focus:outline-none"
+                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                      >
+                        {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                      </button>
+                    </div>
+                  </div>
                   <button
                     className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
                     onClick={handleResetPassword}
@@ -214,6 +244,14 @@ const SignIn = ({ setIsLoggedIn }) => {
                   <FcGoogle className="mr-2" />
                   Sign In with Google
                 </button>
+                {showLoginSpinner && (
+                  <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 z-50">
+                    <div className="text-center text-white p-6 bg-gray-800 rounded-lg shadow-lg">
+                      <div className="animate-spin rounded-full border-t-4 border-b-4 border-indigo-500 w-16 h-16 mx-auto"></div>
+                      <p className="mt-4 text-lg">Logging in...</p>
+                    </div>
+                  </div>
+                )}
                 <form onSubmit={handleSignin}>
                   <label className="block mb-2 text-gray-600">Email*</label>
                   <input
@@ -224,15 +262,25 @@ const SignIn = ({ setIsLoggedIn }) => {
                     value={credentials.email}
                     onChange={handleChange}
                   />
-                  <label className="block mb-2 text-gray-600">Password*</label>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
-                    value={credentials.password}
-                    onChange={handleChange}
-                  />
+                  <div className="relative">
+                    <label className="block mb-2 text-gray-600">Password*</label>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      placeholder="Enter your password"
+                      className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-indigo-400"
+                      value={credentials.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-12 text-gray-500 hover:text-gray-700 focus:outline-none"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                    </button>
+                  </div>
                   <button
                     type="submit"
                     className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
@@ -273,7 +321,6 @@ const SignIn = ({ setIsLoggedIn }) => {
             </div>
           </div>
 
-          {/* Right Section */}
           <div className="hidden md:flex items-center justify-center bg-indigo-600">
             <img src={signin_img} alt="Sign In" className="w-3/4" />
           </div>

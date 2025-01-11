@@ -7,12 +7,14 @@ import { verifyOtp } from "../../service/Api";
 import { sendOtp } from "../../service/Api";
 import Navbar from "../../components/Navbar/Navbar";
 import Loader from "../../components/Loader/Loader";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isOtpLoading, setIsOtpLoading] = useState(false);
   const [isSignupLoading, setIsSignupLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const [credentials, setcredentials] = useState({
@@ -96,6 +98,11 @@ const SignUp = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
+    if (credentials.otp.length < 8) {
+      alert("OTP must be at least 8 characters long.");
+      return;
+    }
+
     if (!isOtpVerified) {
       alert("Please verify your OTP before proceeding with registration.");
       return;
@@ -108,10 +115,8 @@ const SignUp = () => {
       setIsSignupLoading(true);
       try {
         const reg = await RegisterUser(userData);
-        console.log("this is reg: ", reg);
         if (reg.data.exists === true) {
           alert("USER ALREADY EXISTS !! ");
-          // navigate("/signin");
         }
         if (reg.data.success === true) {
           alert("USER CREATED !! ");
@@ -130,7 +135,7 @@ const SignUp = () => {
       } catch (error) {
         console.log("Error in signup", error);
         alert("An error occured while registering");
-      } finally{
+      } finally {
         setIsSignupLoading(false);
       }
     }
@@ -199,10 +204,10 @@ const SignUp = () => {
                 type="button"
                 onClick={handleSendOtp}
                 className={`mt-2 px-4 py-2 rounded-md text-sm font-medium ${isOtpSent
-                    ? "bg-gray-400 text-white cursor-not-allowed"
-                    : isOtpLoading
-                      ? "bg-indigo-600 text-white cursor-wait"
-                      : "bg-indigo-600 text-white hover:bg-indigo-700"
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : isOtpLoading
+                    ? "bg-indigo-600 text-white cursor-wait"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
                   }`}
                 disabled={isOtpSent || isOtpLoading}
               >
@@ -233,8 +238,8 @@ const SignUp = () => {
                   type="button"
                   onClick={handleVerifyOtp}
                   className={`mt-2 px-4 py-2 rounded-md text-sm font-medium ${isOtpVerified
-                      ? "bg-green-500 text-white cursor-not-allowed"
-                      : "bg-indigo-600 text-white hover:bg-indigo-700"
+                    ? "bg-green-500 text-white cursor-not-allowed"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
                     }`}
                   disabled={isOtpVerified}
                 >
@@ -244,42 +249,62 @@ const SignUp = () => {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Password*
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
+              {/* Password Field */}
+              <div className="relative">
+                <label className="block text-sm font-medium text-gray-700">
+                  Password*
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-1 top-6 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Confirm Password*
-              </label>
-              <input
-                type="password"
-                name="cpassword"
-                value={credentials.cpassword}
-                onChange={handleChange}
-                placeholder="Confirm your password"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
+              {/* Confirm Password Field */}
+              <div className="relative mt-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Confirm Password*
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="cpassword"
+                  value={credentials.cpassword}
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-1 top-6 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
 
             <button
               type="submit"
               className={`w-full py-2 px-4 rounded-md text-sm font-medium text-white ${isOtpVerified
-                  ? "bg-indigo-600 hover:bg-indigo-700"
-                  : "bg-gray-400 cursor-not-allowed"
+                ? "bg-indigo-600 hover:bg-indigo-700"
+                : "bg-gray-400 cursor-not-allowed"
                 }`}
               disabled={!isOtpVerified || isSignupLoading}
             >
-              {isSignupLoading ? <Loader /> : "RegisterOtp"}
+              {isSignupLoading ? <Loader /> : "Register"}
             </button>
           </form>
 
