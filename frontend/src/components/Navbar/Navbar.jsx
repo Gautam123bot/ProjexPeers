@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
-import logo from "../../assets/images/logo.png"
+import logo from "../../assets/images/logo.png";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+  const userName = localStorage.getItem("username") || "User";
+  const userImage = "https://via.placeholder.com/150"; // Placeholder image for user avatar
 
   return (
     <div>
-      <header className="bg-blue-600 text-white">
+      <header className="bg-blue-600 text-white shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-          <h1
-            onClick={() => window.location.href = '/'}
-            className="text-md font-bold cursor-pointer"
+          {/* Logo */}
+          <div
+            onClick={() => (window.location.href = '/')}
+            className="flex items-center cursor-pointer"
           >
-          <img src={logo} className='w-20' alt="" />
-            ProjexPeers
-          </h1>
+            <img src={logo} className="w-20" alt="Logo" />
+            <span className="text-xl font-bold ml-2">ProjexPeers</span>
+          </div>
+
           {/* Hamburger menu button */}
           <button
             className="text-white text-3xl md:hidden"
@@ -23,7 +30,8 @@ function Navbar() {
           >
             ☰
           </button>
-          {/* Navigation links */}
+
+          {/* Navigation Links */}
           <nav
             className={`${
               isMenuOpen ? 'block' : 'hidden'
@@ -60,19 +68,64 @@ function Navbar() {
                   Help
                 </a>
               </li>
-              <li>
-                <a href="/login" className="hover:text-yellow-300 transition">
-                  Login
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/signup"
-                  className="bg-yellow-300 text-blue-600 px-5 py-2 rounded-full font-medium hover:bg-yellow-400 transition"
+
+              {/* Conditional rendering for logged-in state */}
+              {isLoggedIn ? (
+                <li
+                  className="relative group"
+                  onMouseEnter={() => setIsUserMenuOpen(true)}
+                  onMouseLeave={() => setIsUserMenuOpen(false)}
                 >
-                  Sign Up
-                </a>
-              </li>
+                  {/* User avatar and dropdown */}
+                  <div className="flex items-center cursor-pointer space-x-2">
+                    <img
+                      src={userImage}
+                      alt="User"
+                      className="w-8 h-8 rounded-full border border-yellow-300"
+                    />
+                    <span className="font-medium">{userName}</span>
+                  </div>
+                  {/* Dropdown menu */}
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 w-48 bg-white text-blue-600 rounded-lg shadow-lg z-10">
+                      <ul className="flex flex-col">
+                        <li>
+                          <a
+                            href="/profile"
+                            className="block px-4 py-2 hover:bg-gray-100"
+                          >
+                            View Profile
+                          </a>
+                        </li>
+                        <li>
+                          <button
+                            onClick={() => console.log("Logout")}
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <a href="/login" className="hover:text-yellow-300 transition">
+                      Login
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/signup"
+                      className="bg-yellow-300 text-blue-600 px-5 py-2 rounded-full font-medium hover:bg-yellow-400 transition"
+                    >
+                      Sign Up
+                    </a>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
