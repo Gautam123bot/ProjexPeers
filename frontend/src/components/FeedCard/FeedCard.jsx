@@ -8,6 +8,7 @@ import { Chips } from "../../components/Chips/Chips";
 import random from "random-string-generator";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import Loader from "../Loader/Loader"
 
 export const FeedCard = ({ post, recall }) => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export const FeedCard = ({ post, recall }) => {
   const [likeCount, setLikeCount] = useState(post?.likes?.length);
   const [requestSent, setRequestSent] = useState(false);
   const [postUser, setPostUser] = useState({});
+  const [friendRequestLoader, setFriendRequestLoader] = useState(false);
   const username = JSON.parse(localStorage.getItem("user_info")).username;
   const fullname = JSON.parse(localStorage.getItem("user_info")).fullname;
   const userspace = JSON.parse(localStorage.getItem("user_spaces"));
@@ -91,7 +93,6 @@ export const FeedCard = ({ post, recall }) => {
       navigate("/messages");
       return;
     }
-    console.log("Creating spaces");
     const admin = username;
     const spaceName = random();
     const members = [username, postUsername];
@@ -100,24 +101,43 @@ export const FeedCard = ({ post, recall }) => {
       admin: admin,
       spaceName: spaceName,
       members: members,
-      chatPic: postUser.profilePic,
+      chatPic: postUser?.profilePic,
     };
 
-    const res = await Axios.post(
-      "http://localhost:3001/space/create-space",
-      obj
-    );
-    const sendMessage = await Axios.post(
-      "http://localhost:3001/email/send-email",
-      { email: post.email, name: fullname }
-    );
-    console.log(sendMessage.data.message);
-    alert(`Request sent to ${post.email}`);
-    setRequestSent(true);
-    navigate("/messages");
+    setFriendRequestLoader(true);
+    try {
+      // Create space
+      const res = await Axios.post("http://localhost:3001/space/create-space", obj);
+
+      // Send email
+      const emailPayload = { email: post?.email, name: fullname };
+      console.log("Email payload:", emailPayload);
+
+      if (!emailPayload.email || !emailPayload.name) {
+        throw new Error("Invalid email or name provided");
+      }
+
+      const sendMessage = await Axios.post(
+        "http://localhost:3001/email/send-email",
+        emailPayload
+      );
+      console.log("Email sent response:", sendMessage.data.message);
+
+      alert(`Request sent to ${post.email}`);
+      setRequestSent(true);
+      navigate("/messages");
+    } catch (error) {
+      console.error("Error occurred:", error.response?.data || error.message);
+      alert("An error occurred while processing your request.");
+    } finally{
+      setFriendRequestLoader(false);
+    }
   }
 
   return (
+    <>
+    {friendRequestLoader ? <Loader /> : 
+
     <div className="feed-card-con bg-gradient-to-r from-gray-800 via-gray-900 to-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out mb-6">
       {post?.username === username && (
         <div
@@ -196,5 +216,7 @@ export const FeedCard = ({ post, recall }) => {
         </div>
       </div>
     </div>
+}
+    </>
   );
 };

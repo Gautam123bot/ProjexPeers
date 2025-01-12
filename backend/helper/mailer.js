@@ -19,7 +19,7 @@ const sendMailToUser = async (email, subject, content) => {
       from: process.env.SMTP_USER, 
       to: email,                         
       subject: subject,                 
-      html: content,                    
+      html: typeof content === "string" ? content : JSON.stringify(content),                   
     };
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent: " + info.messageId);

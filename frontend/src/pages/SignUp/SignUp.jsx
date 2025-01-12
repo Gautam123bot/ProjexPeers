@@ -14,7 +14,8 @@ const SignUp = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isOtpLoading, setIsOtpLoading] = useState(false);
   const [isSignupLoading, setIsSignupLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const [credentials, setcredentials] = useState({
@@ -98,8 +99,8 @@ const SignUp = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (credentials.otp.length < 8) {
-      alert("OTP must be at least 8 characters long.");
+    if (credentials.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
       return;
     }
 
@@ -255,7 +256,7 @@ const SignUp = () => {
                   Password*
                 </label>
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showNewPassword ? "text" : "password"}
                   name="password"
                   value={credentials.password}
                   onChange={handleChange}
@@ -264,11 +265,11 @@ const SignUp = () => {
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowNewPassword(!showNewPassword)}
                   className="absolute right-1 top-6 text-gray-500 hover:text-gray-700 focus:outline-none"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-label={showNewPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
 
@@ -278,7 +279,7 @@ const SignUp = () => {
                   Confirm Password*
                 </label>
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showConfirmPassword ? "text" : "password"}
                   name="cpassword"
                   value={credentials.cpassword}
                   onChange={handleChange}
@@ -287,11 +288,11 @@ const SignUp = () => {
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-1 top-6 text-gray-500 hover:text-gray-700 focus:outline-none"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
             </div>
