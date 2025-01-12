@@ -34,14 +34,20 @@ export const sendEmail = async (req, res) => {
     };
 
     const userData = await User.findOne({ email: email });
+    if (!userData) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }  
 
     // await sendMailToUser(req, res, email, msg.subject, msg.text);
-    const info = await sendMailToUser(email, "Password Reset OTP", msg);
+    const info = await sendMailToUser(email, msg.subject, msg);
 
     if (!info.success) {
       return res.status(500).json({
-        message: "Failed to send OTP. Please try again later.",
         success: false,
+        message: "Failed to send email. Please try again later.",
       });
     }
     return res.status(200).json({
@@ -52,6 +58,6 @@ export const sendEmail = async (req, res) => {
     console.log("Could not find user --> ", e);
     res
       .status(500)
-      .json({ success: false, message: `Couldn't send mail --> {e}` });
+      .json({ success: false, message: `Couldn't send mail --> ${e.message}` });
   }
 };
