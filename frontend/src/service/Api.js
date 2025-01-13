@@ -4,7 +4,7 @@ export const RegisterUser = async (credentials) => {
   try {
     console.log(credentials);
 
-    const Post = await axios.post(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/register`, credentials);
+    const Post = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/register`, credentials);
 
     return Post;
   } catch (error) {
@@ -17,7 +17,7 @@ export const LoginUser = async (credentials) => {
   try {
     console.log("credentials entered: ", credentials);
 
-    const Post = await axios.post(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login`, credentials);
+    const Post = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login`, credentials);
 
     return Post;
   } catch (error) {
@@ -30,7 +30,7 @@ export const PostFeed = async (details) => {
   try {
     console.log(details);
 
-    const Post = await axios.post(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-feed`, details);
+    const Post = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-feed`, details);
 
     return Post;
   } catch (error) {
@@ -41,7 +41,7 @@ export const PostFeed = async (details) => {
 
 export const GetAllPosts = async () => {
   try {
-    const Posts = await axios.get(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/getAllPosts`);
+    const Posts = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/getAllPosts`);
 
     return Posts;
   } catch (error) {
