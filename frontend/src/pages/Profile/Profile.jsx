@@ -40,7 +40,7 @@ const Profile = () => {
         alert("Profile Picture Changed Successfully!");
         getDownloadURL(ref(storage, `profileImages/${profileImg.name}`)).then(
           (url) => {
-            Axios.patch(`http://localhost:3001/user/updateUser/${user._id}`, {
+            Axios.patch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/updateUser/${user._id}`, {
               profilePic: url,
             })
               .then((res) => {
@@ -72,7 +72,7 @@ const Profile = () => {
         alert("Cover Picture Changed Successfully!");
         getDownloadURL(ref(storage, `coverImages/${coverImg.name}`)).then(
           (url) => {
-            Axios.patch(`http://localhost:3001/user/updateUser/${user._id}`, {
+            Axios.patch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/updateUser/${user._id}`, {
               coverPic: url,
             })
               .then((res) => {
@@ -91,7 +91,7 @@ const Profile = () => {
   useEffect(() => {
     console.log(username);
     const setUserDetails = async () => {
-      const res = await Axios.post("http://localhost:3001/user/getUser", {
+      const res = await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser`, {
         username: username,
       });
       console.log("get user res in profile is: ", res.data);

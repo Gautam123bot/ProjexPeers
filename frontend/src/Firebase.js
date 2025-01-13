@@ -14,7 +14,7 @@ const firebaseConfig = {
 
 const credCheck = async function(res){
     
-    const result = await Axios.post('http://localhost:3001/auth/login-with-google',{
+    const result = await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login-with-google`,{
             email : res.user.email
     }).catch((e) => {
         alert("Please Register.");

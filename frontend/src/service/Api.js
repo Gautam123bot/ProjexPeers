@@ -4,7 +4,7 @@ export const RegisterUser = async (credentials) => {
   try {
     console.log(credentials);
 
-    const Post = await axios.post(` http://localhost:3001/auth/register`, credentials);
+    const Post = await axios.post(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/register`, credentials);
 
     return Post;
   } catch (error) {
@@ -17,7 +17,7 @@ export const LoginUser = async (credentials) => {
   try {
     console.log("credentials entered: ", credentials);
 
-    const Post = await axios.post(` http://localhost:3001/auth/login`, credentials);
+    const Post = await axios.post(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login`, credentials);
 
     return Post;
   } catch (error) {
@@ -30,7 +30,7 @@ export const PostFeed = async (details) => {
   try {
     console.log(details);
 
-    const Post = await axios.post(` http://localhost:3001/post/post-feed`, details);
+    const Post = await axios.post(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-feed`, details);
 
     return Post;
   } catch (error) {
@@ -41,7 +41,7 @@ export const PostFeed = async (details) => {
 
 export const GetAllPosts = async () => {
   try {
-    const Posts = await axios.get(` http://localhost:3001/post/getAllPosts`);
+    const Posts = await axios.get(` ${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/getAllPosts`);
 
     return Posts;
   } catch (error) {
@@ -54,7 +54,7 @@ export const UpdateUser = async (userId, details) => {
   try {
     console.log(details);
 
-    const Submission = await axios.patch(`http://localhost:3001/user/updateUser/${userId}`, details);
+    const Submission = await axios.patch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/updateUser/${userId}`, details);
 
     return Submission;
   } catch (error) {
@@ -65,7 +65,7 @@ export const UpdateUser = async (userId, details) => {
 
 export const sendOtp = async (data) => {
   try {
-    const response = await axios.post(`http://localhost:3001/otp/send-otp`, data);
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/otp/send-otp`, data);
     return response;
   } catch (error) {
     console.error(error);
@@ -75,7 +75,7 @@ export const sendOtp = async (data) => {
 
 export const verifyOtp = async (data) => {
   try {
-    const response = await axios.post(`http://localhost:3001/otp/verify-otp`, data);
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/otp/verify-otp`, data);
     return response;
   } catch (error) {
     console.error(error);
@@ -85,7 +85,7 @@ export const verifyOtp = async (data) => {
 
 export const sendForgetPasswordOtp = async (email) => {
   try {
-    const response = await axios.post(`http://localhost:3001/auth/forgot-password`, { email });
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/forgot-password`, { email });
     return response;
   } catch (error) {
     console.error(error);
@@ -95,7 +95,7 @@ export const sendForgetPasswordOtp = async (email) => {
 
 export const resetToNewPassword = async (data) => {
   try {
-    const response = await axios.post(`http://localhost:3001/auth/reset-password`, data);
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/reset-password`, data);
     console.log("resonse in api file is: ", response);
     return response;
   } catch (error) {

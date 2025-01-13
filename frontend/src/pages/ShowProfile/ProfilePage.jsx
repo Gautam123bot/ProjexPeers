@@ -13,7 +13,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/user/getUser/${username}`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser/${username}`);
         setUserData(response.data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch user data');
