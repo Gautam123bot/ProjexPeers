@@ -34,7 +34,7 @@ export const FeedCard = ({ post, recall }) => {
 
   useEffect(() => {
     const setUserDetails = async () => {
-      const res = await Axios.post("http://localhost:3001/user/getUser", {
+      const res = await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser`, {
         username: post?.username,
       });
       setPostUser(res.data);
@@ -48,7 +48,7 @@ export const FeedCard = ({ post, recall }) => {
       return;
     }
     // console.log(randomstring.generate(7));
-    Axios.post("http://localhost:3001/post/post-like", obj).then((res) => {
+    Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-like`, obj).then((res) => {
       console.log(res.data.message);
       setLiked(true);
       setLikeCount(likeCount + 1);
@@ -60,7 +60,7 @@ export const FeedCard = ({ post, recall }) => {
       return;
     }
     // console.log("dislike clicked!")
-    Axios.post("http://localhost:3001/post/post-dislike", obj).then((res) => {
+    Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-dislike`, obj).then((res) => {
       console.log(res.data.message);
       setLiked(false);
       setLikeCount(likeCount - 1);
@@ -68,7 +68,7 @@ export const FeedCard = ({ post, recall }) => {
   };
 
   const deletePost = () => {
-    Axios.post(`http://localhost:3001/post/delete-post/${post._id}`).then(
+    Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/delete-post/${post._id}`).then(
       (res) => {
         console.log(res.data.message);
         window.location.reload();
@@ -107,7 +107,7 @@ export const FeedCard = ({ post, recall }) => {
     setFriendRequestLoader(true);
     try {
       // Create space
-      const res = await Axios.post("http://localhost:3001/space/create-space", obj);
+      const res = await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/create-space`, obj);
 
       // Send email
       const emailPayload = { email: post?.email, name: fullname };
@@ -118,7 +118,7 @@ export const FeedCard = ({ post, recall }) => {
       }
 
       const sendMessage = await Axios.post(
-        "http://localhost:3001/email/send-email",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/email/send-email`,
         emailPayload
       );
       console.log("Email sent response:", sendMessage.data.message);

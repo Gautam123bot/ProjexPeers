@@ -15,10 +15,10 @@ const Chat = () => {
   const [search, setSearch] = useState("");
   const [searchRes, setSearchRes] = useState([]);
   const [selectedSpace, setSelectedSpace] = useState("");
-  const ENDPOINT = "http://localhost:3001";
+  const ENDPOINT = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
   const getUserSpaces = async () => {
-    const res = await Axios.post(`http://localhost:3001/space/get-users-spaces`, {
+    const res = await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/get-users-spaces`, {
       username: user.username,
     });
     localStorage.setItem("user_spaces", JSON.stringify(res.data));
@@ -34,7 +34,7 @@ const Chat = () => {
   };
 
   const submitSearch = async () => {
-    const res = await Axios.post(`http://localhost:3001/space/search-space`, {
+    const res = await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/search-space`, {
       username: user.username,
       search: search,
     });
@@ -51,7 +51,7 @@ const Chat = () => {
     const data = { username, id, message };
     console.log(data);
     if (message) {
-      await Axios.post("http://localhost:3001/space/send-message", data, {
+      await Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/send-message`, data, {
         headers: { "Content-Type": "application/json" },
       })
         .then((response) => {

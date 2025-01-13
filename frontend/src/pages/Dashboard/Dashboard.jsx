@@ -29,7 +29,7 @@ const Dashboard = () => {
   // const fetchUserDetails = async () => {
   //   try {
   //     const res = await Axios.get(
-  //       `http://localhost:3001/user/getUser/${username}`
+  //       `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser/${username}`
   //     );
   //     setUserDetails(res.data);
   //   } catch (err) {
@@ -43,7 +43,7 @@ const Dashboard = () => {
   const fetchPosts = async () => {
     try {
       setLoader(true);
-      const res = await Axios.get("http://localhost:3001/post/getAllPosts");
+      const res = await Axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/getAllPosts`);
       setPosts(res.data.reverse());
       setAllPosts(res.data.reverse());
     } catch (err) {
@@ -56,7 +56,7 @@ const Dashboard = () => {
   const fetchUserSpaces = async () => {
     try {
       const res = await Axios.post(
-        "http://localhost:3001/space/get-users-spaces",
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/get-users-spaces`,
         {
           username,
         }
