@@ -38,6 +38,9 @@ connectionToDb()
     console.error(error.message || error);
   });
 
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome to the ProjexPeers Backend!</h1>");
+});
 app.use("/user", auth, userRoutes);
 app.use(Router.get("/post/getAllPosts", getAllPosts));
 app.use("/post", auth, postRoutes);
