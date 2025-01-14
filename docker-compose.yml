@@ -13,7 +13,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file: ./backend/.env
+    env_file:
+      - ./backend/.env
+      - ./backend/.env.local
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -31,7 +33,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file: ./frontend/.env
+    env_file:
+      - ./frontend/.env
+      - ./frontend/.env.local
     volumes:
       - ./frontend:/app
       - /app/node_modules

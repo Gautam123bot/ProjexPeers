@@ -3,7 +3,7 @@ import Posts from "../models/posts.js";
 
 export const postFeed = async (req, res) => {
   try {
-    const { name, username, title, email, skills, year, date } = req.body;
+    const { name, username, title, email, skills, year, date, city, state, country, competitionType, membersRequired, lastDateOfRegistration } = req.body;
 
     if (!username || !title || !email || !skills || !name) {
       return res.status(422).json({ error: "Please fill all the fields." });
@@ -28,6 +28,12 @@ export const postFeed = async (req, res) => {
       email,
       skills,
       year,
+      city,
+      state, 
+      country,
+      competitionType,
+      membersRequired,
+      lastDateOfRegistration
     });
 
     const postedFeed = await newPost.save();
