@@ -5,7 +5,7 @@ import TeamFinder from "../../components/TeamFinder/TeamFinder";
 import { FeedCard } from "../../components/FeedCard/FeedCard";
 import { useNavigate } from "react-router-dom";
 import { TeamFinderCard } from "../../components/TeamFinder/TeamFinderCard";
-import loader_img from "../../assets/images/loader.svg";
+import Loader from "../../components/Loader/Loader";
 import Axios from "axios";
 // import { useParams } from "react-router-dom";
 
@@ -19,6 +19,9 @@ const Dashboard = () => {
   const [recall, setRecall] = useState(true);
   const [loader, setLoader] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
   const navigate = useNavigate();
   const username = localStorage.getItem("username")
   useEffect(() => {
@@ -41,8 +44,8 @@ const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("user_info"));
 
   const fetchPosts = async () => {
+    setLoader(true);
     try {
-      setLoader(true);
       const res = await Axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/getAllPosts`);
       setPosts(res.data.reverse());
       setAllPosts(res.data.reverse());
@@ -67,17 +70,42 @@ const Dashboard = () => {
     }
   };
 
+  // const handleSearch = (e) => {
+  //   const value = e.target.value.toLowerCase();
+  //   setSearch(value);
+  //   if (value === "") {
+  //     setPosts(allPosts);
+  //   }
+  //   const filteredPosts = allPosts.filter((post) =>
+  //     post.skills.some((skill) => skill.toLowerCase().includes(value))
+  //   );
+  //   setPosts(filteredPosts);
+  // };
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearch(value);
-    if (value === "") {
-      setPosts(allPosts);
-    }
-    const filteredPosts = allPosts.filter((post) =>
-      post.skills.some((skill) => skill.toLowerCase().includes(value))
-    );
-    setPosts(filteredPosts);
+    filterPosts(value, country, state, city); // Apply search and location filter
   };
+
+  // Filter posts by search term, country, state, and city
+  const filterPosts = (searchTerm, countryFilter, stateFilter, cityFilter) => {
+    const filtered = allPosts.filter((post) => {
+      const matchesSearch =
+        post.skills.some((skill) => skill.toLowerCase().includes(searchTerm)) ||
+        post.title.toLowerCase().includes(searchTerm);
+      const matchesLocation =
+        (countryFilter ? post.country.toLowerCase() === countryFilter.toLowerCase() : true) &&
+        (stateFilter ? post.state.toLowerCase() === stateFilter.toLowerCase() : true) &&
+        (cityFilter ? post.city.toLowerCase() === cityFilter.toLowerCase() : true);
+      return matchesSearch && matchesLocation;
+    });
+    setPosts(filtered);
+  };
+
+  useEffect(() => {
+    // Re-filter posts whenever any filter (country, state, city) changes
+    filterPosts(search, country, state, city);
+  }, [country, state, city]);
 
   useEffect(() => {
     // fetchUserDetails();
@@ -114,8 +142,35 @@ const Dashboard = () => {
           </div>
         </div>
 
+        <div className="filter-section">
+          <h3>Location Filters</h3>
+          <div className="filters">
+            <input
+              type="text"
+              placeholder="Country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="filter-input"
+            />
+            <input
+              type="text"
+              placeholder="State"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              className="filter-input"
+            />
+            <input
+              type="text"
+              placeholder="City"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="filter-input"
+            />
+          </div>
+        </div>
+
         {loader ? (
-          <img className="loader-img" src={loader_img} alt="Loading..." />
+          <Loader />
         ) : (
           posts.map((post, idx) => {
             return <FeedCard post={post} recall={recall} key={idx} />;

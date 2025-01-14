@@ -44,6 +44,30 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  city: {
+    type: String,
+    required: false,
+  },
+  state: {
+    type: String,
+    required: false,
+  },
+  country: {
+    type: String,
+    required: false,
+  },
+  competitionType: {
+    type: String,
+    required: false,
+  },
+  membersRequired: {
+    type: String, 
+    required: false,
+  },
+  lastDateOfRegistration: {
+    type: Date, 
+    required: false,
+  }
 });
 
 postSchema.methods.upvote = async function (username) {
