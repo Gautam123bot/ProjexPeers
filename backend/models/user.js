@@ -21,10 +21,6 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
-  is_verified:{
-    type: Boolean,
-    default: false
-  },
   username: {
     type: String,
     required: false,
@@ -117,6 +113,11 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  available: {
+    type: Boolean,
+    required: false,
+    default: false,
+  }
 });
 
 // Hashing Passwords

@@ -42,6 +42,11 @@ export const EditProfile = () => {
   const [projects, setProjects] = useState(
     user_info.projects ? user_info.projects : []
   );
+  const [available, setAvailable] = useState(user_info.available);
+
+  const handleAvailabilityToggle = () => {
+    setAvailable(!available);
+  };
 
   const obj = {
     fullname,
@@ -57,6 +62,7 @@ export const EditProfile = () => {
     achievements,
     experiences,
     projects,
+    available
   };
   function addSkill(e) {
     if (e.key === "Enter") {
@@ -92,15 +98,27 @@ export const EditProfile = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const submission = await UpdateUser(username, obj);
-    console.log(submission);
-    if (submission.data.success === true) {
-      alert("Profile Updated");
-      navigate("/profile");
-    } else {
-      alert("Error");
+    
+    try {
+      const submission = await UpdateUser(username, obj);
+      console.log(submission);
+      
+      if (submission.data.success === true) {
+        alert("Profile Updated");
+  
+        const updatedUserInfo = { ...JSON.parse(localStorage.getItem("user_info")), ...obj };
+        localStorage.setItem("user_info", JSON.stringify(updatedUserInfo));
+  
+        navigate("/profile");
+      } else {
+        alert("Error updating profile");
+      }
+    } catch (error) {
+      console.error("Error during update:", error);
+      alert("An error occurred");
     }
   };
+  
 
   const deleteSkill = (idx) => {
     console.log("Deleted Skill");
@@ -252,6 +270,20 @@ export const EditProfile = () => {
             onChange={(e) => setAbout(e.target.value)}
           ></textarea>
         </div>
+        <div className="availability-toggle">
+        <label>Availability</label>
+        <div className="toggle-button-container">
+          <span>{available ? "Available" : "Not Available"}</span>
+          <label className="switch">
+            <input 
+              type="checkbox" 
+              checked={available} 
+              onChange={handleAvailabilityToggle} 
+            />
+            <span className="slider"></span>
+          </label>
+        </div>
+      </div>
         <div className="edit-skills">
           <div className="roww">
             <label>Skills</label>
