@@ -20,6 +20,7 @@ import { FeedCard } from "./components/FeedCard/FeedCard";
 import { EditProfile } from "./pages/Profile/EditProfile";
 import Home from "./pages/Home/Home";
 import ProfilePage from "./pages/ShowProfile/ProfilePage";
+import FindATeammate from "./pages/FindATeammate/FindATeammate";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Start as null to delay rendering
@@ -68,6 +69,7 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/profile/edit" element={<EditProfile />} />
                   <Route path="/messages" element={<Chat />} />
+                  <Route path="/findateammate" element={<FindATeammate />} />
                   {/* <Route path="/team-finder" element={<TeamFinderCard />} /> */}
                   {/* <Route path="/feed" element={<FeedCard />} /> */}
                   <Route path="*" element={<div>404 Page Not Found</div>} />

@@ -96,7 +96,7 @@ const Profile = () => {
       });
       console.log("get user res in profile is: ", res.data);
       setUser(res.data);
-      localStorage.setItem("user_info", JSON.stringify(res.data));
+      // localStorage.setItem("user_info", JSON.stringify(res.data));
     };
     setUserDetails();
   }, [username]);

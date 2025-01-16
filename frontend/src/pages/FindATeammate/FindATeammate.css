@@ -1,0 +1,63 @@
+/* FindATeammate.css */
+.users-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 2rem;
+  justify-content: center;
+}
+
+.user-card {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+}
+
+.user-profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info {
+  margin-top: 1rem;
+}
+
+.view-profile-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.view-profile-btn:hover {
+  background-color: #45a049;
+}
+
+.availability-status {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.status-indicator.available {
+  background-color: green; /* Green dot for availability */
+}
+
+.status-indicator.not-available {
+  background-color: red; /* Red dot for not available */
+}

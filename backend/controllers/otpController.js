@@ -47,7 +47,7 @@ export const sendOtp = async (req, res) => {
     const msg = `<p> Hi <b>${email}</b>, </p><br><p> Your OTP for ProjexPeers is: ${generatedOtp} </p><br><p> Regards, <br> ProjexPeers Team </p>`;
     console.log("OTP: ", generatedOtp);
     // await sendMailToUser(req, res, email, "OTP for ProjexPeers", msg);
-    const info = await sendMailToUser(email, "Password Reset OTP", msg);
+    const info = await sendMailToUser(email, "OTP for signup in ProejxPeers", msg);
 
     if (!info.success) {
       return res.status(500).json({

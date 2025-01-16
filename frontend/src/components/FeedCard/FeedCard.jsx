@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import "./FeedCard.css";
 import feed_avatar from "../../assets/images/profile_img.jpg";
 import heart_outlined from "../../assets/icons/heart_outlined.png";
 import heart_filled from "../../assets/icons/heart_filled.png";
@@ -9,6 +8,8 @@ import random from "random-string-generator";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Loader from "../Loader/Loader"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 export const FeedCard = ({ post, recall }) => {
   const navigate = useNavigate();
@@ -138,13 +139,14 @@ export const FeedCard = ({ post, recall }) => {
     <>
       {friendRequestLoader ? <Loader /> :
 
-        <div className="feed-card-con bg-gradient-to-r from-gray-800 via-gray-900 to-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out mb-6">
+        <div className="feed-card-con bg-gradient-to-r from-gray-800 via-gray-900 to-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out mb-6 relative">
           {post?.username === username && (
             <div
-              className="delete-con absolute top-4 right-4 cursor-pointer text-gray-400 hover:text-white"
+              className="delete-con absolute bottom-4 right-4 cursor-pointer text-gray-400 hover:text-white"
               onClick={deletePost}
             >
-              <i className="fas fa-trash-alt text-xl"></i>
+              {/* <i className="fas fa-trash-alt text-xl"></i> */}
+              <FontAwesomeIcon icon={faTrashAlt} className="text-xl" />
             </div>
           )}
 
