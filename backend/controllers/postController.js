@@ -17,7 +17,7 @@ export const postFeed = async (req, res) => {
 
     const postsFound = await Posts.find({ username: username });
     const postsCount = postsFound.length;
-
+    console.log("count of post is: ", postsCount)
     await userFound.updatePost(postsCount);
 
     const newPost = new Posts({

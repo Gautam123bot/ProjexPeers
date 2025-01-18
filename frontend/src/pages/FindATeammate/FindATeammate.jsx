@@ -11,7 +11,7 @@ const FindATeammate = () => {
 
   useEffect(() => {
     const fetchCurrentUser = () => {
-      const user = JSON.parse(localStorage.getItem("user_info")); // Fetch current user info from localStorage
+      const user = JSON.parse(localStorage.getItem("user_info"));
       setCurrentUser(user?.username);
     };
 
@@ -36,6 +36,30 @@ const FindATeammate = () => {
     );
   };
 
+  const handleConnect = async (user) => {
+    if (!currentUser) {
+      alert("Please log in to connect with users.");
+      return;
+    }
+
+    const payload = {
+      admin: currentUser,
+      members: [currentUser, user.username],
+      spaceName: `${currentUser}-${user.username}`, // Example space name
+      chatPic: user.profilePic || profile_img,
+    };
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/create-space`, payload);
+      if (response.status === 200) {
+        alert(`You are now connected with ${user.fullname}!`);
+      }
+    } catch (error) {
+      console.error("Error connecting with user", error);
+      alert("Failed to connect. Please try again later.");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -58,6 +82,13 @@ const FindATeammate = () => {
                   <Link to={`/${user.username}`} className="view-profile-btn">
                     View Profile
                   </Link>
+                  <button
+                    onClick={() => handleConnect(user)}
+                    className="connect-btn"
+                    disabled={!user.available} // Disable button if user is not available
+                  >
+                    Connect
+                  </button>
                 </div>
               </div>
             ))

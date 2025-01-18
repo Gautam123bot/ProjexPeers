@@ -84,7 +84,7 @@ const Dashboard = () => {
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearch(value);
-    filterPosts(value, country, state, city); // Apply search and location filter
+    filterPosts(value, country, state, city);
   };
 
   // Filter posts by search term, country, state, and city
@@ -103,9 +103,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    // Re-filter posts whenever any filter (country, state, city) changes
     filterPosts(search, country, state, city);
-  }, [country, state, city]);
+  }, [search, country, state, city]);
 
   useEffect(() => {
     // fetchUserDetails();
@@ -144,38 +143,45 @@ const Dashboard = () => {
 
         <div className="filter-section">
           <h3>Location Filters</h3>
-          <div className="filters">
+          <div className="filters mt-2">
             <input
               type="text"
               placeholder="Country"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              className="filter-input"
+              className="p-2 border-2 border-gray-300 mr-3 rounded-lg"
             />
             <input
               type="text"
               placeholder="State"
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="filter-input"
+              className="p-2 border-2 border-gray-300 mr-3 rounded-lg"
             />
             <input
               type="text"
               placeholder="City"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="filter-input"
+              className="p-2 border-2 border-gray-300 mr-3 rounded-lg"
             />
           </div>
         </div>
-
+          <div className="mt-5">
         {loader ? (
           <Loader />
+        ) : posts.length === 0 ? (
+          <div className="flex justify-center items-center h-64 text-xl text-gray-600">
+            <span className="mr-2">😞</span>
+            <p>No posts available</p>
+          </div>
         ) : (
           posts.map((post, idx) => {
             return <FeedCard post={post} recall={recall} key={idx} />;
           })
         )}
+        </div>
+
       </div>
 
       <div className="dashboard-summary">
