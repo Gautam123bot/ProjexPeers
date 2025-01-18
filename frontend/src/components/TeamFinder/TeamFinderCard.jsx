@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 // import Skills from "./finder_skill"
-import "./TeamFinderCard.css"
+import "./teamFinderCard.css"
 import years from './finder_year';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
