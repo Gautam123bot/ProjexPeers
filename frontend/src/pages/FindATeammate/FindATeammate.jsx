@@ -45,7 +45,7 @@ const FindATeammate = () => {
     const payload = {
       admin: currentUser,
       members: [currentUser, user.username],
-      spaceName: `${currentUser}-${user.username}`, // Example space name
+      spaceName: `${currentUser}-${user.username}`,
       chatPic: user.profilePic || profile_img,
     };
 
