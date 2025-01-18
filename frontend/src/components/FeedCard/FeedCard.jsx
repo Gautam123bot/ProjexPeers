@@ -10,6 +10,7 @@ import moment from "moment";
 import Loader from "../Loader/Loader"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import profile_img from "../../../src/assets/images/profile_img.jpg"
 
 export const FeedCard = ({ post, recall }) => {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ export const FeedCard = ({ post, recall }) => {
       admin: admin,
       spaceName: spaceName,
       members: members,
-      chatPic: postUser?.profilePic,
+      chatPic: postUser?.profilePic || profile_img,
     };
 
     setFriendRequestLoader(true);
