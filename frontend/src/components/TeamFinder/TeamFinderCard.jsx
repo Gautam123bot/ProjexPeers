@@ -10,7 +10,7 @@ import { Chips } from '../Chips/Chips';
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import Loader from '../Loader/Loader';
-
+ 
 export const TeamFinderCard = ({ setModal }) => {
   const user = JSON.parse(localStorage.getItem("user_info"));
   const savedEmail = user?.email;
