@@ -130,8 +130,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Generating Auth Token
-
 userSchema.methods.generateAuthToken = async function () {
   try {
     console.log("came here for generate token")
@@ -147,6 +145,16 @@ userSchema.methods.generateAuthToken = async function () {
 userSchema.methods.updatePost = async function (postsCount) {
   try {
     this.posts = postsCount + 1;
+    await this.save();
+    return this.posts;
+  } catch (e) {
+    console.log(`Failed to generate token --> ${e}`);
+  }
+}
+
+userSchema.methods.initialUpdatePost = async function (postsCount) {
+  try {
+    this.posts = postsCount;
     await this.save();
     return this.posts;
   } catch (e) {

@@ -178,6 +178,7 @@ export const EditProfile = () => {
               type="text"
               value={fullname}
               onChange={(e) => setFullname(e.target.value)}
+              className="border-none"
             />
           </div>
           <div className="edit-github">
@@ -190,6 +191,7 @@ export const EditProfile = () => {
               type="text"
               value={github}
               onChange={(e) => setGithub(e.target.value)}
+              className="border-none"
             />
           </div>
           <div className="edit-linkedIn">
@@ -202,6 +204,7 @@ export const EditProfile = () => {
               type="text"
               value={linkedIn}
               onChange={(e) => setLinkedin(e.target.value)}
+              className="border-none"
             />
           </div>
           <div className="edit-profimage">
@@ -216,6 +219,7 @@ export const EditProfile = () => {
               onChange={(e) => {
                 setProfilePic(e.target.value);
               }}
+              className="border-none"
             />
           </div>
        
@@ -232,6 +236,7 @@ export const EditProfile = () => {
               onChange={(e) => {
                 setCoverPic(e.target.value);
               }}
+              className="border-none"
             />
           </div>
         <div className="sec2">
@@ -242,6 +247,7 @@ export const EditProfile = () => {
               type="text"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
+              className="border-none"
             />
           </div>
           <div className="edit-collegeStream">
@@ -251,6 +257,7 @@ export const EditProfile = () => {
               type="text"
               value={collegeStream}
               onChange={(e) => setCollegeStream(e.target.value)}
+              className="border-none"
             />
           </div>
           <div className="edit-collegeYear">
@@ -259,6 +266,7 @@ export const EditProfile = () => {
               type="text"
               value={collegeYear}
               onChange={(e) => setCollegeYear(e.target.value)}
+              className="border-none"
             />
           </div>
         </div>
@@ -279,6 +287,7 @@ export const EditProfile = () => {
               type="checkbox" 
               checked={available} 
               onChange={handleAvailabilityToggle} 
+              className="border-none"
             />
             <span className="slider"></span>
           </label>
@@ -292,6 +301,7 @@ export const EditProfile = () => {
               onKeyDown={(e) => {
                 addSkill(e);
               }}
+              className="border-none"
             />
           </div>
           <div className="roww">
@@ -315,6 +325,7 @@ export const EditProfile = () => {
             onKeyDown={(e) => {
               addAchievement(e);
             }}
+              className="border-none"
           />
           <ul>
             {achievements.map((achievement, idx) => {
@@ -341,6 +352,7 @@ export const EditProfile = () => {
             onKeyDown={(e) => {
               addExperience(e);
             }}
+              className="border-none"
           />
           <ul>
             {experiences.map((experience, idx) => {
@@ -370,6 +382,7 @@ export const EditProfile = () => {
             onKeyDown={(e) => {
               addProject(e);
             }}
+              className="border-none"
           />
           <ul>
             {projects.map((project, idx) => {

@@ -27,7 +27,7 @@ const ProfileSummary = () => {
       <div className="mini-card">
         <img src={writePost} alt="Posts" className='iconn' />
         <div className="statss">
-          <p className='count'>{user.posts}</p>
+          <p className='count'>{user.posts || 0}</p>
           <p className='count-sub'>Posts</p>
         </div>
       </div>

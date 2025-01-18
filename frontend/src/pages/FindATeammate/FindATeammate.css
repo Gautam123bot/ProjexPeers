@@ -55,9 +55,28 @@
 }
 
 .status-indicator.available {
-  background-color: green; /* Green dot for availability */
+  background-color: green;
 }
 
 .status-indicator.not-available {
-  background-color: red; /* Red dot for not available */
+  background-color: red;
+}
+
+.connect-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.connect-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.connect-btn:hover:not(:disabled) {
+  background-color: #45a049;
 }
