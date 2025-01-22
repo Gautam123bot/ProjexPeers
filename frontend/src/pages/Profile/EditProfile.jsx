@@ -11,7 +11,9 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { BsPersonFill } from "react-icons/bs";
-import {MdInsertPhoto} from "react-icons/md"
+import {MdInsertPhoto} from "react-icons/md";
+import Loader from "../../components/Loader/Loader";
+
 export const EditProfile = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ export const EditProfile = () => {
   const [collegeStream, setCollegeStream] = useState(user_info.collegeStream);
   const [collegeYear, setCollegeYear] = useState(user_info.collegeYear);
   const [about, setAbout] = useState(user_info.about);
+  const [changesLoader, setChangesLoader] = useState(false);
   const [skills, setSkills] = useState(
     user_info.skills ? user_info.skills : []
   );
@@ -98,6 +101,7 @@ export const EditProfile = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setChangesLoader(true);
     
     try {
       const submission = await UpdateUser(username, obj);
@@ -116,6 +120,8 @@ export const EditProfile = () => {
     } catch (error) {
       console.error("Error during update:", error);
       alert("An error occurred");
+    } finally {
+      setChangesLoader(false);
     }
   };
   
@@ -151,7 +157,8 @@ export const EditProfile = () => {
     setProjects(newProjects);
   };
 
-  return (
+  return (<>
+    {changesLoader && <Loader />}
     <div className="edit-con">
       <div className="edit-con-header">
         <div className="ph">
@@ -403,5 +410,6 @@ export const EditProfile = () => {
         Save Changes
       </div>
     </div>
+    </>
   );
 };

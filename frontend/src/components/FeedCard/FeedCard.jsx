@@ -182,20 +182,25 @@ export const FeedCard = ({ post, recall }) => {
                     ))}
                   </div>
                 </div>
-                <div className="flex pt-2"><div className="text-gray-400">Country:</div><div className="text-white">
+                <div className="flex">
+                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">Country:</div><div className="text-white">
                   {post?.country}
                 </div></div>
-                <div className="flex pt-2"><div className="text-gray-400">State:</div><div className="text-white">
+                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">State:</div><div className="text-white">
                   {post?.state}
                 </div></div>
-                <div className="flex pt-2"><div className="text-gray-400">City:</div><div className="text-white">
+                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">City:</div><div className="text-white">
                   {post?.city}
                 </div></div>
-                <div className="flex pt-2"><div className="text-gray-400">Competition tyep: </div>
+                </div>
+                <div className="flex">
+
+                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">Competition tyep: </div>
                 <div className="text-white">{post?.competitionType}</div></div>
-                <div className="flex pt-2"><div className="text-gray-400">Members Required</div>
+                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">Members Required: </div>
                 <div className="text-white">{post?.membersRequired}</div></div>
-                <div className="flex pt-2"><div className="text-gray-400">Last date of registration</div>
+                </div>
+                <div className="flex pt-2"><div className="text-gray-400 pr-2">Last date of registration</div>
                 <div className="text-white">{post?.lastDateOfRegistration}</div></div>
 
                 <p className="yoe text-gray-400 mt-4">Year of Education: {post?.year}</p>
