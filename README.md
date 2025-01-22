@@ -56,7 +56,7 @@ Before getting started, ensure the following are installed:
 
 ### Clone the Repository:
 ```bash
-git clone https://github.com/your-repository/projexpeers.git
+git clone https://github.com/Gautam123bot/ProjexPeers
 cd projexpeers
 
 # ProjexPeers
