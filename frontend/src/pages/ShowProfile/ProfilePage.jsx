@@ -37,13 +37,13 @@ const ProfilePage = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-gray-900 text-red-400">
-        <div className="text-lg font-semibold">Error: {error}</div>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen bg-gray-900 text-red-400">
+  //       <div className="text-lg font-semibold">Error: {error}</div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

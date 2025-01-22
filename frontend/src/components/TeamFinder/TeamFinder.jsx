@@ -13,14 +13,14 @@ const TeamFinder = ({ setModal }) => {
       <Link to="/findateammate">
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.99 }}>
           <img src={findATeammate} alt="Find a teammate" className='w-[80px]' />
-          <p><span className='find'>Find</span><br /> A teammate</p>
+          <p><span className='find'>Find</span><br /> A team-member</p>
           {/* Your content inside the finder-box */}
         </motion.div>
       </Link>
       </div>
       <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.99 }} className="finder-box" onClick={() => setModal(true)}>
         <img src={joinATeam} alt="Join a team" />
-        <p>create post to get team members</p>
+        <p>Join a team or create post for your team</p>
       </motion.div>
     </div>
   )

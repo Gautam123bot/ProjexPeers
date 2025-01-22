@@ -31,7 +31,10 @@ function Navbar() {
             onClick={() => (window.location.href = '/')}
             className="flex items-center cursor-pointer"
           >
-            <img src={logo} className="w-20" alt="Logo" />
+            <div className="w-16">
+
+            <img src={logo} alt="Logo" />
+            </div>
             <span className="text-xl font-bold ml-2">ProjexPeers</span>
           </div>
 
@@ -51,13 +54,8 @@ function Navbar() {
           >
             <ul className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-lg px-6 md:px-0 py-4 md:py-0">
               <li>
-                <a href="#features" className="hover:text-yellow-300 transition">
-                  Features
-                </a>
-              </li>
-              <li>
-                <a href="#about" className="hover:text-yellow-300 transition">
-                  About
+                <a href="/dashboard" className="hover:text-yellow-300 transition">
+                  Dashboard
                 </a>
               </li>
               <li>
@@ -70,11 +68,11 @@ function Navbar() {
                   Articles
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#contact" className="hover:text-yellow-300 transition">
                   Contact
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="/help" className="hover:text-yellow-300 transition">
                   Help
