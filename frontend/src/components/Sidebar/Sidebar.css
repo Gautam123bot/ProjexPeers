@@ -21,7 +21,7 @@
     white-space: nowrap;
     align-items: center;
     height: 50px;
-    gap: 30px;
+    /* gap: 30px; */
 }
 .sidebar_top img{
     height: 30px;

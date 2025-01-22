@@ -6,6 +6,7 @@ import logout_logo from '../../assets/icons/logout.svg'
 import hamburger_logo from '../../assets/icons/hamburger.svg'
 import routes from './sidebar_routes'
 import "./Sidebar.css"
+import { Link } from 'react-router-dom'
 
 const Sidebar = ({ children, setIsLoggedIn, isLoggedIn}) => {
     const navigate = useNavigate()
@@ -31,7 +32,9 @@ const Sidebar = ({ children, setIsLoggedIn, isLoggedIn}) => {
             <motion.div animate={{ width: isOpen ? "18%" : "6%" }} className="sidebar">
                 <div>
                     <div className="sidebar_top" onClick={sidebarToggle}>
+                        <Link to="/">
                         {isOpen && <h1 className='header'>ProjexPeers</h1>}
+                        </Link>
                         <img src={hamburger_logo} alt="hamburger" />
                     </div>
 

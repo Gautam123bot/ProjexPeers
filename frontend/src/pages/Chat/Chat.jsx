@@ -3,6 +3,7 @@ import "./Chat.css";
 import { IoMdSend } from "react-icons/io";
 import Axios from "axios";
 import { io } from "socket.io-client";
+import Navbar from "../../components/Navbar/Navbar";
 
 let socket;
 
@@ -105,6 +106,8 @@ const Chat = () => {
   console.log(selectedSpace);
 
   return (
+    <>
+    <Navbar />
     <div className="dashboard-con">
       <div className="chat-main">
         <div className="welcome-con">
@@ -218,6 +221,7 @@ const Chat = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
