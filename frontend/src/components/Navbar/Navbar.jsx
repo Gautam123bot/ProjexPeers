@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import logo from "../../assets/images/logo.png";
+import avatar_pic from '../../assets/images/profile_img.jpg';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,7 +9,18 @@ function Navbar() {
   const token = localStorage.getItem("token");
   const isLoggedIn = !!token;
   const userName = localStorage.getItem("username") || "User";
-  const userImage = "https://via.placeholder.com/150"; // Placeholder image for user avatar
+  const userData = localStorage.getItem("user_info");
+  const userImage = userData?.profilePic || avatar_pic;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_info");
+    localStorage.removeItem("user_spaces");
+    localStorage.removeItem("username");
+    navigate("/login")
+    window.location.reload();
+  }
 
   return (
     <div>
@@ -33,9 +46,8 @@ function Navbar() {
 
           {/* Navigation Links */}
           <nav
-            className={`${
-              isMenuOpen ? 'block' : 'hidden'
-            } md:block absolute md:static top-16 left-0 w-full md:w-auto bg-blue-600 md:bg-transparent`}
+            className={`${isMenuOpen ? 'block' : 'hidden'
+              } md:block absolute md:static top-16 left-0 w-full md:w-auto bg-blue-600 md:bg-transparent`}
           >
             <ul className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-lg px-6 md:px-0 py-4 md:py-0">
               <li>
@@ -99,7 +111,7 @@ function Navbar() {
                         </li>
                         <li>
                           <button
-                            onClick={() => console.log("Logout")}
+                            onClick={() => handleLogout()}
                             className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                           >
                             Logout

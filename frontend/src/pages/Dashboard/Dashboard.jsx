@@ -167,19 +167,22 @@ const Dashboard = () => {
             />
           </div>
         </div>
-          <div className="mt-5">
-        {loader ? (
-          <Loader />
-        ) : posts.length === 0 ? (
-          <div className="flex justify-center items-center h-64 text-xl text-gray-600">
-            <span className="mr-2">😞</span>
-            <p>No posts available</p>
-          </div>
-        ) : (
-          posts.map((post, idx) => {
-            return <FeedCard post={post} recall={recall} key={idx} />;
-          })
-        )}
+        <div className="mt-5 flex flex-col items-center">
+          {loader ? (
+            <Loader />
+          ) : posts.length === 0 ? (
+            <div className="flex justify-center items-center h-64 text-xl text-gray-600">
+              <span className="mr-2">😞</span>
+              <p>No posts available</p>
+            </div>
+          ) : (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 w-full px-4">
+              {posts.map((post, idx) => (
+                <FeedCard post={post} recall={recall} key={idx} />
+              ))}
+            </div>
+          )}
         </div>
 
       </div>
