@@ -1,50 +1,85 @@
-# ProjexPeers  
+ProjexPeers
 
-ProjexPeers is a web application that connects users with potential team members for projects, hackathons, and collaborations. The platform enables users to register, find peers, and build teams efficiently. It also provides features like login via email and Google, forgot password functionality, and team management.  
+ProjexPeers is a web application designed to connect users with potential team members for projects, hackathons, and collaborations. The platform streamlines the process of finding peers and building teams by offering features like user registration, login via email and Google, forgot password functionality, and efficient team management.
 
-The app is deployed using **Docker**, making it portable and easy to set up on any system.  
+The application is fully responsive and deployed using Docker, ensuring portability and ease of setup on any system. Additionally, the frontend is accessible at ProjexPeers Frontend, making it simple for users to explore and use the platform.
 
----
+Features
 
-## Features  
+User Registration and Authentication:Users can easily register and log in using email credentials or authenticate securely via Google.
 
-- **User Registration and Authentication**:  
-  Users can register, log in using email credentials, or authenticate via Google.  
+Forgot Password and Reset Password:Securely reset passwords through an OTP-based mechanism.
 
-- **Forgot Password and Reset Password**:  
-  Securely reset passwords using an OTP-based mechanism.  
+Team Member Search:Find and connect with peers based on their skills, interests, and project preferences.
 
-- **Team Member Search**:  
-  Find and connect with peers based on their skills and interests.  
+Responsive Design:Optimized for all screen sizes and devices, ensuring a seamless user experience.
 
-- **Responsive Design**:  
-  Optimized for all screen sizes and devices.  
+Docker Deployment:Easily deployable using Docker for a streamlined development and production setup.
 
-- **Docker Deployment**:  
-  Easily deployable with Docker for a streamlined development and production setup.  
+Technologies Used
 
----
+Frontend:
 
-## Technologies Used  
+ReactJS
 
-- **Frontend**:  
-  - ReactJS  
-  - PrimeReact  
-  - CSS  
-  - Firebase (for Google Sign-In)  
+PrimeReact
 
-- **Backend**:  
-  - Node.js  
-  - Express.js  
-  - MongoDB  
+CSS
 
-- **Deployment**:  
-  - Docker  
+Firebase (for Google Sign-In)
 
----
+Backend:
 
-### Prerequisites  
+Node.js
 
-1. **Docker**: Not necessary, you can run it locally on your system.  
-2. **Node.js**: If running locally, Node.js and npm should be installed.  
-3. **MongoDB**: A MongoDB instance (local or cloud-based).  
+Express.js
+
+MongoDB
+
+Deployment:
+
+Docker
+
+Prerequisites
+
+Docker:While Docker simplifies the deployment process, you can also run the application locally on your system.
+
+Node.js:If running locally, ensure that Node.js and npm are installed.
+
+MongoDB:Set up a MongoDB instance, either locally or using a cloud-based service like MongoDB Atlas.
+
+Getting Started
+
+To get started with ProjexPeers, follow these steps:
+
+Clone the Repository:
+
+git clone https://github.com/your-repository/projexpeers.git
+cd projexpeers
+
+Install Dependencies:Navigate to the frontend and backend directories and install the required dependencies:
+
+cd frontend
+npm install
+cd ../backend
+npm install
+
+Run Locally:
+
+Start the backend server:
+
+npm start
+
+Start the frontend server:
+
+cd frontend
+npm start
+
+Docker Deployment:Build and run the Docker containers:
+
+docker-compose up --build
+
+Access the Application:Open https://projex-peers.vercel.app/ to use the application.
+
+ProjexPeers simplifies the process of building teams and fosters collaboration among individuals with shared goals. Whether you're preparing for a hackathon or seeking project partners, ProjexPeers is the platform to make your vision a reality!
+
