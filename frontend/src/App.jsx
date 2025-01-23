@@ -72,6 +72,7 @@ function App() {
                   <Route path="/findateammate" element={<FindATeammate />} />
                   {/* <Route path="/team-finder" element={<TeamFinderCard />} /> */}
                   {/* <Route path="/feed" element={<FeedCard />} /> */}
+                  <Route path="*" element={<Navigate to={"/404"}/>} />
                 </Routes>
               {/* </Sidebar> */}
             </ProtectedRoute>
