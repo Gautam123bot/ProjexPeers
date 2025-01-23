@@ -11,6 +11,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Backdrop } from "../../components/Backdrop/Backdrop";
 import { motion } from "framer-motion";
 import 'font-awesome/css/font-awesome.min.css';
+import Navbar from "../../components/Navbar/Navbar";
 
 const Profile = () => {
   const username = JSON.parse(localStorage.getItem("user_info")).username;
@@ -102,6 +103,8 @@ const Profile = () => {
   }, [username]);
 
   return (
+    <>
+    <Navbar />
     <div className="profile-con">
       <div className="edit-conn">
         <h1>My Profile</h1>
@@ -320,6 +323,7 @@ const Profile = () => {
 
 
     </div>
+    </>
   );
 };
 
