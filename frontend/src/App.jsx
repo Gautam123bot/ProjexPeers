@@ -23,6 +23,7 @@ import Home from "./pages/Home/Home";
 import ProfilePage from "./pages/ShowProfile/ProfilePage";
 import FindATeammate from "./pages/FindATeammate/FindATeammate";
 import NotFound from "./pages/NotFound/NotFound";
+import Invitations from "./pages/Invitations/Invitations";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null); // Start as null to delay rendering
@@ -70,6 +71,7 @@ function App() {
                   <Route path="/profile/edit" element={<EditProfile />} />
                   <Route path="/messages" element={<Chat />} />
                   <Route path="/findateammate" element={<FindATeammate />} />
+                  <Route path="/invitations" element={<Invitations />} />
                   {/* <Route path="/team-finder" element={<TeamFinderCard />} /> */}
                   {/* <Route path="/feed" element={<FeedCard />} /> */}
                 </Routes>

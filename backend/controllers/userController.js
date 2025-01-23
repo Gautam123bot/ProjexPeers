@@ -15,23 +15,35 @@ export const updateUser = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
-    // const { username: tokenUsername } = req.rootUser;
-    const { username } = req.body;
-    if (!username) {
-      return res.status(400).json({ message: "Username is required." });
-    }
-    const userFound = await User.findOne({ username });
+    const { username, _id } = req.body;
 
+    // Validate that at least one of username or _id is provided
+    if (!username && !_id) {
+      return res.status(400).json({ message: "Username or _id is required." });
+    }
+
+    if (_id) {
+      const userFound = await User.findById(_id);
+      if (userFound) {
+        return res.status(200).json(userFound);
+      } else {
+        return res.status(400).json({ message: "User not found by _id!" });
+      }
+    }
+
+    const userFound = await User.findOne({ username });
     if (userFound) {
       return res.status(200).json(userFound);
     } else {
-      return res.status(404).json({ message: "User not found!" });
+      return res.status(400).json({ message: "User not found by username!" });
     }
+
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "An error occurred.", error: e.message });
   }
 };
+
 
 export const getUserByUsername = async (req, res) => {
   try {

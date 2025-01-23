@@ -1,10 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TeamFinderCard } from "../../components/TeamFinder/TeamFinderCard";
 import Navbar from "../../components/Navbar/Navbar";
+import axios from "axios";
+import notification_icon from "../../assets/icons/notification_icon.png"
 
 function Dashboard() {
     const [modal, setModal] = useState(false);
+    const [pendingCount, setPendingCount] = useState(0);
+
+    useEffect(() => {
+        const fetchPendingCount = async () => {
+          try {
+            const user_info = JSON.parse(localStorage.getItem("user_info"));
+            const userId = user_info?._id;
+    
+            if (userId) {
+              const response = await axios.get(
+                `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/get-invite`,
+                { params: { recipientId: userId } }
+              );
+              setPendingCount(response.data.length);
+            }
+          } catch (error) {
+            console.error("Error fetching pending invitations:", error);
+          }
+        };
+    
+        fetchPendingCount();
+      }, []);
+
     return (
         <>
             <Navbar />
@@ -75,6 +100,27 @@ function Dashboard() {
                         </button>
                     </Link>
                 </div>
+
+                <div className="relative bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition">
+    <h2 className="text-xl font-bold text-gray-800">Invitations</h2>
+    <p className="text-gray-600 mt-2">
+        Check your team invitations and respond to them.
+    </p>
+    <Link to="/invitations">
+        <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition flex items-center gap-2">
+            <span>View Invitations</span>
+            <div className="relative">
+                <span className="inline-block w-5 h-5 rounded-full">
+                <img src={notification_icon} alt="" />
+                </span>
+                <span className="absolute -top-1.5 -right-1.5 text-xs text-white bg-red-600 w-4 h-4 flex items-center justify-center rounded-full">
+                    {pendingCount}
+                </span>
+            </div>
+        </button>
+    </Link>
+</div>
+
 
             </div>
         </div>
