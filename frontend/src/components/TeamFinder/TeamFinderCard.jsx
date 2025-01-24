@@ -10,7 +10,7 @@ import { Chips } from '../Chips/Chips';
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import Loader from '../Loader/Loader';
- 
+
 export const TeamFinderCard = ({ setModal }) => {
   const user = JSON.parse(localStorage.getItem("user_info"));
   const savedEmail = user?.email;
@@ -109,30 +109,31 @@ export const TeamFinderCard = ({ setModal }) => {
       {loader && <Loader />}
       <Backdrop onClick={() => setModal(false)}>
         <motion.div onClick={(e) => { e.stopPropagation() }}>
-          <div className="w-[800px] h-[90%] bg-[#EFF5FF] flex flex-col p-10 items-start justify-center font-product rounded-[20px] relative">
-          <button
-        className="absolute top-4 right-4 text-3xl font-bold text-[#3364FF] hover:text-red-500"
-        onClick={() => setModal(false)}
-      >
-        &times;
-      </button>
-            <h1 className="mb-5 self-center">Create Post to make your team strong</h1>
+          <div className="bg-white text-black rounded-lg w-full max-w-3xl p-6 overflow-y-auto max-h-[90vh] relative">
+            <button
+              className="absolute top-4 right-4 text-3xl font-bold text-[#3364FF] hover:text-red-500"
+              onClick={() => setModal(false)}
+            >
+              &times;
+            </button>
+            <h1 className="text-center text-2xl font-semibold mb-5">Create Post to make your team strong</h1>
             <form action="">
-              <div className="flex items-center justify-start gap-6 mb-5">
-                <h4>Title of the Developer<span style={{ color: "red" }}>*</span></h4>
-                <input className='px-3 py-2 border border-black rounded-lg text-gray-400' name="title" placeholder='Enter your title' type="text" value={details.title} onChange={handleChange} />
+              <div className="mb-4">
+                <h4 className="text-lg">Title of the Developer<span style={{ color: "red" }}>*</span></h4>
+                <input className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white placeholder-gray-400" name="title" placeholder='Enter your title' type="text" value={details.title} onChange={handleChange} />
               </div>
-              <div className='flex'>
-                <div className="flex items-center justify-start gap-4 mb-5 p-4">
-                  <h4>Your Email<span style={{ color: "red" }}>*</span></h4>
-                  <input className="px-3 py-2 border border-black rounded-lg text-gray-400" name="email" placeholder="Enter your email" type="email" value={details.email} onChange={handleChange} />
+  
+              <div className='flex gap-4 flex-wrap'>
+                <div className="flex-1 mb-4">
+                  <h4 className="text-lg">Your Email<span style={{ color: "red" }}>*</span></h4>
+                  <input className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white placeholder-gray-400" name="email" placeholder="Enter your email" type="email" value={details.email} onChange={handleChange} />
                 </div>
-                <div className="mb-5 flex flex-col">
-                  <div className="flex items-center justify-start gap-4 mb-5 p-4">
-                    <h4>Skills Required<span style={{ color: "red" }}>*</span></h4>
-                    <input className="px-3 py-2 border border-black rounded-lg text-gray-400" name="skill" placeholder="Enter the skill you are looking for" type="text" onKeyDown={(e) => { addSkill(e); }} />
+                <div className="flex-1 mb-5 flex flex-col">
+                  <div>
+                    <h4 className="text-lg">Skills Required<span style={{ color: "red" }}>*</span></h4>
+                    <input className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white placeholder-gray-400" name="skill" placeholder="Enter the skill you are looking for" type="text" onKeyDown={(e) => { addSkill(e); }} />
                   </div>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 flex-wrap mt-2">
                     {details.skills.map((item, idx) => (
                       <div onClick={() => deleteSkill(item)} key={idx}>
                         <Chips name={item} />
@@ -141,50 +142,44 @@ export const TeamFinderCard = ({ setModal }) => {
                   </div>
                 </div>
               </div>
-
-              <div className="mb-5 flex flex-col md:flex-row gap-4 w-full">
-                <label htmlFor="">Select Your Region<span style={{ color: "red" }}>*</span></label>
-                <Select
-                  options={Country.getAllCountries()}
-                  getOptionLabel={(country) => country.name}
-                  getOptionValue={(country) => country.isoCode}
-                  value={selectedCountry}
-                  onChange={handleCountryChange}
-                />
-                <Select
-                  options={
-                    selectedCountry
-                      ? State.getStatesOfCountry(selectedCountry.isoCode)
-                      : []
-                  }
-                  getOptionLabel={(state) => state.name}
-                  getOptionValue={(state) => state.isoCode}
-                  value={selectedState}
-                  onChange={handleStateChange}
-                />
-                <Select
-                  options={
-                    selectedState
-                      ? City.getCitiesOfState(
-                        selectedCountry ? selectedCountry.isoCode : "",
-                        selectedState ? selectedState.isoCode : ""
-                      )
-                      : []
-                  }
-                  getOptionLabel={(city) => city.name}
-                  getOptionValue={(city) => city.name}
-                  value={selectedCity}
-                  onChange={handleCityChange}
-                />
+  
+              <div className="mb-4 flex flex-wrap justify-between">
+                <label className="text-lg mr-4 w-full sm:w-auto">Select Your Region<span style={{ color: "red" }}>*</span></label>
+                <div className='pe-4 pr-4 w-full sm:w-auto'>
+                  <Select
+                    options={Country.getAllCountries()}
+                    getOptionLabel={(country) => country.name}
+                    getOptionValue={(country) => country.isoCode}
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                  />
+                </div>
+                <div className='pe-4 pr-4 w-full sm:w-auto'>
+                  <Select
+                    options={selectedCountry ? State.getStatesOfCountry(selectedCountry.isoCode) : []}
+                    getOptionLabel={(state) => state.name}
+                    getOptionValue={(state) => state.isoCode}
+                    value={selectedState}
+                    onChange={handleStateChange}
+                  />
+                </div>
+                <div className='pe-4 pr-4 w-full sm:w-auto'>
+                  <Select
+                    options={selectedState ? City.getCitiesOfState(selectedCountry ? selectedCountry.isoCode : "", selectedState ? selectedState.isoCode : "") : []}
+                    getOptionLabel={(city) => city.name}
+                    getOptionValue={(city) => city.name}
+                    value={selectedCity}
+                    onChange={handleCityChange}
+                  />
+                </div>
               </div>
-              <div className='flex'>
-                <div className="cs p-4">
-                  <h4>
-                    Competition Type<span style={{ color: "red" }}>*</span>
-                  </h4>
+  
+              <div className="flex gap-4 flex-wrap">
+                <div className="flex-1 mb-4">
+                  <h4 className="text-lg">Competition Type<span style={{ color: "red" }}>*</span></h4>
                   {details.competitionType !== "Other" ? (
                     <select
-                      className="px-3 py-2"
+                      className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white"
                       name="competitionType"
                       value={details.competitionType}
                       onChange={handleChange}
@@ -199,7 +194,7 @@ export const TeamFinderCard = ({ setModal }) => {
                     </select>
                   ) : (
                     <input
-                      className="px-3 py-2 border border-black rounded-lg text-gray-400"
+                      className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white placeholder-gray-400"
                       name="competitionType"
                       placeholder="Please specify"
                       type="text"
@@ -208,11 +203,11 @@ export const TeamFinderCard = ({ setModal }) => {
                     />
                   )}
                 </div>
-
-                <div className="cs p-4">
-                  <h4>Members Required<span style={{ color: "red" }}>*</span></h4>
+  
+                <div className="flex-1 mb-4">
+                  <h4 className="text-lg">Members Required<span style={{ color: "red" }}>*</span></h4>
                   <input
-                    className='px-3 py-2 border border-black rounded-lg text-gray-400'
+                    className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white placeholder-gray-400"
                     name="membersRequired"
                     placeholder='Enter the number of members required'
                     type="number"
@@ -220,11 +215,11 @@ export const TeamFinderCard = ({ setModal }) => {
                     onChange={handleChange}
                   />
                 </div>
-
-                <div className="cs p-4">
-                  <h4>Last Date of Registration<span style={{ color: "red" }}>*</span></h4>
+  
+                <div className="flex-1 mb-4">
+                  <h4 className="text-lg">Last Date of Registration<span style={{ color: "red" }}>*</span></h4>
                   <input
-                    className='px-3 py-2 border border-black rounded-lg text-gray-400'
+                    className="w-full p-2 mt-2 rounded-lg bg-gray-700 text-white"
                     name="lastDateOfRegistration"
                     type="date"
                     value={details.lastDateOfRegistration.toISOString().split('T')[0]}
@@ -232,28 +227,34 @@ export const TeamFinderCard = ({ setModal }) => {
                   />
                 </div>
               </div>
-
-              <div className="cs">
-                <h4>Year of Education <span style={{ color: "gray" }}>(Optional)</span></h4>
+  
+              <div className="mb-4">
+                <h4 className="text-lg">Year of Education <span style={{ color: "gray" }}>(Optional)</span></h4>
                 <div className="flex gap-2 flex-wrap">
                   {years.map((item, idx) => (
-                    <div className='bg-[#c7c3c3] p-2 rounded-lg hover:bg-[#3364FF] hover:text-white cursor-default' id={selectedYear === item.name ? "year-selected" : ""} key={idx} onClick={() => { setDetails({ ...details, year: item.name }); setSelectedYear(item.name) }}>
+                    <div className='bg-[#c7c3c3] p-2 rounded-lg hover:bg-[#3364FF] hover:text-white cursor-pointer' id={selectedYear === item.name ? "year-selected" : ""} key={idx} onClick={() => { setDetails({ ...details, year: item.name }); setSelectedYear(item.name) }}>
                       <b>{item.name}</b>
                     </div>
                   ))}
                 </div>
               </div>
-
+  
               {/* Submit Button */}
-              <div className='flex items-center justify-center self-center'>
-                <div type="submit" className='w-[80px] h-[40px] bg-[#3364FF] text-white font-bold shadow-[2px_2px_1px_2px_#cecece] flex justify-center items-center rounded-[10px] hover:cursor-pointer' onClick={handleSubmit}>Submit</div>
+              <div className='mt-6'>
+                <button
+                  type="button"
+                  className="w-full p-3 rounded-lg bg-[#3364FF] text-white font-semibold hover:bg-[#254edb] transition-colors"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
               </div>
-
             </form>
           </div>
-
         </motion.div>
       </Backdrop>
     </>
-  )
+  );
+  
+
 }
