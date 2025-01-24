@@ -7,6 +7,7 @@ import profile_img from "../../../src/assets/images/profile_img.jpg";
 import down_arrow from "../../../src/assets/icons/down.png";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
+import Loader from "../../components/Loader/Loader";
 
 const FindATeammate = () => {
   const [users, setUsers] = useState([]);
@@ -18,6 +19,7 @@ const FindATeammate = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
+  const [loaderUser, setLoaderUser] = useState(false);
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const user_id = user_info?._id;
 
@@ -171,11 +173,14 @@ const FindATeammate = () => {
     };
 
     const fetchUsers = async () => {
+      setLoaderUser(true);
       try {
         const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getallusers`);
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users", error);
+      } finally {
+        setLoaderUser(false);
       }
     };
 
@@ -200,6 +205,7 @@ const FindATeammate = () => {
 
   return (
     <>
+      {loaderUser && <Loader /> }
       <Navbar />
       <div className="flex flex-wrap gap-6 p-8 justify-center">
         {users.length === 0 ? (
