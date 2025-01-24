@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
 import avatar_pic from "../../assets/images/profile_img.jpg";
+import background_profile_img from "../../assets/images/background_profile_img.jpg"
 import github from "../../assets/icons/github.svg";
 import linkedin from "../../assets/icons/linkedin.svg";
 import skills from "./test_skills";
@@ -123,7 +124,7 @@ const Profile = () => {
 
         <div className="profile-header">
           <div className="profile-wall">
-            <img className="coverpic" src={user.coverPic} alt="" />
+            <img className="coverpic" src={user.coverPic ? user.coverPic : background_profile_img} alt="" />
             <span onClick={() => setCoverModal(true)}>
               <i
                 id="editCoverPic"
