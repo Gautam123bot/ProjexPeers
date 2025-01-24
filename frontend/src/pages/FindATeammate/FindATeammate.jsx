@@ -4,17 +4,98 @@ import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import "./FindATeammate.css";
 import profile_img from "../../../src/assets/images/profile_img.jpg";
+import down_arrow from "../../../src/assets/icons/down.png";
+import { Country, State, City } from "country-state-city";
+import Select from "react-select";
 
 const FindATeammate = () => {
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [teamName, setTeamName] = useState("");
-  const [competition, setCompetition] = useState("");
-  const [message, setMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const user_info = localStorage.getItem("user_info");
-  const user_id = JSON.parse(user_info)?._id;
+  const [isNameEditable, setIsNameEditable] = useState(false);
+  const [isEmailEditable, setIsEmailEditable] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const user_info = JSON.parse(localStorage.getItem("user_info"));
+  const user_id = user_info?._id;
+
+  const [formData, setFormData] = useState({
+    // sender details
+    senderName: "",
+    senderEmail: "",
+    // competition details
+    competitionType: "",
+    competitionName: "",
+    dateOfCompetition: "",
+    durationOfCompetition: "",
+    registrationDeadlineOfCompetition: "",
+    // team details
+    currentTeamSize: "",
+    teamName: "",
+    // venue details
+    country: "",
+    state: "",
+    city: "",
+    location: "",
+    // project details
+    projectOverview: "",
+    // other info
+    message: "",
+  });
+
+  const [openSections, setOpenSections] = useState({
+    senderDetails: false,
+    competitionDetails: false,
+    teamDetails: false,
+    venueDetails: false,
+    projectDetails: false,
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleToggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCountryChange = (selectedOption) => {
+    setSelectedCountry(selectedOption);
+    setSelectedState(null);
+    setSelectedCity(null);
+    setFormData({ ...formData, country: selectedOption ? selectedOption.name : "" });
+  };
+
+  const handleStateChange = (selectedOption) => {
+    setSelectedState(selectedOption);
+    setSelectedCity(null);
+    setFormData({ ...formData, state: selectedOption ? selectedOption.name : "" });
+  };
+
+  const handleCityChange = (selectedOption) => {
+    setSelectedCity(selectedOption);
+    setFormData({ ...formData, city: selectedOption ? selectedOption.name : "" });
+  };
+
+  useEffect(() => {
+    if (user_info) {
+      setFormData((prevData) => ({
+        ...prevData,
+        senderName: user_info.fullname,
+        senderEmail: user_info.email,
+      }));
+    }
+  }, []);
+
 
   const handleOpenModal = (user) => {
     setSelectedUser(user);
@@ -23,23 +104,60 @@ const FindATeammate = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setTeamName("");
-    setCompetition("");
-    setMessage("");
   };
 
   const handleSend = async (recipientId) => {
+    setError("");
+    setSuccess("");
+
+    const payload = {
+      ...formData,
+      senderId: user_id,
+      recipientId,
+    };
+
+    const requiredFields = [
+      "senderName",
+      "senderEmail",
+      "competitionType",
+      "competitionName",
+      "durationOfCompetition",
+      "registrationDeadlineOfCompetition",
+      "currentTeamSize",
+    ];
+
+    for (let field of requiredFields) {
+      if (!payload[field]) {
+        setError(`Field ${field} is required.`);
+        alert(`Field ${field} is required.`);
+        return;
+      }
+    }
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/send-invite`, {
-        senderId: user_id,
-        recipientId,
-        teamName,
-        competition,
-        message,
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/send-invite`, payload);
+      setSuccess(response.data.message);
+      setFormData({
+        senderId: "",
+        recipientId: "",
+        senderName: "",
+        senderEmail: "",
+        competitionType: "",
+        competitionName: "",
+        dateOfCompetition: "",
+        durationOfCompetition: "",
+        registrationDeadlineOfCompetition: "",
+        currentTeamSize: "",
+        projectOverview: "",
+        teamName: "",
+        message: "",
+        country: "",
+        state: "",
+        city: "",
+        location: "",
       });
       alert("Invitation sent successfully!");
     } catch (error) {
-      console.error(error);
+      setError(error.response?.data?.error || "Failed to send the invitation.");
       alert("Failed to send invitation.");
     } finally {
       handleCloseModal();
@@ -73,44 +191,27 @@ const FindATeammate = () => {
     );
   };
 
-  // const handleConnect = async (user) => {
-  //   if (!currentUser) {
-  //     alert("Please log in to connect with users.");
-  //     return;
-  //   }
-
-  //   const payload = {
-  //     admin: currentUser,
-  //     members: [currentUser, user.username],
-  //     spaceName: `${currentUser}-${user.username}`,
-  //     chatPic: user.profilePic || profile_img,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/create-space`, payload);
-  //     if (response.status === 200) {
-  //       alert(`You are now connected with ${user.fullname}!`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error connecting with user", error);
-  //     alert("Failed to connect. Please try again later.");
-  //   }
-  // };
+  const handleNameEditClick = () => {
+    setIsNameEditable(true);
+  };
+  const handleEmailEditClick = () => {
+    setIsEmailEditable(true);
+  };
 
   return (
     <>
       <Navbar />
-      <div className="users-list-container">
+      <div className="flex flex-wrap gap-6 p-8 justify-center">
         {users.length === 0 ? (
           <p>No users available</p>
         ) : (
           users
             .filter((user) => user.username !== currentUser)
             .map((user) => (
-              <div key={user._id} className="user-card">
+              <div key={user._id} className="bg-white p-4 rounded-lg shadow-lg text-center">
                 <div className="flex justify-center">
 
-                <img src={user.profilePic || profile_img} alt={user.fullname} className="user-profile-pic" />
+                  <img src={user.profilePic || profile_img} alt={user.fullname} className="w-20 h-20 rounded-full object-cover" />
                 </div>
                 <div className="user-info">
                   <h3>{user.fullname}</h3>
@@ -120,25 +221,16 @@ const FindATeammate = () => {
                     <span>{user.available ? "Available" : "Not Available"}</span>
                   </div>
                   <div className="flex mt-3">
-                  
-                  {/* <button
-                    onClick={() => handleConnect(user)}
-                    className="connect-btn"
-                    disabled={!user.available}
-                  >
-                    Connect
-                  </button> */}
-
-                  <button
-                    onClick={() => handleOpenModal(user)}
-                    className="connect-btn mr-2"
-                    disabled={!user.available}
-                  >
-                    Send Invitation
-                  </button>
-                  <Link to={`/${user.username}`} className="view-profile-btn mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition duration-200 ease-in-out">
-                    View Profile
-                  </Link>
+                    <button
+                      onClick={() => handleOpenModal(user)}
+                      className="connect-btn mr-2"
+                      disabled={!user.available}
+                    >
+                      Send Invitation
+                    </button>
+                    <Link to={`/${user.username}`} className="inline-block py-2 px-4 rounded-md text-decoration-none mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition duration-200 ease-in-out">
+                      View Profile
+                    </Link>
                   </div>
 
 
@@ -168,36 +260,359 @@ const FindATeammate = () => {
                       <h2 className="text-2xl font-semibold text-center text-gray-800">
                         Send Invitation to {selectedUser?.fullname}
                       </h2>
-                      <form className="space-y-4">
-                        <div>
-                          <label className="block text-gray-700">Team Name:</label>
-                          <input
-                            type="text"
-                            value={teamName}
-                            onChange={(e) => setTeamName(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Enter team name"
-                          />
+                      <form className="max-h-[400px] overflow-y-auto">
+                        {/* Sender Details */}
+                        <div className="border-b pb-4 mb-4 relative">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSection("senderDetails")}
+                            className="w-full text-left font-medium text-lg py-2"
+                          >
+                            Sender Details<span className="text-red-500">*</span>
+                          </button>
+                          <div
+                            className={`transition-all duration-700 ease-in-out overflow-hidden ${openSections.senderDetails ? "max-h-[9999px] opacity-100" : "max-h-0 opacity-0"}`}
+                          >
+                            {openSections.senderDetails && (
+                              <div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="senderName">
+                                    Sender Name<span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="senderName"
+                                    name="senderName"
+                                    value={formData.senderName}
+                                    onChange={handleChange}
+                                    disabled={!isNameEditable}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                  {!isNameEditable && (
+                                    <button
+                                      type="button"
+                                      onClick={handleNameEditClick}
+                                      className="text-blue-500 text-sm mt-2 absolute right-6 z-100 underline hover:text-blue-700 hover:underline"
+                                    >
+                                      Edit
+                                    </button>
+                                  )}
+                                </div>
+
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="senderEmail">
+                                    Sender Email<span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="email"
+                                    id="senderEmail"
+                                    name="senderEmail"
+                                    value={formData.senderEmail}
+                                    onChange={handleChange}
+                                    disabled={!isEmailEditable}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                  {!isEmailEditable && (
+                                    <button
+                                      type="button"
+                                      onClick={handleEmailEditClick}
+                                      className="text-blue-500 text-sm mt-2 absolute right-6 z-100 underline hover:text-blue-700 hover:underline"
+                                    >
+                                      Edit
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div>
-                          <label className="block text-gray-700">Competition:</label>
-                          <input
-                            type="text"
-                            value={competition}
-                            onChange={(e) => setCompetition(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Enter competition name"
-                          />
+
+                        {/* Competition Details */}
+                        <div className="border-b pb-4 mb-4">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSection("competitionDetails")}
+                            className="w-full text-left font-medium text-lg py-2"
+                          >
+                            Competition Details<span className="text-red-500">*</span>
+                          </button>
+                          <div
+                            className={`transition-all duration-700 ease-in-out overflow-hidden ${openSections.competitionDetails ? "max-h-[9999px] opacity-100" : "max-h-0 opacity-0"}`}
+                          >
+                            {openSections.competitionDetails && (
+                              <div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="competitionType">
+                                    Competition Type<span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="competitionType"
+                                    name="competitionType"
+                                    placeholder="select competition type"
+                                    value={formData.competitionType}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="competitionName">
+                                    Competition Name<span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="competitionName"
+                                    name="competitionName"
+                                    placeholder="Enter competition name"
+                                    value={formData.competitionName}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="dateOfCompetition">
+                                    Date of Competition
+                                  </label>
+                                  <input
+                                    type="date"
+                                    id="dateOfCompetition"
+                                    name="dateOfCompetition"
+                                    value={formData.dateOfCompetition}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="durationOfCompetition">
+                                    Duration of Competition<span className="text-red-500">*</span> (in hrs)
+                                  </label>
+                                  <input
+                                    type="number"
+                                    id="durationOfCompetition"
+                                    name="durationOfCompetition"
+                                    placeholder="Enter duration of your competition"
+                                    value={formData.durationOfCompetition}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="registrationDeadlineOfCompetition">
+                                    Registration Deadline of Competition<span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="date"
+                                    id="registrationDeadlineOfCompetition"
+                                    name="registrationDeadlineOfCompetition"
+                                    value={formData.registrationDeadlineOfCompetition}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div>
-                          <label className="block text-gray-700">Message:</label>
+
+                        {/* Team Details */}
+                        <div className="border-b pb-4 mb-4">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSection("teamDetails")}
+                            className="w-full text-left font-medium text-lg py-2"
+                          >
+                            Team Details<span className="text-red-500">*</span>
+                          </button>
+                          <div
+                            className={`transition-all duration-700 ease-in-out overflow-hidden ${openSections.teamDetails ? "max-h-[9999px] opacity-100" : "max-h-0 opacity-0"}`}
+                          >
+                            {openSections.teamDetails && (
+                              <div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="currentTeamSize">
+                                    Current Team Size<span className="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    id="currentTeamSize"
+                                    name="currentTeamSize"
+                                    value={formData.currentTeamSize}
+                                    placeholder="Enter your team size"
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="teamName">
+                                    Team Name
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="teamName"
+                                    name="teamName"
+                                    value={formData.teamName}
+                                    placeholder="Enter your Team Name"
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Venue Details */}
+                        <div className="border-b pb-4 mb-4">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSection("venueDetails")}
+                            className="w-full text-left font-medium text-lg py-2"
+                          >
+                            Venue Details<span className="text-red-500">*</span>
+                          </button>
+                          <div
+                            className={`transition-all duration-700 ease-in-out overflow-hidden ${openSections.venueDetails ? "max-h-[9999px] opacity-100" : "max-h-0 opacity-0"}`}
+                          >
+                            {openSections.venueDetails && (
+                              <div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="country">
+                                    Country
+                                  </label>
+                                  {/* <input
+                                    type="text"
+                                    id="country"
+                                    name="country"
+                                    value={formData.country}
+                                    placeholder="Select Country"
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  /> */}
+                                  <Select
+                                    options={Country.getAllCountries()}
+                                    getOptionLabel={(country) => country.name}
+                                    getOptionValue={(country) => country.isoCode}
+                                    value={selectedCountry}
+                                    onChange={handleCountryChange}
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="state">
+                                    State
+                                  </label>
+                                  {/* <input
+                                    type="text"
+                                    id="state"
+                                    name="state"
+                                    value={formData.state}
+                                    placeholder="Select State"
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  /> */}
+                                  <Select
+                                    options={
+                                      selectedCountry
+                                        ? State.getStatesOfCountry(selectedCountry.isoCode)
+                                        : []
+                                    }
+                                    getOptionLabel={(state) => state.name}
+                                    getOptionValue={(state) => state.isoCode}
+                                    value={selectedState}
+                                    onChange={handleStateChange}
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="city">
+                                    City
+                                  </label>
+                                  {/* <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    value={formData.city}
+                                    placeholder="Select City"
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  /> */}
+                                  <Select
+                                    options={
+                                      selectedState
+                                        ? City.getCitiesOfState(
+                                          selectedCountry ? selectedCountry.isoCode : "",
+                                          selectedState ? selectedState.isoCode : ""
+                                        )
+                                        : []
+                                    }
+                                    getOptionLabel={(city) => city.name}
+                                    getOptionValue={(city) => city.name}
+                                    value={selectedCity}
+                                    onChange={handleCityChange}
+                                  />
+                                </div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="location">
+                                    Location
+                                  </label>
+                                  <input
+                                    type="text"
+                                    id="location"
+                                    name="location"
+                                    value={formData.location}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Project Details */}
+                        <div className="border-b pb-4 mb-4">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSection("projectDetails")}
+                            className="w-full text-left font-medium text-lg py-2"
+                          >
+                            Project Details<span className="text-red-500">*</span>
+                          </button>
+                          <div
+                            className={`transition-all duration-700 ease-in-out overflow-hidden ${openSections.projectDetails ? "max-h-[9999px] opacity-100" : "max-h-0 opacity-0"}`}
+                          >
+                            {openSections.projectDetails && (
+                              <div>
+                                <div className="mb-4">
+                                  <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="projectOverview">
+                                    Project Overview
+                                  </label>
+                                  <textarea
+                                    id="projectOverview"
+                                    name="projectOverview"
+                                    value={formData.projectOverview}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Message */}
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium mb-1 text-left ml-2.5" htmlFor="message">
+                            Message
+                          </label>
                           <textarea
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Write a message"
+                            id="message"
+                            name="message"
+                            value={formData.message}
+                            placeholder="Enter other message that you want to deliver"
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-500"
                           />
                         </div>
+
                         <button
                           type="button"
                           onClick={() => handleSend(selectedUser._id)}

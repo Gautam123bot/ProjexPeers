@@ -2,23 +2,38 @@ import Invitation from "../models/invitations.js";
 
 export const sendInvitation = async (req, res) => {
   try {
-    const { senderId, recipientId, teamName, competition, message } = req.body;
+    const { senderId, recipientId, senderName, senderEmail, competitionType, competitionName, dateOfCompetition, durationOfCompetition, registrationDeadlineOfCompetition, currentTeamSize, projectOverview, teamName, message, country, state, city, location } = req.body;
 
     const invitation = new Invitation({
       senderId,
       recipientId,
+      senderName,
+      senderEmail,
+      competitionType,
+      competitionName,
+      dateOfCompetition,
+      durationOfCompetition,
+      registrationDeadlineOfCompetition,
+      currentTeamSize,
+      projectOverview,
       teamName,
-      competition,
       message,
+      country,
+      state,
+      city,
+      location,
       status: "Pending",
     });
+
     await invitation.save();
 
     res.status(201).json({ message: "Invitation sent successfully!" });
   } catch (err) {
-    res.status(500).json({ error: "Failed to send invitation." });
+    console.error(err);
+    res.status(500).json({ error: "Failed to send invitation.", details: err.message });
   }
 };
+
 
 export const getInvitation = async (req, res) => {
   try {
