@@ -1,73 +1,69 @@
-.profile-conn{
-    font-family: Product;
-}
+/* ProfileSummary.css */
 
-.profile-summary-con{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 40px;
-    padding-bottom: 20px;
-    gap: 12px;
-}
-.profile-summary-con .username{
-    font-size: 20px;
+.profile-container {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #ffd700;
+    margin: 10px auto;
+  }
+  
+  .profile-username {
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #000000;
-}
-.profile-summary-con .title{
-    font-size: 16px;
-    color: #4a4a4a;
-}
-
-.profile-pic{
-    width: 80%;
-    border-radius: 15px;
-    box-shadow: 2px 1px 5px #b3b3b4;
-}
-
-.profile-stats{
-    padding-top: 25px;
+  }
+  
+  .profile-title {
+    font-size: 1rem;
+    color: #b3b3b3;
+  }
+  
+  .profile-stats {
     display: flex;
+    justify-content: space-between;
     gap: 10px;
-}
-
-.mini-card{
-    height: 60px;
-    flex: 0.5;
+  }
+  
+  .stat-card {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 15px;
+    flex: 1;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 10px;
-    background-color: aliceblue;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-}
-
-.count{
-    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .stat-info {
+    text-align: left;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #3364FF;
-}
-
-.count-sub{
-    color: #696969;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.profile-stats .peers, .statss{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-stats{
-    font-size: 18px;
-}
-
-.title{
-    margin-top: -10px;
-}
+  }
+  
+  .stat-label {
+    font-size: 0.875rem;
+    color: #b3b3b3;
+  }
+  

@@ -138,108 +138,118 @@ export const FeedCard = ({ post, recall }) => {
 
   return (
     <>
-      {friendRequestLoader ? <Loader /> :
+  {friendRequestLoader ? <Loader /> :
+    <div className="feed-card-con bg-gradient-to-r from-gray-800 via-gray-900 to-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out mb-6 relative">
+      {post?.username === username && (
+        <div
+          className="delete-con absolute bottom-4 right-4 cursor-pointer text-gray-400 hover:text-white"
+          onClick={deletePost}
+        >
+          <FontAwesomeIcon icon={faTrashAlt} className="text-xl" />
+        </div>
+      )}
 
-        <div className="feed-card-con bg-gradient-to-r from-gray-800 via-gray-900 to-black p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out mb-6 relative">
-          {post?.username === username && (
-            <div
-              className="delete-con absolute bottom-4 right-4 cursor-pointer text-gray-400 hover:text-white"
-              onClick={deletePost}
-            >
-              {/* <i className="fas fa-trash-alt text-xl"></i> */}
-              <FontAwesomeIcon icon={faTrashAlt} className="text-xl" />
+      <div className="flex flex-col sm:flex-row sm:space-x-6">
+        {/* Left: Avatar */}
+        <div className="left flex-shrink-0 mb-4 sm:mb-0">
+          <img
+            src={postUser.profilePic ? postUser.profilePic : feed_avatar}
+            alt="Avatar"
+            className="feed_avatar w-16 h-16 rounded-full object-cover border-4 border-gray-700"
+          />
+        </div>
+
+        {/* Right: Content */}
+        <div className="right flex-1">
+          <p
+            className="feed-name text-2xl font-semibold text-white cursor-pointer hover:text-indigo-400 transition-all"
+            onClick={() => navigate(`/${post?.username}`)}
+          >
+            {post?.name}
+          </p>
+          <p className="feed-time text-gray-400 text-sm">{moment(post?.date).format("LLL")}</p>
+
+          <div className="proj-desc mt-4">
+            <p className="feed-title text-xl text-white font-semibold mt-2">{post?.title}</p>
+
+            <div className="skillss-con mt-3">
+              <p className="text-gray-400">Skills Required: </p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {post?.skills.map((skill, idx) => (
+                  <Chips className="feed-skill bg-gray-700 text-white px-3 py-1 rounded-full" name={skill} key={idx} />
+                ))}
+              </div>
             </div>
-          )}
 
-          <div className="flex space-x-6">
-            {/* Left: Avatar */}
-            <div className="left flex-shrink-0">
-              <img
-                src={postUser.profilePic ? postUser.profilePic : feed_avatar}
-                alt="Avatar"
-                className="feed_avatar w-16 h-16 rounded-full object-cover border-4 border-gray-700"
-              />
+            <div className="flex flex-col sm:flex-row sm:space-x-4 mt-4">
+              <div className="flex pt-2 pe-4">
+                <div className="text-gray-400 pr-2">Country:</div>
+                <div className="text-white">{post?.country}</div>
+              </div>
+              <div className="flex pt-2 pe-4">
+                <div className="text-gray-400 pr-2">State:</div>
+                <div className="text-white">{post?.state}</div>
+              </div>
+              <div className="flex pt-2 pe-4">
+                <div className="text-gray-400 pr-2">City:</div>
+                <div className="text-white">{post?.city}</div>
+              </div>
             </div>
 
-            {/* Right: Content */}
-            <div className="right flex-1">
-              <p
-                className="feed-name text-2xl font-semibold text-white cursor-pointer hover:text-indigo-400 transition-all"
-                onClick={() => navigate(`/${post?.username}`)}
+            <div className="flex flex-col sm:flex-row sm:space-x-4 mt-4">
+              <div className="flex pt-2 pe-4">
+                <div className="text-gray-400 pr-2">Competition type:</div>
+                <div className="text-white">{post?.competitionType}</div>
+              </div>
+              <div className="flex pt-2 pe-4">
+                <div className="text-gray-400 pr-2">Members Required:</div>
+                <div className="text-white">{post?.membersRequired}</div>
+              </div>
+            </div>
+
+            <div className="flex pt-2">
+              <div className="text-gray-400 pr-2">Last date of registration</div>
+              <div className="text-white">{post?.lastDateOfRegistration}</div>
+            </div>
+
+            <p className="yoe text-gray-400 mt-4">Year of Education: {post?.year}</p>
+          </div>
+
+          {/* Bottom: Actions */}
+          <div className="bottom-con flex flex-col sm:flex-row justify-between items-center mt-6">
+            {post?.username !== username && (
+              <div
+                className="connect-btn bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded-full cursor-pointer transition-all"
+                onClick={() => handleConnect(post?.username)}
               >
-                {post?.name}
-              </p>
-              <p className="feed-time text-gray-400 text-sm">{moment(post?.date).format("LLL")}</p>
-
-              <div className="proj-desc mt-4">
-                <p className="feed-title text-xl text-white font-semibold mt-2">{post?.title}</p>
-
-                <div className="skillss-con mt-3">
-                  <p className="text-gray-400">Skills Required: </p>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {post?.skills.map((skill, idx) => (
-                      <Chips className="feed-skill bg-gray-700 text-white px-3 py-1 rounded-full" name={skill} key={idx} />
-                    ))}
-                  </div>
-                </div>
-                <div className="flex">
-                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">Country:</div><div className="text-white">
-                  {post?.country}
-                </div></div>
-                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">State:</div><div className="text-white">
-                  {post?.state}
-                </div></div>
-                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">City:</div><div className="text-white">
-                  {post?.city}
-                </div></div>
-                </div>
-                <div className="flex">
-
-                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">Competition tyep: </div>
-                <div className="text-white">{post?.competitionType}</div></div>
-                <div className="flex pt-2 pe-4"><div className="text-gray-400 pr-2">Members Required: </div>
-                <div className="text-white">{post?.membersRequired}</div></div>
-                </div>
-                <div className="flex pt-2"><div className="text-gray-400 pr-2">Last date of registration</div>
-                <div className="text-white">{post?.lastDateOfRegistration}</div></div>
-
-                <p className="yoe text-gray-400 mt-4">Year of Education: {post?.year}</p>
+                <p>{requestSent ? "Request Sent" : "Connect"}</p>
               </div>
+            )}
 
-              {/* Bottom: Actions */}
-              <div className="bottom-con flex justify-between items-center mt-6">
-                {post?.username !== username && (
-                  <div
-                    className="connect-btn bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded-full cursor-pointer transition-all"
-                    onClick={() => handleConnect(post?.username)}
-                  >
-                    <p>{requestSent ? "Request Sent" : "Connect"}</p>
-                  </div>
-                )}
-
-                <div className="like-con flex items-center space-x-3">
-                  {liked ? (
-                    <img
-                      src={heart_filled}
-                      alt="liked"
-                      className="cursor-pointer w-6 h-6"
-                      onClick={handleDislike}
-                    />
-                  ) : (
-                    <img
-                      src={heart_outlined}
-                      alt="not liked"
-                      className="cursor-pointer w-6 h-6"
-                      onClick={handleLike}
-                    />
-                  )}
-                  <p className="likes text-white text-lg font-semibold">{post?.likes ? likeCount : 0}</p>
-                </div>
-              </div>
+            <div className="like-con flex items-center space-x-3">
+              {liked ? (
+                <img
+                  src={heart_filled}
+                  alt="liked"
+                  className="cursor-pointer w-6 h-6"
+                  onClick={handleDislike}
+                />
+              ) : (
+                <img
+                  src={heart_outlined}
+                  alt="not liked"
+                  className="cursor-pointer w-6 h-6"
+                  onClick={handleLike}
+                />
+              )}
+              <p className="likes text-white text-lg font-semibold">{post?.likes ? likeCount : 0}</p>
             </div>
           </div>
         </div>
-      }
-    </>
+      </div>
+    </div>
+  }
+</>
+
   );
 };

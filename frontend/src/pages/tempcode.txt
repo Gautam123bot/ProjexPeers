@@ -30,3 +30,28 @@
                   >
                     Connect
                   </button> */}
+
+feeds.jsx file
+ // const fetchUserDetails = async () => {
+  //   try {
+  //     const res = await Axios.get(
+  //       `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser/${username}`
+  //     );
+  //     setUserDetails(res.data);
+  //   } catch (err) {
+  //     console.error("Error fetching user details:", err);
+  //     navigate("/login"); // Redirect to login if user not found
+  //   }
+  // };
+
+   // const handleSearch = (e) => {
+  //   const value = e.target.value.toLowerCase();
+  //   setSearch(value);
+  //   if (value === "") {
+  //     setPosts(allPosts);
+  //   }
+  //   const filteredPosts = allPosts.filter((post) =>
+  //     post.skills.some((skill) => skill.toLowerCase().includes(value))
+  //   );
+  //   setPosts(filteredPosts);
+  // };
