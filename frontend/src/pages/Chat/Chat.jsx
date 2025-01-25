@@ -24,7 +24,7 @@ const Chat = () => {
     });
     localStorage.setItem("user_spaces", JSON.stringify(res.data));
     setUserSpaces(res.data);
-    console.log(res.data);
+    console.log("get user space : ", res.data);
   };
 
   const handleSearch = (e) => {
@@ -133,6 +133,7 @@ const Chat = () => {
               <div className="name-box">
               {searchRes.length === 0
                   ? userSpaces.map((space) => {
+                    console.log("space is: ", space)
                       return (
                         <div
                           className="names"
@@ -140,7 +141,7 @@ const Chat = () => {
                           onClick={() => setSelectedSpace(space)}
                         >
                           <img src={space.chatPic} alt="..." />
-                          <h3>{space.chatHead}</h3>
+                          <h3>{space?.members[0]}</h3>
                         </div>
                       );
                     })

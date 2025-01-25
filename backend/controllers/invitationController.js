@@ -1,4 +1,5 @@
 import Invitation from "../models/invitations.js";
+import Notification from "../models/notifications.js";
 
 export const sendInvitation = async (req, res) => {
   try {
@@ -61,7 +62,21 @@ export const updateInvitationStatus = async (req, res) => {
       return res.status(404).json({ error: "Invitation not found." });
     }
 
-    res.status(200).json({ message: "Invitation status updated.", invitation: invitation });
+    const message = `Your invitation to ${invitation.recipientId} was ${status}.`;
+    const notification = await Notification.findOneAndUpdate(
+      { userId: invitation.senderId },
+      {
+        $push: { messages: { message } }, // Append the new message to messages array
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true } // Create if not exists
+    );
+
+    if (!notification) {
+      return res.status(500).json({ error: "Failed to create or update notification." });
+    }
+
+    return res.status(200).json({ message: 'Invitation status updated and notification sent to sender.', invitation: invitation });
+
   } catch (err) {
     res.status(500).json({ error: "Failed to update invitation status." });
   }

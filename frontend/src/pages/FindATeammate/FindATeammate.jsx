@@ -8,6 +8,7 @@ import down_arrow from "../../../src/assets/icons/down.png";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import Loader from "../../components/Loader/Loader";
+import Notifications from "../../components/Notifications/Notifications";
 
 const FindATeammate = () => {
   const [users, setUsers] = useState([]);
@@ -22,7 +23,7 @@ const FindATeammate = () => {
   const [loaderUser, setLoaderUser] = useState(false);
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const user_id = user_info?._id;
-
+  
   const [formData, setFormData] = useState({
     // sender details
     senderName: "",
@@ -138,25 +139,6 @@ const FindATeammate = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/send-invite`, payload);
       setSuccess(response.data.message);
-      setFormData({
-        senderId: "",
-        recipientId: "",
-        senderName: "",
-        senderEmail: "",
-        competitionType: "",
-        competitionName: "",
-        dateOfCompetition: "",
-        durationOfCompetition: "",
-        registrationDeadlineOfCompetition: "",
-        currentTeamSize: "",
-        projectOverview: "",
-        teamName: "",
-        message: "",
-        country: "",
-        state: "",
-        city: "",
-        location: "",
-      });
       alert("Invitation sent successfully!");
     } catch (error) {
       setError(error.response?.data?.error || "Failed to send the invitation.");
@@ -636,6 +618,8 @@ const FindATeammate = () => {
             ))
         )}
       </div>
+
+      {/* <Notifications user_id={user_id} /> */}
 
     </>
   );
