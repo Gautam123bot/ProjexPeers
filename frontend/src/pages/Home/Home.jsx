@@ -9,16 +9,16 @@ const Home = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-gray-800 text-white py-32 text-center h-screen">
-        <div className="max-w-6xl mx-auto space-y-12 px-6">
-          <h1 className="text-5xl font-extrabold leading-tight sm:text-7xl animate-fade-in">
+      <section className="bg-gray-800 text-white py-32 text-center h-screen md:py-32 md:h-screen">
+        <div className="max-w-6xl mx-auto space-y-12 px-6 md:space-y-12">
+          <h1 className="text-4xl font-extrabold leading-tight md:text-7xl animate-fade-in md:leading-tight">
             Empower Your Connections <br /> <span className='text-yellow-400'>Securely and Effortlessly</span>
           </h1>
-          <p className="text-xl sm:text-2xl max-w-2xl mx-auto animate-fade-in animation-delay-2">
+          <p className="text-base md:text-2xl max-w-2xl mx-auto animate-fade-in animation-delay-2">
             Join a community where your network grows with your aspirations. Sign up now to create meaningful connections.
           </p>
           {!token && (
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               <a
                 href="/signup"
                 className="bg-yellow-400 text-gray-900 px-10 py-4 rounded-full text-lg font-semibold hover:bg-yellow-500 transition duration-300 ease-in-out animate-fade-in animation-delay-3 shadow-lg hover:shadow-xl"
