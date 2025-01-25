@@ -48,7 +48,7 @@ const SignIn = ({ setIsLoggedIn }) => {
       const reg = await LoginUser(credentials);
       console.log("registered user details: ", reg);
       if (reg?.data?.success === true) {
-        alert("USER LOGGED IN !! ");
+        // alert("USER LOGGED IN !! ");
         localStorage.setItem("token", reg.data.token);
         localStorage.setItem("username", reg.data.username);
         localStorage.setItem("user_info", JSON.stringify(reg.data.user));

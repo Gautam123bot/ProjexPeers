@@ -49,7 +49,6 @@ export const getInvitation = async (req, res) => {
 export const updateInvitationStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id is: ", id)
     const { status } = req.body;
 
     const invitation = await Invitation.findByIdAndUpdate(
@@ -65,5 +64,20 @@ export const updateInvitationStatus = async (req, res) => {
     res.status(200).json({ message: "Invitation status updated.", invitation: invitation });
   } catch (err) {
     res.status(500).json({ error: "Failed to update invitation status." });
+  }
+};
+
+export const getInvitationStatus = async (req, res) => {
+  try {
+    const { senderId, recipientId } = req.query;
+    const invitation = await Invitation.findOne({ senderId, recipientId });
+
+    if (invitation) {
+      return res.status(200).json(invitation);
+    }
+
+    res.status(404).json({ error: "No invitation found." });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch invitation status." });
   }
 };
