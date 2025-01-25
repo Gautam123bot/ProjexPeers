@@ -1,6 +1,5 @@
 import express from "express";
 import { createSpace, getUserSpaces, searchSpace, sendMessage } from "../controllers/spaceController.js";
-import auth from "../middleware/auth.js";
 
 const spaceRouter = express.Router();
 
