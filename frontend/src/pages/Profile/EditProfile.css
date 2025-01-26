@@ -31,8 +31,8 @@
 .edit-main-con label{
     font-size: 22px;
     font-weight: bold;
-    color: #3364FF;
     margin-bottom: 10px;
+    margin-right: 10px;
 }
 
 .edit-main-con input{
@@ -55,7 +55,6 @@
     height: 40px;
     border-radius: 10px;
     background-color: #EFF5FF;
-    color: #3364FF;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -164,7 +163,6 @@ textarea:focus{
 .availability-toggle {
     margin-top: 1.5rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
   }
   
@@ -173,9 +171,9 @@ textarea:focus{
     align-items: center;
   }
   
-  .toggle-button-container span {
+  /* .toggle-button-container span {
     margin-right: 10px;
-  }
+  } */
   
   .switch {
     position: relative;

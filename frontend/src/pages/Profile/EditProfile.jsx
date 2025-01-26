@@ -197,6 +197,7 @@ export const EditProfile = () => {
             <input
               type="text"
               value={github}
+              placeholder="Enter your github url"
               onChange={(e) => setGithub(e.target.value)}
               className="border-none"
             />
@@ -210,6 +211,7 @@ export const EditProfile = () => {
             <input
               type="text"
               value={linkedIn}
+              placeholder="Enter your linkedin url"
               onChange={(e) => setLinkedin(e.target.value)}
               className="border-none"
             />
@@ -282,13 +284,13 @@ export const EditProfile = () => {
           <label>About</label>
           <textarea
             value={about}
+            placeholder="Tell us about yourself"
             onChange={(e) => setAbout(e.target.value)}
           ></textarea>
         </div>
         <div className="availability-toggle">
-        <label>Availability</label>
+        <label className="pr-4">Availability</label>
         <div className="toggle-button-container">
-          <span>{available ? "Available" : "Not Available"}</span>
           <label className="switch">
             <input 
               type="checkbox" 
@@ -298,6 +300,7 @@ export const EditProfile = () => {
             />
             <span className="slider"></span>
           </label>
+          <span className="mb-2 mr-4">{available ? "Available" : "Not Available"}</span>
         </div>
       </div>
         <div className="edit-skills">
