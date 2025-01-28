@@ -72,6 +72,7 @@ function App() {
                   <Route path="/messages" element={<Chat />} />
                   <Route path="/findateammate" element={<FindATeammate />} />
                   <Route path="/invitations" element={<Invitations />} />
+                  <Route path="*" element={<Navigate to="/404" />} />
                   {/* <Route path="/team-finder" element={<TeamFinderCard />} /> */}
                   {/* <Route path="/feed" element={<FeedCard />} /> */}
                 </Routes>
