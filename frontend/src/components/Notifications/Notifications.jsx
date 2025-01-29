@@ -4,10 +4,6 @@ import axios from "axios";
 const Notifications = ({ user_id }) => {
     const [notifications, setNotifications] = useState([]); // State for storing notifications
 
-    useEffect(()=>{
-        console.log("notifications are : ", notifications);
-    }, [notifications])
-
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
@@ -20,7 +16,6 @@ const Notifications = ({ user_id }) => {
                         userId: user_id, // Pass userId in the request body
                     }
                 );
-                console.log("resposne is: ", response.data[0].messages)
                 if (response) {
                     setNotifications(response.data[0].messages); // Update state with fetched notifications
                 } else {
