@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: false,
   },
-  about : {
+  about: {
     type: String,
     trim: true
   },
@@ -96,8 +96,8 @@ const userSchema = new mongoose.Schema({
       required: false,
     },
   ],
-  posts : {
-    type : Number
+  posts: {
+    type: Number
   },
   groups: [
     {
@@ -117,7 +117,13 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: false,
     default: false,
-  }
+  },
+  friendList: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "USER",
+    },
+  ],
 });
 
 // Hashing Passwords
@@ -133,7 +139,7 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateAuthToken = async function () {
   try {
     console.log("came here for generate token")
-    let token = jwt.sign({ _id: this._id, username: this.username ,email: this.email }, process.env.SECRET_KEY, { expiresIn: '24h' });;
+    let token = jwt.sign({ _id: this._id, username: this.username, email: this.email }, process.env.SECRET_KEY, { expiresIn: '24h' });
     this.tokens = this.tokens.concat({ token: token });
     await this.save();
     return token;

@@ -1,5 +1,6 @@
 import Invitation from "../models/invitations.js";
 import Notification from "../models/notifications.js";
+import User from "../models/user.js";
 
 export const sendInvitation = async (req, res) => {
   try {
@@ -60,6 +61,20 @@ export const updateInvitationStatus = async (req, res) => {
 
     if (!invitation) {
       return res.status(404).json({ error: "Invitation not found." });
+    }
+
+    if (status === "Accepted") {
+      await User.findByIdAndUpdate(
+        invitation.senderId,
+        { $addToSet: { friendList: invitation.recipientId } },
+        { new: true }
+      );
+
+      await User.findByIdAndUpdate(
+        invitation.recipientId,
+        { $addToSet: { friendList: invitation.senderId } },
+        { new: true }
+      );
     }
 
     const message = `Your invitation to ${invitation.recipientId} was ${status}.`;
