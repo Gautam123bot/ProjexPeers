@@ -1,5 +1,7 @@
 import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
+import ContactUs from '../../components/ContactUs/Contactus';
 
 const Home = () => {
   const token = localStorage.getItem("token");
@@ -7,6 +9,11 @@ const Home = () => {
   return (
     <div className="bg-gray-900 text-gray-200 min-h-screen flex flex-col">
       <Navbar />
+      <div className="bg-yellow-400 text-gray-900 py-3 text-center font-semibold text-lg overflow-hidden whitespace-nowrap">
+        <marquee behavior="scroll" direction="left" scrollamount="8">
+          🚀 Exciting News! ProjexPeers is launching on <span className="font-bold">March 15th</span>. Stay tuned for an incredible experience! 🎉
+        </marquee>
+      </div>
 
       {/* Hero Section */}
       <section className="bg-gray-800 text-white py-32 text-center h-screen md:py-32 md:h-screen">
@@ -101,34 +108,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <footer id="contact" className="bg-gray-900 text-gray-300 py-12">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-sm mb-6">&copy; 2024 ProjexPeers. All rights reserved.</p>
-          <div className="flex justify-center space-x-8 text-lg">
-            {[{
-              href: 'https://facebook.com',
-              label: 'Facebook',
-            }, {
-              href: 'https://twitter.com',
-              label: 'Twitter',
-            }, {
-              href: 'https://linkedin.com',
-              label: 'LinkedIn',
-            }].map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-yellow-400 transition duration-300 ease-in-out"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
+      <ContactUs />
+      <Footer />
+      
     </div>
   );
 };
