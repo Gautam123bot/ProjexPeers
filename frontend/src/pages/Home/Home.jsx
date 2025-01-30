@@ -16,7 +16,7 @@ const Home = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="bg-gray-800 text-white py-32 text-center h-screen md:py-32 md:h-screen">
+      <section className="bg-gray-800 text-white py-24 text-center h-screen md:py-32 md:h-screen">
         <div className="max-w-6xl mx-auto space-y-12 px-6 md:space-y-12">
           <h1 className="text-4xl font-extrabold leading-tight md:text-7xl animate-fade-in md:leading-tight">
             Empower Your Connections <br /> <span className='text-yellow-400'>Securely and Effortlessly</span>
