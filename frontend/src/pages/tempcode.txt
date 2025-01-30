@@ -55,3 +55,30 @@ feeds.jsx file
   //   );
   //   setPosts(filteredPosts);
   // };
+
+
+
+
+
+
+
+   // if (action === "Accepted") {
+            //     const spaceName = random();
+            //     try {
+            //         const { data: { invitation } } = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/get-invite-by-id/${id}`);
+            //         const receiverUserId = invitation?.senderId;
+            //         const postUser = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser`, { _id: receiverUserId })
+            //         const postUsername = postUser?.data?.username;
+            //         const members = [username, postUsername];
+
+            //         await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/create-space`, {
+            //             admin: username,
+            //             members,
+            //             spaceName: spaceName,
+            //             chatPic: postUser?.data?.profilePic || profile_img,
+            //         });
+            //         // alert(`Request ${action}`)
+            //     } catch (error) {
+            //         console.error(error);
+            //     }
+            // }

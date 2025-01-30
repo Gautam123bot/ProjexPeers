@@ -1,6 +1,7 @@
 import Invitation from "../models/invitations.js";
 import Notification from "../models/notifications.js";
 import User from "../models/user.js";
+// import {io} from "../socket/socket.js";
 
 export const sendInvitation = async (req, res) => {
   try {
@@ -28,6 +29,7 @@ export const sendInvitation = async (req, res) => {
     });
 
     await invitation.save();
+    // io.to(recipientId).emit('newInvitation', invitation);
 
     res.status(201).json({ message: "Invitation sent successfully!" });
   } catch (err) {
@@ -47,7 +49,6 @@ export const getInvitation = async (req, res) => {
   }
 };
 
-// PATCH /api/invitations/:id
 export const updateInvitationStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -81,14 +82,22 @@ export const updateInvitationStatus = async (req, res) => {
     const notification = await Notification.findOneAndUpdate(
       { userId: invitation.senderId },
       {
-        $push: { messages: { message } }, // Append the new message to messages array
+        $push: { messages: { message } },
       },
-      { upsert: true, new: true, setDefaultsOnInsert: true } // Create if not exists
+      { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
     if (!notification) {
       return res.status(500).json({ error: "Failed to create or update notification." });
     }
+
+    // if (status === "Accepted") {
+    //   io.to(invitation.senderId).emit('invitationAccepted', invitation);
+    //   io.to(invitation.recipientId).emit('invitationAccepted', invitation);
+    // } else if (status === "Declined") {
+    //   io.to(invitation.senderId).emit('invitationDeclined', invitation);
+    //   io.to(invitation.recipientId).emit('invitationDeclined', invitation);
+    // }
 
     return res.status(200).json({ message: 'Invitation status updated and notification sent to sender.', invitation: invitation });
 
