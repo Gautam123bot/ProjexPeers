@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import logo from "../../assets/images/logo.png";
 
 function Footer() {
@@ -27,15 +27,15 @@ function Footer() {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-2xl sm:text-3xl font-semibold text-white">Stay Updated</h3>
-            <p className="text-lg sm:text-xl text-gray-400 mb-6">Subscribe to our newsletter for updates.</p>
-            <div className="flex flex-col sm:flex-row items-center bg-gray-800 p-4 rounded-lg space-y-4 sm:space-y-0 sm:space-x-4">
+            <h3 className="text-2xl lg:text-3xl font-semibold text-white">Stay Updated</h3>
+            <p className="text-lg lg:text-xl text-gray-400 mb-6">Subscribe to our newsletter for updates.</p>
+            <div className="flex flex-col lg:flex-row items-center bg-gray-800 p-4 rounded-lg space-y-4 lg:space-y-0 lg:space-x-4">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-transparent outline-none text-lg sm:text-xl flex-1 px-4 text-white rounded-lg sm:w-60"
+                className="bg-transparent outline-none text-lg lg:text-xl flex-1 px-4 text-white rounded-lg lg:w-60"
               />
-              <button className="bg-yellow-400 text-gray-900 px-6 py-3 sm:py-4 text-lg sm:text-xl rounded-lg transition duration-200 ease-in-out hover:bg-yellow-500 w-full sm:w-auto">
+              <button className="bg-yellow-400 text-gray-900 px-6 py-3 lg:py-4 text-lg lg:text-xl rounded-lg transition duration-200 ease-in-out hover:bg-yellow-500 w-full md:w-auto">
                 Subscribe
               </button>
             </div>
@@ -67,6 +67,14 @@ function Footer() {
                 className="hover:text-yellow-400 transition duration-300"
               >
                 <FaLinkedinIn />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-yellow-400 transition duration-300"
+              >
+                <FaInstagram />
               </a>
             </div>
           </div>
