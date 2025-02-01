@@ -49,7 +49,7 @@ function Navbar() {
         <nav
           className={`${isMenuOpen ? 'block' : 'hidden'} md:block absolute md:static top-16 left-0 w-full md:w-auto bg-gray-800 md:bg-transparent`}
         >
-          <ul className="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0 text-lg px-6 md:px-0 py-4 md:py-0">
+          <ul className="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0 text-base px-6 md:px-0 py-4 md:py-0">
             <li>
               <a href="/dashboard" className="hover:text-yellow-400 transition font-medium">
                 Dashboard
@@ -57,7 +57,7 @@ function Navbar() {
             </li>
             <li>
               <a href="/hackathons" className="hover:text-yellow-400 transition font-medium">
-                Explore Hackathons
+                Hackathons
               </a>
             </li>
             <li>
