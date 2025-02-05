@@ -129,6 +129,9 @@ ProjexPeers simplifies the process of building teams and fosters collaboration a
 We welcome contributions to ProjexPeers! Feel free to open issues or submit pull requests to improve the project.
 
 ---
+#NOTE
+Ensure that you have set up a .env with secrets
+
 
 ## 👥 Contact
 
