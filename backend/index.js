@@ -17,7 +17,6 @@ import initializeSocket from "./socket/socket.js";
 import User from "./models/user.js";
 import Posts from "./models/posts.js";
 import invitationRoutes from "./routes/invitationRoutes.js";
-import notificationRoutes from "./routes/notificationRoutes.js";
 import contactusRoutes from "./routes/contactusRoutes.js";
 
 dotenv.config();
@@ -51,7 +50,6 @@ app.use(Router.get("/post/getAllPosts", getAllPosts));
 app.use("/post", auth, postRoutes);
 app.use("/space", auth, spaceRoutes);
 app.use("/invitation", auth, invitationRoutes);
-app.use("/notifications", auth, notificationRoutes);
 
 app.use("/auth", authRoutes);
 app.use(Router.get("/auth/logout", auth, logoutUser));

@@ -66,57 +66,6 @@ const socketController = (io) => {
       }
     });
 
-    socket.on("acceptRequest", async ({ invitationId }, callback) => {
-      try {
-        const invitation = await Invitation.findByIdAndUpdate(
-          invitationId,
-          { status: "Accepted" },
-          { new: true }
-        );
-
-        if (!invitation) {
-          return callback({ error: "Invitation not found." });
-        }
-
-        // Add users to each other's friend list
-        await User.findByIdAndUpdate(invitation.senderId, { $addToSet: { friendList: invitation.recipientId } });
-        await User.findByIdAndUpdate(invitation.recipientId, { $addToSet: { friendList: invitation.senderId } });
-
-        // Notify both users
-        io.to(invitation.senderId).emit("invitationAccepted", invitation);
-        io.to(invitation.recipientId).emit("invitationAccepted", invitation);
-
-        callback({ message: "Invitation accepted successfully!" });
-      } catch (err) {
-        console.error("Error in acceptRequest:", err);
-        callback({ error: "Failed to accept invitation." });
-      }
-    });
-
-    // Decline Invitation
-    socket.on("declineRequest", async ({ invitationId }, callback) => {
-      try {
-        const invitation = await Invitation.findByIdAndUpdate(
-          invitationId,
-          { status: "Declined" },
-          { new: true }
-        );
-
-        if (!invitation) {
-          return callback({ error: "Invitation not found." });
-        }
-
-        // Notify both users
-        io.to(invitation.senderId).emit("invitationDeclined", invitation);
-        io.to(invitation.recipientId).emit("invitationDeclined", invitation);
-
-        callback({ message: "Invitation declined successfully!" });
-      } catch (err) {
-        console.error("Error in declineRequest:", err);
-        callback({ error: "Failed to decline invitation." });
-      }
-    });
-
     socket.on("disconnect", () => {
       console.log("User has disconnected.");
     });

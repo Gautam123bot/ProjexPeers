@@ -1,47 +1,94 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Bell, X } from "lucide-react";
+import socket from "../../socket";
 
-const Notifications = ({ user_id }) => {
-    const [notifications, setNotifications] = useState([]); // State for storing notifications
+const Notifications = () => {
+    const [notifications, setNotifications] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [hasNew, setHasNew] = useState(false);
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                if (!user_id) return; // Ensure user_id is available before making the request
+        const storedNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+        setNotifications(storedNotifications);
 
-                // Make a POST request to fetch notifications
-                const response = await axios.post(
-                    `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/notifications/get-notifications`,
-                    {
-                        userId: user_id, // Pass userId in the request body
-                    }
-                );
-                if (response) {
-                    setNotifications(response.data[0].messages); // Update state with fetched notifications
-                } else {
-                    console.warn("No notifications received from the server.");
-                }
-            } catch (error) {
-                console.error("Failed to fetch notifications:", error.message || error); // Log specific error message
-            }
+        const storedHasNew = JSON.parse(localStorage.getItem("hasNew")) || false;
+        setHasNew(storedHasNew);
+    }, []);
+
+    useEffect(() => {
+        const handleInviteAccepted = ({ senderUserName, recipientUserName }) => {
+            addNotification(`${recipientUserName} accepted your invitation.`, "success");
         };
 
-        fetchNotifications(); // Call the function to fetch notifications
-    }, [user_id]); // Re-run effect when user_id changes
+        const handleInviteDeclined = ({ senderUserName, recipientUserName }) => {
+            addNotification(`${recipientUserName} declined your invitation.`, "error");
+        };
+
+        socket.on("invite:accepted", handleInviteAccepted);
+        socket.on("invite:declined", handleInviteDeclined);
+
+        return () => {
+            socket.off("invite:accepted", handleInviteAccepted);
+            socket.off("invite:declined", handleInviteDeclined);
+        };
+    }, []);
+
+    const addNotification = (message, type) => {
+        const newNotification = { id: Date.now(), message, type };
+        const updatedNotifications = [newNotification, ...notifications];
+
+        setNotifications(updatedNotifications);
+        setHasNew(true);
+        localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+        localStorage.setItem("hasNew", JSON.stringify(true));
+    };
+
+    const removeNotification = (id) => {
+        const updatedNotifications = notifications.filter((notif) => notif.id !== id);
+        setNotifications(updatedNotifications);
+        localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+    };
+
+    const handleBellClick = () => {
+        setIsOpen(!isOpen);
+        if (isOpen) return;
+
+        setHasNew(false);
+        localStorage.setItem("hasNew", JSON.stringify(false));
+    };
 
     return (
-        <div>
-            <h2>Notifications</h2>
-            {notifications?.length > 0 ? (
-                <ul>
-                    {notifications.map((notification, index) => (
-                        <li key={index}>
-                            {notification.message} - {notification.status}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No notifications found.</p>
+        <div className="relative">
+            <button 
+                className="relative p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition" 
+                onClick={handleBellClick}
+            >
+                <Bell className="w-6 h-6 text-gray-700" />
+                {hasNew && (
+                    <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
+                )}
+            </button>
+
+            {isOpen && (
+                <div className="absolute right-0 mt-2 w-96 bg-white shadow-lg rounded-lg p-3 z-50">
+                    <h3 className="text-lg text-gray-800 font-semibold mb-2">Notifications</h3>
+                    {notifications.length === 0 ? (
+                        <p className="text-gray-500">No new notifications</p>
+                    ) : (
+                        <ul className="space-y-2">
+                            {notifications.map((notif) => (
+                                <li key={notif.id} className="flex items-center justify-between p-2 rounded-md shadow-sm">
+                                    <span className={`${notif.type === "success" ? "text-green-600" : "text-red-600"}`}>
+                                        {notif.message}
+                                    </span>
+                                    <button onClick={() => removeNotification(notif.id)}>
+                                        <X className="w-4 h-4 text-gray-500 hover:text-red-500" />
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             )}
         </div>
     );

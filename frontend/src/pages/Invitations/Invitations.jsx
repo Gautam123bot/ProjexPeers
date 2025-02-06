@@ -3,6 +3,8 @@ import axios from "axios";
 import Navbar from "../../components/Navbar/Navbar";
 import profile_img from "../../../src/assets/images/profile_img.jpg"
 import random from "random-string-generator";
+import useSocket from "../../hooks/useSocket";
+import socket from "../../socket";
 
 const Invitations = () => {
     const [invitations, setInvitations] = useState([]);
@@ -16,11 +18,12 @@ const Invitations = () => {
     const user_info = JSON.parse(localStorage.getItem("user_info"));
     const userId = user_info._id;
     const username = user_info.username;
+    const { invitations: socketInvitations = [] } = useSocket();
 
     useEffect(() => {
         const fetchInvitations = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/get-invite?recipientId=${userId}`);
+                const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/get-invite?recipientUserName=${username}`);
                 setInvitations(response.data);
             } catch (error) {
                 console.error(error);
@@ -33,7 +36,37 @@ const Invitations = () => {
         else {
             console.log("user id not available");
         }
-    }, []);
+    }, [userId]);
+
+    useEffect(() => {
+        if (Array.isArray(socketInvitations)) {
+            setInvitations((prevInvites) => {
+                const updatedInvites = [...prevInvites];
+                let hasChanges = false;
+    
+                socketInvitations.forEach((newInvite) => {
+                    const index = updatedInvites.findIndex((invite) => invite._id === newInvite._id);
+                    if (index !== -1) {
+                        if (updatedInvites[index] !== newInvite) {
+                            updatedInvites[index] = newInvite;
+                            hasChanges = true;
+                        }
+                    } else {
+                        updatedInvites.push(newInvite);
+                        hasChanges = true;
+                    }
+                });
+    
+                if (hasChanges) {
+                    return updatedInvites;
+                }
+    
+                return prevInvites; 
+            });
+        }
+    }, [socketInvitations]);
+    
+    
 
     const handleAction = async (id, action) => {
         try {
@@ -41,18 +74,32 @@ const Invitations = () => {
             setInvitations((prev) =>
                 prev.filter((invitation) => invitation._id !== id)
             );
+            const spaceName = random();
+            const senderUserName = res?.data?.invitation?.senderUserName;
+            console.log("Fetching user with payload:", { username: senderUserName });
+            const postUser = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser`, { username: senderUserName })
+            const postUsername = postUser?.data?.username;
+            const members = [username, postUsername];
             if (action === "Accepted") {
-                const spaceName = random();
-                const receiverUserId = res?.data?.invitation?.senderId;
-                const postUser = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getUser`, { _id: receiverUserId })
-                const postUsername = postUser?.data?.username;
-                const members = [username, postUsername];
+                console.log("came for invite accepted");
+                socket.emit("invite:accepted", { senderUserName, recipientUserName: username }, (ack) => {
+                    if (!ack) {
+                        console.error("No acknowledgment received from the server.");
+                    } else {
+                        console.log("Invite accepted event acknowledged:", ack);
+                    }
+                });
 
                 await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/space/create-space`, {
                     admin: username,
                     members,
                     spaceName: spaceName,
                     chatPic: postUser?.data?.profilePic || profile_img,
+                });
+            }
+            else if (action === "Declined") {
+                socket.emit("invite:declined", { senderUserName, recipientUserName: username }, (ack) => {
+                    console.log("Invite declined event acknowledged:", ack);
                 });
             }
 

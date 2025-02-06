@@ -13,12 +13,12 @@ function Dashboard() {
         const fetchPendingCount = async () => {
             try {
                 const user_info = JSON.parse(localStorage.getItem("user_info"));
-                const userId = user_info?._id;
+                const username = user_info?.username;
 
-                if (userId) {
+                if (username) {
                     const response = await axios.get(
                         `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/get-invite`,
-                        { params: { recipientId: userId } }
+                        { params: { recipientUserName: username } }
                     );
                     setPendingCount(response.data.length);
                 }
