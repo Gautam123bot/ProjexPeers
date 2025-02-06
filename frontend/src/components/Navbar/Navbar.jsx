@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from "../../assets/images/logo.png";
 import avatar_pic from '../../assets/images/profile_img.jpg';
 import { useNavigate } from 'react-router-dom';
+import Notifications from '../Notifications/Notifications';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,7 +71,7 @@ function Navbar() {
                 Help
               </a>
             </li>
-
+            <Notifications />
             {isLoggedIn ? (
               <li
                 className="relative group"

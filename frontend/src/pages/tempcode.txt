@@ -82,3 +82,64 @@ feeds.jsx file
             //         console.error(error);
             //     }
             // }
+
+
+
+
+            // setUsers((prevUsers) => {
+      //   return prevUsers.filter((user) => user.username !== senderUserName);
+      // });
+
+
+
+
+      const message = `Your invitation to ${invitation.recipientUserName} was ${status}.`;
+    const notification = await Notification.findOneAndUpdate(
+      { userId: invitation.senderUserName },
+      {
+        $push: { messages: { message } },
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+
+    import mongoose from "mongoose";
+
+const notificationSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    unique: true,
+    required: true
+  },
+  messages: [
+    {
+      message: { type: String, required: true },
+      status: { type: String, enum: ['unread', 'read'], default: 'unread' },
+      createdAt: { type: Date, default: Date.now },
+    }
+  ],
+  createdAt: { type: Date, default: Date.now },
+}, {
+  timestamps: true,
+});
+
+notificationSchema.index({ userId: 1 }, { unique: true });
+
+const Notification = mongoose.model('Notification', notificationSchema);
+
+export default Notification;
+
+import Notification from "../models/notifications.js";
+
+export const getNotification = async (req, res) => {
+    try {
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: "User ID is required." });
+      }
+      const notifications = await Notification.find({userId: userId});
+      res.status(200).json(notifications);
+    } catch (err) {
+      res.status(500).json({ error: "Failed to fetch invitations." });
+    }
+  };

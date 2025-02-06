@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const InvitationSchema = new mongoose.Schema({
-    senderId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    recipientId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    senderUserName: { type: String, required: true },
+    recipientUserName: { type: String, required: true },
     senderName: { type: String, required: true },
     senderEmail: { type: String, required: true, match: /.+\@.+\..+/ },
     competitionType: { type: String, required: true },

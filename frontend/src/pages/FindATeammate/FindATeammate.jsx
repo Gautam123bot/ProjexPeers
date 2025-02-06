@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
@@ -8,7 +8,7 @@ import down_arrow from "../../../src/assets/icons/down.png";
 import { Country, State, City } from "country-state-city";
 import Select from "react-select";
 import Loader from "../../components/Loader/Loader";
-import Notifications from "../../components/Notifications/Notifications";
+import socket from "../../socket";
 
 const FindATeammate = () => {
   const [users, setUsers] = useState([]);
@@ -23,29 +23,33 @@ const FindATeammate = () => {
   const [loaderUser, setLoaderUser] = useState(false);
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const user_id = user_info?._id;
-  
+  const username = user_info?.username;
+  const [sentRequests, setSentRequests] = useState(() => {
+    try {
+      const storedRequests = localStorage.getItem("sentRequests");
+      return storedRequests ? JSON.parse(storedRequests) : [];
+    } catch (e) {
+      console.error("Error parsing sentRequests from localStorage:", e);
+      return [];
+    }
+  });
+
   const [formData, setFormData] = useState({
-    // sender details
-    senderName: "",
+    senderName: "",               // sender details
     senderEmail: "",
-    // competition details
-    competitionType: "",
+    competitionType: "",            // competition details
     competitionName: "",
     dateOfCompetition: "",
     durationOfCompetition: "",
     registrationDeadlineOfCompetition: "",
-    // team details
-    currentTeamSize: "",
+    currentTeamSize: "",                // team details
     teamName: "",
-    // venue details
-    country: "",
+    country: "",                        // venue details
     state: "",
     city: "",
     location: "",
-    // project details
-    projectOverview: "",
-    // other info
-    message: "",
+    projectOverview: "",                // project details
+    message: "",                // other info
   });
 
   const [openSections, setOpenSections] = useState({
@@ -109,14 +113,92 @@ const FindATeammate = () => {
     setIsModalOpen(false);
   };
 
-  const handleSend = async (recipientId) => {
+  useEffect(() => {
+    socket.on('invite:accepted', (data) => {
+      const { senderUserName, recipientUserName } = data;
+
+      if (!senderUserName || !recipientUserName) {
+        console.error("Missing senderUserName or recipientUserName in accepted event!");
+        return;
+      }
+      console.log("yehh! invite accepted");
+
+      setSentRequests((prevRequests) => {
+        const updatedRequests = prevRequests.filter((request) => request !== recipientUserName);
+        localStorage.setItem("sentRequests", JSON.stringify(updatedRequests));
+        return updatedRequests;
+      });
+
+      let acceptedUsers = JSON.parse(localStorage.getItem("acceptedUsers")) || [];
+      acceptedUsers = [...new Set([...acceptedUsers, recipientUserName])];
+      localStorage.setItem("acceptedUsers", JSON.stringify(acceptedUsers));
+    });
+
+    return () => {
+      socket.off('invite:accepted');
+    };
+  }, []);
+
+
+  socket.on('invite:declined', (data) => {
+    const { senderUserName, recipientUserName, status } = data;
+
+    if (!senderUserName || !recipientUserName) {
+      console.error("Missing senderUserName or recipientUserName in declined event!");
+      return;
+    }
+
+    console.log("😢 Invite declined by", recipientUserName);
+
+    setSentRequests((prevRequests) => {
+      const updatedRequests = prevRequests.filter((request) => request !== recipientUserName);
+      localStorage.setItem("sentRequests", JSON.stringify(updatedRequests));
+      return updatedRequests;
+    });
+    return () => {
+      socket.off('invite:accepted');
+    };
+
+  });
+
+
+
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const savedRequests = localStorage.getItem("sentRequests");
+      if (savedRequests) {
+        const parsedRequests = JSON.parse(savedRequests);
+        if (Array.isArray(parsedRequests)) {
+          setSentRequests(parsedRequests);
+        } else {
+          console.warn("Invalid data in localStorage, resetting sentRequests.");
+          setSentRequests([]);
+          localStorage.setItem("sentRequests", JSON.stringify([]));
+        }
+      }
+    } catch (e) {
+      console.error("Error reading sentRequests from localStorage:", e);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sentRequests", JSON.stringify(sentRequests));
+  }, [sentRequests]);
+
+  const handleSend = useCallback(async (recipientUserName) => {
     setError("");
     setSuccess("");
 
     const payload = {
       ...formData,
-      senderId: user_id,
-      recipientId,
+      senderUserName: username,
+      recipientUserName,
     };
 
     const requiredFields = [
@@ -137,16 +219,31 @@ const FindATeammate = () => {
       }
     }
     try {
+      if (!socket || !socket.connected) {
+        console.error("❌ Socket is not connected!");
+        return;
+      }
+
+      socket.emit('invite:sent', { senderUserName: username, recipientUserName });
+      console.log("📤 Emitting event: invite:sent", { senderUserName: username, recipientUserName });
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/invitation/send-invite`, payload);
       setSuccess(response.data.message);
       alert("Invitation sent successfully!");
+      setSentRequests((prev) => {
+        const updatedRequests = Array.isArray(prev) ? [...new Set([...prev, recipientUserName])] : [recipientUserName];
+        localStorage.setItem("sentRequests", JSON.stringify(updatedRequests));
+        return updatedRequests;
+      });
+      socket.on("invite:sent:confirmation", () => {
+        console.log("✅ Server acknowledged the invite:sent event.");
+      });
     } catch (error) {
       setError(error.response?.data?.error || "Failed to send the invitation.");
       alert("Failed to send invitation.");
     } finally {
       handleCloseModal();
     }
-  };
+  }, [user_id, formData]);
 
   useEffect(() => {
     const fetchCurrentUser = () => {
@@ -158,7 +255,11 @@ const FindATeammate = () => {
       setLoaderUser(true);
       try {
         const response = await axios.get(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/user/getallusers`);
-        setUsers(response.data);
+        let users = response.data;
+
+        const acceptedUsers = JSON.parse(localStorage.getItem("acceptedUsers")) || [];
+        users = users.filter((user) => !acceptedUsers.includes(user.username));
+        setUsers(users);
       } catch (error) {
         console.error("Error fetching users", error);
       } finally {
@@ -187,7 +288,7 @@ const FindATeammate = () => {
 
   return (
     <>
-      {loaderUser && <Loader /> }
+      {loaderUser && <Loader />}
       <Navbar />
       <div className="flex flex-wrap gap-6 p-8 justify-center">
         {users.length === 0 ? (
@@ -209,13 +310,19 @@ const FindATeammate = () => {
                     <span>{user.available ? "Available" : "Not Available"}</span>
                   </div>
                   <div className="flex mt-3">
-                    <button
-                      onClick={() => handleOpenModal(user)}
-                      className="connect-btn mr-2"
-                      disabled={!user.available}
-                    >
-                      Send Invitation
-                    </button>
+                    {sentRequests.includes(user.username) ? (
+                      <button className="bg-gray-400 text-white rounded-lg py-2 px-4 cursor-not-allowed">
+                        Request Sent
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleOpenModal(user)}
+                        className="connect-btn mr-2"
+                        disabled={!user.available}
+                      >
+                        Send Invitation
+                      </button>
+                    )}
                     <Link to={`/${user.username}`} className="inline-block py-2 px-4 rounded-md text-decoration-none mr-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition duration-200 ease-in-out">
                       View Profile
                     </Link>
@@ -603,7 +710,7 @@ const FindATeammate = () => {
 
                         <button
                           type="button"
-                          onClick={() => handleSend(selectedUser._id)}
+                          onClick={() => handleSend(selectedUser.username)}
                           disabled={!selectedUser.available}
                           className="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none"
                         >
@@ -618,9 +725,6 @@ const FindATeammate = () => {
             ))
         )}
       </div>
-
-      {/* <Notifications user_id={user_id} /> */}
-
     </>
   );
 };

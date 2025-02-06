@@ -17,44 +17,49 @@ export const getUser = async (req, res) => {
   try {
     const { username, _id } = req.body;
 
-    // Validate that at least one of username or _id is provided
     if (!username && !_id) {
       return res.status(400).json({ message: "Username or _id is required." });
     }
 
-    if (_id) {
-      const userFound = await User.findById(_id);
+    let userFound = null;
+
+    if (_id && mongoose.Types.ObjectId.isValid(_id)) {
+      userFound = await User.findById(_id);
       if (userFound) {
         return res.status(200).json(userFound);
       } else {
-        return res.status(400).json({ message: "User not found by _id!" });
+        return res.status(404).json({ message: "User not found by _id!" });
       }
+    } else if (_id) {
+      return res.status(400).json({ message: "Invalid _id format!" });
     }
 
-    const userFound = await User.findOne({ username });
-    if (userFound) {
-      return res.status(200).json(userFound);
+    if (typeof username === "string" && username.trim().length > 0) {
+      userFound = await User.findOne({ username });
+      if (userFound) {
+        return res.status(200).json(userFound);
+      } else {
+        return res.status(404).json({ message: "User not found by username!" });
+      }
     } else {
-      return res.status(400).json({ message: "User not found by username!" });
+      return res.status(400).json({ message: "Invalid username format!" });
     }
 
   } catch (e) {
-    console.error(e);
+    console.error("Error in getUser:", e);
     res.status(500).json({ message: "An error occurred.", error: e.message });
   }
 };
 
-
 export const getUserByUsername = async (req, res) => {
   try {
-    const { username } = req.params; // Extract username from URL parameter
-    const user = await User.findOne({ username }); // Find user in DB
+    const { username } = req.params; 
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Return the user data
     res.json(user);
   } catch (err) {
     console.error(err);
