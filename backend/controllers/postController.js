@@ -52,60 +52,6 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
-export const postLike = async (req, res) => {
-  const { id, username } = req.body;
-
-  if (!id || !username) {
-    return res.status(422).json({ error: "Please fill all the fields." });
-  }
-
-  try {
-    const likePost = await Posts.findOne({ _id: id });
-
-    if (!likePost) {
-      return res.status(404).json({ error: "Post not found." });
-    }
-
-    const upvoted = await likePost.upvote(username);
-
-    if (upvoted) {
-      res.json({ message: "Upvoted Successfully!" });
-    } else {
-      res.json({ message: "Could not upvote!" });
-    }
-  } catch (e) {
-    console.log(e);
-    res.status(500).send(e);
-  }
-};
-
-export const dislikePost = async (req, res) => {
-  const { id, username } = req.body;
-
-  if (!username || !id) {
-    return res.status(422).json({ error: "Please fill all the fields." });
-  }
-
-  try {
-    const dislikePost = await Posts.findOne({ _id: id });
-
-    if (!dislikePost) {
-      return res.status(404).json({ message: "Post not found!" });
-    }
-
-    const downvoted = await dislikePost.downvote(username);
-
-    if (downvoted) {
-      return res.status(200).json({ message: "Downvoted Successfully!" });
-    } else {
-      return res.status(200).json({ message: "Already Downvoted!" });
-    }
-  } catch (e) {
-    console.log(e);
-    res.status(500).send(e);
-  }
-};
-
 export const deletePost = async (req, res) => {
   const _id = req.params.id;
 

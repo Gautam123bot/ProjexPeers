@@ -143,3 +143,62 @@ export const getNotification = async (req, res) => {
       res.status(500).json({ error: "Failed to fetch invitations." });
     }
   };
+
+
+   const handleLike = () => {
+    if (liked) {
+      return;
+    }
+    // console.log(randomstring.generate(7));
+    Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-like`, obj).then((res) => {
+      console.log(res.data.message);
+      setLiked(true);
+      setLikeCount(likeCount + 1);
+    });
+  };
+
+  const handleDislike = () => {
+    if (!liked) {
+      return;
+    }
+    // console.log("dislike clicked!")
+    Axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/post/post-dislike`, obj).then((res) => {
+      console.log(res.data.message);
+      setLiked(false);
+      setLikeCount(likeCount - 1);
+    });
+  };
+
+  <div className="like-con flex items-center space-x-3">
+              {liked ? (
+                <img
+                  src={heart_filled}
+                  alt="liked"
+                  className="cursor-pointer w-6 h-6"
+                  onClick={handleDislike}
+                />
+              ) : (
+                <img
+                  src={heart_outlined}
+                  alt="not liked"
+                  className="cursor-pointer w-6 h-6"
+                  onClick={handleLike}
+                />
+              )}
+              <p className="likes text-white text-lg font-semibold">{post?.likes ? likeCount : 0}</p>
+            </div>
+
+            const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post?.likes?.length);
+
+   useEffect(() => {
+    if (post?.likes.some((like) => like.username === username)) {
+      setLiked(true);
+    }
+  }, []);
+
+   // const liked = post.likes.some(like => like.username === username);
+  const obj = {
+    id: post?._id,
+    username: username,
+  };

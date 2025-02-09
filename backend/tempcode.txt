@@ -1,0 +1,81 @@
+export const postLike = async (req, res) => {
+  const { id, username } = req.body;
+
+  if (!id || !username) {
+    return res.status(422).json({ error: "Please fill all the fields." });
+  }
+
+  try {
+    const likePost = await Posts.findOne({ _id: id });
+
+    if (!likePost) {
+      return res.status(404).json({ error: "Post not found." });
+    }
+
+    const upvoted = await likePost.upvote(username);
+
+    if (upvoted) {
+      res.json({ message: "Upvoted Successfully!" });
+    } else {
+      res.json({ message: "Could not upvote!" });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+
+export const dislikePost = async (req, res) => {
+  const { id, username } = req.body;
+
+  if (!username || !id) {
+    return res.status(422).json({ error: "Please fill all the fields." });
+  }
+
+  try {
+    const dislikePost = await Posts.findOne({ _id: id });
+
+    if (!dislikePost) {
+      return res.status(404).json({ message: "Post not found!" });
+    }
+
+    const downvoted = await dislikePost.downvote(username);
+
+    if (downvoted) {
+      return res.status(200).json({ message: "Downvoted Successfully!" });
+    } else {
+      return res.status(200).json({ message: "Already Downvoted!" });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
+  }
+};
+
+postRouter.post("/post-like", postLike);
+postRouter.post("/post-dislike", dislikePost);
+
+
+postSchema.methods.upvote = async function (username) {
+  try {
+    this.likes = this.likes.concat({ username: username });
+    await this.save();
+    return this.likes;
+  } catch (e) {
+    console.log(`Failed to Upvote --> ${e}`);
+  }
+};
+
+postSchema.methods.downvote = async function (username) {
+  try {
+    this.likes = this.likes.filter((elem) => {
+      return elem.username !== username;
+    });
+
+    console.log(this.likes);
+    await this.save();
+    return this.likes;
+  } catch (e) {
+    console.log(`Failed to Downvote --> ${e}`);
+  }
+};
