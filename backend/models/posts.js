@@ -10,14 +10,6 @@ const postSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  likes: [
-    {
-      username: {
-        type: String,
-        trim: true,
-      },
-    },
-  ],
   profilePic: {
     type: String,
     required: false,
