@@ -15,13 +15,16 @@
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.4.7",
     "express": "^4.17.3",
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.7",
     "nodemailer": "^6.9.16",
     "nodemon": "^2.0.15",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.5",
     "socket.io": "^4.4.1",
     "validator": "^13.7.0"
   }

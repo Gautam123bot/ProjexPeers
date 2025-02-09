@@ -70,30 +70,6 @@ const postSchema = new mongoose.Schema({
   }
 });
 
-postSchema.methods.upvote = async function (username) {
-  try {
-    this.likes = this.likes.concat({ username: username });
-    await this.save();
-    return this.likes;
-  } catch (e) {
-    console.log(`Failed to Upvote --> ${e}`);
-  }
-};
-
-postSchema.methods.downvote = async function (username) {
-  try {
-    this.likes = this.likes.filter((elem) => {
-      return elem.username !== username;
-    });
-
-    console.log(this.likes);
-    await this.save();
-    return this.likes;
-  } catch (e) {
-    console.log(`Failed to Downvote --> ${e}`);
-  }
-};
-
 const Posts = mongoose.model("Post", postSchema);
 
 export default Posts;
